@@ -11,6 +11,7 @@ local Special_MATERIAL=cc.PhysicsMaterial(0,0,0)
 local ObstacleVo = require("game.data.ObstacleVo")
 
 local Flash_Skeep_Time = 0.25
+local Delay_Time = 1.5
 
 function Obstacle:ctor(id,py)
     Obstacle.super.ctor(self)
@@ -169,7 +170,7 @@ function Obstacle:executeMove(parameters)
         end
     end
     toFadeOut()
-    self.tipsTime = Tools.delayCallFunc(1.5,function()
+    self.tipsTime = Tools.delayCallFunc(Delay_Time/(MoveSpeed/SelectLevel[GameDataManager.getCurLevelId()].speed),function()
         transition.stopTarget(self.tip_1)
         if not tolua.isnull(self.tip_1) then
             self.tip_1:removeFromParent()
