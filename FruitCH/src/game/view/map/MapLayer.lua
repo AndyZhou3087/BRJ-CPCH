@@ -14,6 +14,8 @@ local MapGroup = require("game.view.map.MapGroup")
 
 function MapLayer:ctor(parameters)
 
+    local lvSpeed = SelectLevel[GameDataManager.getCurLevelId()].speed
+    MoveSpeed = lvSpeed
     GameController.setSpeed(MoveSpeed)
     self.m_backbg = BackGroundMove.new(GameBgRes,0,MoveSpeed):addTo(self)
 
@@ -111,7 +113,9 @@ function MapLayer:touchFunc(event)
     if GameController.isWin or GameController.isDead then
         return true
     end
-
+    if GameController.isInState(PLAYER_STATE.StartSprint) then
+    	return true
+    end
     if event.name == "began" or event.name == "added" then
         self.m_player:toPlay(PLAYER_ACTION.Jump,0)
         self.m_player:toMove()
@@ -211,10 +215,10 @@ end
 function MapLayer:onEnterFrame(dt)
 
     --移动金币
---    GameController.attract()
+    GameController.attract()
 
---    local bpx,bpy = self.m_player:getPosition()
---    self.m_player:update(dt,bpx,bpy)
+    local bpx,bpy = self.m_player:getPosition()
+    self.m_player:update(dt,bpx,bpy)
 
     --跑了多少米换算公式
    self.pexel = self.pexel + MoveSpeed*0.1/(Pixel/Miles)
@@ -274,11 +278,11 @@ function MapLayer:dispose(parameters)
         self.m_backbg:dispose()
     end
     
-    MoveSpeed = initSpeed
     self.m_isDelay = false
     
     GameDataManager.resetLevelData()
     GameController.clearBody()
+    GameController.resetStartProp()
     
     self:removeFromParent(true)
 end

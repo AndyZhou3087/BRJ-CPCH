@@ -197,7 +197,6 @@ function GameDataManager.addGoods(_goodsId,_num)
     _goodsVo.num = _num
     table.insert(goodsList,_goodsVo)
     GameDataManager.SaveData()
-    GameDispatcher:dispatch(EventNames.EVENT_FIGHT_UPDATE_PROP,_goodsId)
 end
 
 --使用道具,此方法要检测玩家背包内是否拥有该道具(主动使用)
@@ -210,8 +209,6 @@ function GameDataManager.useGoods(_goodsId)
                 if var.num <= 0 then
                     table.remove(goodsList,key)
                 end
-                --刷新道具
-                GameDispatcher:dispatch(EventNames.EVENT_FIGHT_UPDATE_PROP,_goodsId)
                 return true
             else
                 return false
@@ -226,9 +223,9 @@ end
 function GameDataManager.useGoodsExp(_goodsId)
     local goodsCon = GoodsConfig[_goodsId]
     if goodsCon then
-        if goodsCon.type == GOODS_TYPE.MadCow then
-            Tools.printDebug("使用疯牛药剂")
-            GameDispatcher:dispatch(EventNames.EVENT_MAD_RUN,{time = goodsCon.time,index = goodsCon.speedIndex})
+        if goodsCon.type == GOODS_TYPE.StartSprint then
+            Tools.printDebug("使用开局冲刺")
+            GameDispatcher:dispatch(EventNames.EVENT_START_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
         elseif goodsCon.type == GOODS_TYPE.TopSpeed then
             Tools.printDebug("使用急速飞行")
             GameDispatcher:dispatch(EventNames.EVENT_TOP_FLY,{time = goodsCon.time,index = goodsCon.speedIndex,radius = goodsCon.radius})
@@ -279,32 +276,20 @@ end
 --===================角色信息相关=========================
 --初始化角色信息
 function GameDataManager.initPlayerVo()
-    --    local _lv = DataPersistence.getAttribute("user_lv")
-    --    curRoleID = DataPersistence.getAttribute("cur_roleID")
     local roleConfig = RoleConfig[curRoleID]
     if roleConfig then
         local _lv = GameDataManager.getRoleModle(curRoleID).roleLv
         playerVo.m_roleId = curRoleID
         playerVo.m_level = _lv
---        playerVo.m_lifeNum = roleConfig.lifeNum
         playerVo.m_hp = roleConfig.hp     --血量
         playerVo.m_att = roleConfig.att           -- 攻击力
---        playerVo.m_score_rate = GameDataManager.getScoreRate(curRoleID,_lv)   --分数加成
---        playerVo.m_coin_rate = GameDataManager.getMoneyRate(curRoleID,_lv)    --金币加成
---        playerVo.m_jump = roleConfig.jump --弹跳值
---        playerVo.m_damageArea = roleConfig.damageArea    --破坏面积（以角色中心点向外扩散的矩形区域长宽半径）
---        playerVo.m_sprintTime = roleConfig.sprintTime   --冲刺时间
---        playerVo.m_magnetTime = roleConfig.magnetTime   --磁铁时间
---        playerVo.m_invincibleTime = roleConfig.invincibleTime   --无敌时间
---        playerVo.m_rocketTime = roleConfig.rocketTime
---        playerVo.m_superRocketTime = roleConfig.superRocketTime
---        playerVo.m_leisheqiang = roleConfig.role_qiang  --镭射枪
---        playerVo.m_daibuji = roleConfig.role_daibuji  --代步机
---        playerVo.m_roleArm  = roleConfig.armatureName   --角色原动画
---        playerVo.m_sprintTimeAdd= roleConfig.sprintTimeAdd   --冲刺时间延长 (s)
---        playerVo.m_invincibleTimeAdd=roleConfig.invincibleTimeAdd   --无敌时间延长(s)
---        playerVo.m_protectTimeAdd=roleConfig.protectTimeAdd       --护盾时间延长(s)
---        playerVo.m_speed = roleConfig.speed    --移动速度
+        playerVo.m_score_rate = GameDataManager.getScoreRate(curRoleID,_lv)   --分数加成
+        playerVo.m_coin_rate = GameDataManager.getMoneyRate(curRoleID,_lv)    --金币加成
+        playerVo.m_sprintTime = roleConfig.sprintTime    --冲刺时间
+        playerVo.m_magnetTime = roleConfig.magnetTime   --磁铁时间
+        playerVo.m_giantTime = roleConfig.giantTime   --巨人时间
+        playerVo.m_transTime = roleConfig.transTime   --转黄时间
+        playerVo.m_cloudTime = roleConfig.cloudTime    --浮云时间
     end
 end
 
@@ -341,6 +326,7 @@ function GameDataManager.changeRole(_roleId)
     if roleConfig then
         curRoleID = _roleId
         GameDataManager.initPlayerVo()
+        GameDispatcher:dispatch(EventNames.EVENT_ROLE_CHANGE)
     else
         printf("chjh erro 找不到id=%d的角色皮肤配置",_roleId)
     end
@@ -356,13 +342,51 @@ function GameDataManager.getFightRole()
     return curRoleID
 end
 
---获取当前角色技能时间
-function GameDataManager.getSkillTime(_roleId,_lv)
+--获取等级分数加成
+function GameDataManager.getScoreRate(_roleId,_lv)
+    Tools.printDebug(_roleId,_lv)
     local _roleLvObj = RoleLvs[_roleId][_lv]
-    local _basic = RoleConfig[_roleId].basicTime
     if _roleLvObj then
-        Tools.printDebug(_roleLvObj.skillTime+_basic)
-        return _roleLvObj.skillTime+_basic
+        return _roleLvObj.scoreRate
+    else
+        return 0
+    end
+end
+
+--获取等级金币加成
+function GameDataManager.getMoneyRate(_roleId,_lv)
+    local _roleLvObj = RoleLvs[_roleId][_lv]
+    if _roleLvObj then
+        return _roleLvObj.coinRate
+    else
+        return 0
+    end
+end
+
+--获取当前角色被动技能磁铁时间
+function GameDataManager.getUnActSkillTime(_roleId,_lv,type)
+    local _roleLvObj = RoleLvs[_roleId][_lv]
+    local _basic
+    local _roleLvTime
+    if type == GOODS_TYPE.Magnet then
+        _basic = RoleConfig[_roleId].magnetTime
+        _roleLvTime = _roleLvObj.magnetTime+_basic
+    elseif type == GOODS_TYPE.GrantDrink then
+        _basic = RoleConfig[_roleId].giantTime
+        _roleLvTime = _roleLvObj.giantTime+_basic
+    elseif type == GOODS_TYPE.ConverGold then
+        _basic = RoleConfig[_roleId].transTime
+        _roleLvTime = _roleLvObj.transTime+_basic
+    elseif type == GOODS_TYPE.LimitSprint then
+        _basic = RoleConfig[_roleId].sprintTime
+        _roleLvTime = _roleLvObj.sprintTime+_basic
+    elseif type == GOODS_TYPE.CloudLadder then
+        _basic = RoleConfig[_roleId].cloudTime
+        _roleLvTime = _roleLvObj.cloudTime+_basic
+    end
+--    Tools.printDebug("---角色技能时间:",_roleLvTime)
+    if _roleLvObj then
+        return _roleLvTime
     else
         return 0
     end
@@ -387,8 +411,8 @@ function GameDataManager.updateUserLv(_roleId,_lv)
         if roleCon then
             _modleVo.roleLv = _lv
             playerVo.m_level = _lv
---            playerVo.m_score_rate = GameDataManager.getScoreRate(_roleId,_lv)   --分数加成
---            playerVo.m_coin_rate = GameDataManager.getMoneyRate(_roleId,_lv)    --金币加成
+            playerVo.m_score_rate = GameDataManager.getScoreRate(_roleId,_lv)   --分数加成
+            playerVo.m_coin_rate = GameDataManager.getMoneyRate(_roleId,_lv)    --金币加成
         else
             printf("chjh error 找不到id=%d的角色配置",_roleId)
         end
@@ -396,6 +420,20 @@ function GameDataManager.updateUserLv(_roleId,_lv)
         printf("chjh error id=%d的角色你暂未拥有，不能升级",_roleId)
     end
 
+end
+
+function GameDataManager.getRoleLevel(_roleId)
+    local _modleVo = modleDic[_roleId]
+    if _modleVo then
+        local roleCon = RoleConfig[_roleId]
+        if roleCon then
+            return _modleVo.roleLv
+        else
+            return 1
+        end
+    else
+        return 1
+    end
 end
 
 --获取原始角色数据对象
@@ -406,12 +444,6 @@ end
 local curPlyaerVo = nil
 function GameDataManager.generatePlayerVo()
     curPlyaerVo = clone(playerVo)
---    local petVo = petDataDic[fightPet]
---    if petVo then
-----        curPlyaerVo.m_score_rate = curPlyaerVo.m_score_rate+petVo.score_rate
-----        curPlyaerVo.m_coin_rate = curPlyaerVo.m_coin_rate+petVo.coin_rate
---        curPlyaerVo.m_att = curPlyaerVo.m_att + petVo.m_att
---    end
 end
 function GameDataManager.getPlayerVo()
     return curPlyaerVo
@@ -452,7 +484,7 @@ end
 --增加当前关卡得分
 local curLevelScore = 0
 --_score:当前获得积分,_noRate:不需要加成,默认为nil即计算加成
-function GameDataManager.addLevelScore(_score)
+function GameDataManager.addLevelScore(_score,_noRate)
     curLevelScore = _score
     GameDispatcher:dispatch(EventNames.EVENT_UPDATE_SCORE,curLevelScore)
     return curLevelScore
@@ -529,11 +561,18 @@ end
 function GameDataManager.getAllScore()
     local _score = GameDataManager.getCountByCurrency(Coin_Type.Coin_Copper)*1+GameDataManager.getCountByCurrency(Coin_Type.Coin_Silver)*5
         +GameDataManager.getCountByCurrency(Coin_Type.Coin_Gold)*10+GameDataManager.getLevelScore()
+    _score = math.ceil(_score*(1+curPlyaerVo.m_score_rate*0.01))
     --分数取整(GameController.doubleScore为是否使用双倍道具)
     _score=math.ceil(_score*GameController.doubleScore)
     return _score
 end
 
+--游戏中获得的总金币数
+function GameDataManager.getAllFightCoins()
+    local _coin = math.floor(GameDataManager.getLevelCoin()/3)
+    _coin = math.ceil(_coin*(1+curPlyaerVo.m_coin_rate*0.01))
+    return _coin
+end
 
 --游戏中获得币种数量
 local currency = {}

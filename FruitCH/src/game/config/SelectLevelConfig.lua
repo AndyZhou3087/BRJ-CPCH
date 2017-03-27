@@ -36,7 +36,7 @@ SelectLevel[1]=
     coins = {1,1,1,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
     goods={0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
     gap = 500,    --每组之间的间隔差距，单位:像素
-    endPoint = 5000,  --终点距离，单位：像素
+    speed = 32,  --每一关卡速度
 }
 
 SelectLevel[2]= 
@@ -53,7 +53,7 @@ SelectLevel[2]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[3]= 
@@ -70,7 +70,7 @@ SelectLevel[3]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[4]= 
@@ -87,7 +87,7 @@ SelectLevel[4]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[5]= 
@@ -104,7 +104,7 @@ SelectLevel[5]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[6]= 
@@ -121,7 +121,7 @@ SelectLevel[6]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[7]= 
@@ -138,7 +138,7 @@ SelectLevel[7]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[8]= 
@@ -155,7 +155,7 @@ SelectLevel[8]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},     --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
     
 SelectLevel[9]= 
@@ -172,7 +172,7 @@ SelectLevel[9]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[10]= 
@@ -189,7 +189,7 @@ SelectLevel[10]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[11]= 
@@ -206,7 +206,7 @@ SelectLevel[11]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[12]= 
@@ -223,7 +223,7 @@ SelectLevel[12]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[13]= 
@@ -240,7 +240,7 @@ SelectLevel[13]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[14]= 
@@ -257,7 +257,7 @@ SelectLevel[14]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[15]= 
@@ -274,7 +274,7 @@ SelectLevel[15]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }
 
 SelectLevel[16]= 
@@ -291,5 +291,5 @@ SelectLevel[16]=
         coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
-        endPoint = 5000,  --终点距离，单位：像素
+        speed = 32,  --每一关卡速度
     }

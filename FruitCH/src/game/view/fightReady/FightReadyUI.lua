@@ -11,6 +11,9 @@ local PropItem = require("game.view.fightReady.PropItem")
 function FightReadyUI:ctor(parm)
     FightReadyUI.super.ctor(self)
 
+    --启用监听
+    self:setNodeEventEnabled(true)
+
     --阴影层
     local bg = display.newColorLayer(cc.c4b(0,0,0,120)):addTo(self)
     self.m_size_ = bg:getCascadeBoundingBox().size
@@ -19,7 +22,7 @@ function FightReadyUI:ctor(parm)
     self:addChild(self.FightReady)
     
     local commonui = CommonUI.new():addTo(self)
-    commonui:setPosition(cc.p(10,display.top-60))
+    commonui:setPosition(cc.p(0,display.top-60))
     
     local _levelCon = 1  --关卡默认值
     if parm == GAME_TYPE.LevelMode then
@@ -53,6 +56,7 @@ function FightReadyUI:ctor(parm)
     local rolebtn = cc.uiloader:seekNodeByName(self.FightReady,"Rolebtn")
     rolebtn:onButtonClicked(function(event)
         Tools.printDebug("-----------角色")
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_ROLEVIEW)
     end)
     
     local startGame = cc.uiloader:seekNodeByName(self.FightReady,"StartGame")
@@ -69,6 +73,8 @@ function FightReadyUI:ctor(parm)
                         elseif var.cost.type == COST_TYPE.Diamond then
                             GameDataManager.costDiamond(var.cost.price)
                         end
+                        GameDataManager.addGoods(var.id,1)
+                        GameController.setStartProp(var.id,var.isSelect)
                     end
                 end
                 GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
@@ -93,11 +99,30 @@ function FightReadyUI:ctor(parm)
         end
     end)
     
+    self.roleImg = cc.uiloader:seekNodeByName(self.FightReady,"RoleImg")
+    self.roleImg:setButtonEnabled(false)
+    self.roleImg:setButtonImage("disabled",RoleConfig[GameDataManager.getFightRole()].roleImg)
+    
+    self.GoldLabel = cc.uiloader:seekNodeByName(self.FightReady,"GoldLabel")
+    self.GoldLabel:setString("+ "..GameDataManager.getMoneyRate(GameDataManager.getFightRole(),GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
+    self.AbilityLabel = cc.uiloader:seekNodeByName(self.FightReady,"AbilityLabel")
+    self.AbilityLabel:setString("+ "..GameDataManager.getScoreRate(GameDataManager.getFightRole(),GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
+    
     GameDispatcher:dispatch(EventNames.EVENT_LOADING_OVER)
+    
+    GameDispatcher:addListener(EventNames.EVENT_ROLE_CHANGE,handler(self,self.changeRole))
 end
 
 function FightReadyUI:touchListener(event)
 	
+end
+
+function FightReadyUI:changeRole(parameters)
+    self.roleImg:setButtonImage("disabled",RoleConfig[GameDataManager.getFightRole()].roleImg)
+    self.GoldLabel:setString("+ "..GameDataManager.getMoneyRate(GameDataManager.getFightRole(),
+        GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
+    self.AbilityLabel:setString("+ "..GameDataManager.getScoreRate(GameDataManager.getFightRole(),
+        GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
 end
 
 function FightReadyUI:initProp(par)
@@ -167,8 +192,15 @@ end
 function FightReadyUI:addedToScene()
 end
 
+--清理数据
+function FightReadyUI:onCleanup()
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
+end
+
 --关闭界面调用
 function FightReadyUI:toClose(_clean)
+
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
 
     FightReadyUI.super.toClose(self,_clean)
 

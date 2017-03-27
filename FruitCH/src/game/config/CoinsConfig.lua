@@ -15,8 +15,8 @@ Coins = {}
 Coins[1]=
     {
         {res="Common/Common_gold.png",x=320,y=131,type = Coin_Type.Coin_Gold},
-        {res="Common/Common_gold.png",x=640,y=150,type = Coin_Type.Coin_Silver},--普通金币
-        {res="Common/Common_gold.png",x=960,y=290,type = Coin_Type.Coin_Copper},--普通金币
+--        {res="Common/Common_gold.png",x=640,y=150,type = Coin_Type.Coin_Silver},--普通金币
+--        {res="Common/Common_gold.png",x=960,y=290,type = Coin_Type.Coin_Copper},--普通金币
     }
 Coins[2]=
     {

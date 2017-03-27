@@ -6,6 +6,8 @@ require("framework.init")
 require("game.events.EventNames")
 
 require("game.config.GameConfig")
+require("game.config.PaymentConfig")
+require("game.config.RoleLelelConfig")
 require("game.config.RoleConfig")
 require("game.config.SelectLevelConfig")
 require("game.config.GoodsConfig")
@@ -13,7 +15,6 @@ require("game.config.CoinsConfig")
 require("game.config.ObsGroupConfig")
 require("game.config.ObstacleConfig")
 require("game.config.GoodGroupConfig")
-require("game.config.PaymentConfig")
 require("game.config.ShopConfig")
 
 PoolManager = require("game.tools.PoolManager")
@@ -49,7 +50,7 @@ function GameApp:ctor()
     DataPersistence.insertAttribute("sound",true)
     
     DataPersistence.insertAttribute("cur_roleID",1)      --当前使用角色id
-    DataPersistence.insertAttribute("modle_list",{ModleVo={roleId =1,isOwn = true},})    --已经解锁的角色模型列表，元素为ModleVo
+    DataPersistence.insertAttribute("modle_list",{ModleVo={roleId =1,isOwn = true,roleLv = 1},})    --已经解锁的角色模型列表，元素为ModleVo
     
     --关卡相关
     DataPersistence.insertAttribute("fight_data",{})    --战斗数据,列表元素为LevelVo

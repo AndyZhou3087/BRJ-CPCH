@@ -7,6 +7,7 @@ local Pause = require("game.view.Pause.Pause")
 local FightOver = require("game.view.FightOver.FightOver")
 local LoadingView = require("game.view.loading.LoadingView")
 local ShopView = require("game.view.Shop.ShopView")
+local RoleView = require("game.view.role.RoleView")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -26,6 +27,9 @@ function UIController:ctor()
     
     --打开商城
     GameDispatcher:addListener(EventNames.EVENT_OPEN_SHOP,handler(self,self.openShop))
+    
+    --打开角色界面
+    GameDispatcher:addListener(EventNames.EVENT_OPEN_ROLEVIEW,handler(self,self.openRoleView))
 end
 
 --打开战斗准备界面
@@ -58,6 +62,11 @@ end
 function UIController:openShop(parameters)
     local _shopUI = ShopView.new(parameters.data)
     _shopUI:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+function UIController:openRoleView(parameters)
+    local _roleUI = RoleView.new(parameters.data)
+    _roleUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

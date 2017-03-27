@@ -39,7 +39,7 @@ end
 --游戏暂停
 function GameController.pauseGame(isEvent)
     Tools.printDebug("暂停游戏！")
-    display.pause()
+--    display.pause()
     _isPause=true
     MoveSpeed = 0  --地图移动速度
 --    if isEvent then
@@ -51,7 +51,7 @@ end
 --游戏恢复
 function GameController.resumeGame(isEvent)
     Tools.printDebug("恢复游戏！")
-    display.resume()
+--    display.resume()
     _isPause=false
     MoveSpeed = _curSpeed
     TimeUtil.init()
@@ -98,48 +98,69 @@ function GameController.getCurMap(parameters)
 	return curMapLayer
 end
 
+--已选中开局道具
+local startProp = {}
+function GameController.setStartProp(id,_enable)
+    if not startProp[id] then
+    	startProp[id] = {}
+    end
+    startProp[id].id = id
+    startProp[id].isSelect = _enable
+end
+function GameController.getStartPropById(id)
+    if not startProp[id] then
+    	return false
+    end
+    return startProp[id].isSelect
+end
+function GameController.getStartProp(parameters)
+    return startProp
+end
+function GameController.resetStartProp(parameters)
+	startProp = {}
+end
 
 --组合排序
-function GameController.getSorting(arr)
-   local configArr = {}
-   for key, var in pairs(arr) do
-        table.insert(configArr,var)
-   end
-   for vr=1, #configArr do
-        for var=vr+1, #configArr do
-            if configArr[vr].probability > configArr[var].probability then
-            	local temp
-                temp = configArr[vr]
-                configArr[vr] = configArr[var]
-                configArr[var] = temp
-            end
-        end
-   end
-   return configArr
-end
---组合总权重
-function GameController.getTotalWeight(arr)
-	local _weight = 0
-	for var=1, #arr do
-        _weight = _weight + arr[var].probability
-	end
-	return _weight
-end
---按权重抽取一组数据
-function GameController.getDataIdByWeight(_wegt,sorArr)
-    local weight = math.random(1,_wegt)
-    local t = 0
-    --得到当前id
-    local id = 0
-    for var=1, #sorArr do
-        t = t + sorArr[var].probability
-        if t >= weight then
-            id = sorArr[var]._id
-            return id
-        end
-    end
-    return id
-end
+--function GameController.getSorting(arr)
+--   local configArr = {}
+--   for key, var in pairs(arr) do
+--        table.insert(configArr,var)
+--   end
+--   for vr=1, #configArr do
+--        for var=vr+1, #configArr do
+--            if configArr[vr].probability > configArr[var].probability then
+--            	local temp
+--                temp = configArr[vr]
+--                configArr[vr] = configArr[var]
+--                configArr[var] = temp
+--            end
+--        end
+--   end
+--   return configArr
+--end
+----组合总权重
+--function GameController.getTotalWeight(arr)
+--	local _weight = 0
+--	for var=1, #arr do
+--        _weight = _weight + arr[var].probability
+--	end
+--	return _weight
+--end
+----按权重抽取一组数据
+--function GameController.getDataIdByWeight(_wegt,sorArr)
+--    local weight = math.random(1,_wegt)
+--    local t = 0
+--    --得到当前id
+--    local id = 0
+--    for var=1, #sorArr do
+--        t = t + sorArr[var].probability
+--        if t >= weight then
+--            id = sorArr[var]._id
+--            return id
+--        end
+--    end
+--    return id
+--end
 
 
 --添加金币
@@ -164,34 +185,6 @@ function GameController.attract(parameters)
                 local parent=curPlayer:getParent()
                 local playP = cc.p(curPlayer:getPosition())
                 local playSize = curPlayer:getAreaSize()
-                local goldPos=gold:getParent():convertToWorldSpace(cc.p(gold:getPosition()))
-                local goldSize = gold:getSize()
-                local playerRect = cc.rect(playP.x,playP.y,playSize.width,playSize.height)
-                local goldRect = cc.rect(goldPos.x,goldPos.y,goldSize.width,goldSize.height)
-                if cc.rectIntersectsRect(goldRect,playerRect) then
-                    gold:collision()
-                    table.remove(goldBody,var)
-                    return
-                end
-            end
-            if not tolua.isnull(curPlayerL) then
-                local parent=curPlayerL:getParent()
-                local playP = cc.p(curPlayerL:getPosition())
-                local playSize = curPlayerL:getAreaSize()
-                local goldPos=gold:getParent():convertToWorldSpace(cc.p(gold:getPosition()))
-                local goldSize = gold:getSize()
-                local playerRect = cc.rect(playP.x,playP.y,playSize.width,playSize.height)
-                local goldRect = cc.rect(goldPos.x,goldPos.y,goldSize.width,goldSize.height)
-                if cc.rectIntersectsRect(goldRect,playerRect) then
-                    gold:collision()
-                    table.remove(goldBody,var)
-                    return
-                end
-            end
-            if not tolua.isnull(curPlayerR) then
-                local parent=curPlayerR:getParent()
-                local playP = cc.p(curPlayerR:getPosition())
-                local playSize = curPlayerR:getAreaSize()
                 local goldPos=gold:getParent():convertToWorldSpace(cc.p(gold:getPosition()))
                 local goldSize = gold:getSize()
                 local playerRect = cc.rect(playP.x,playP.y,playSize.width,playSize.height)
@@ -232,8 +225,8 @@ function GameController.detect(target,targetPos,radius,type)
     for var=#goldBody,1,-1 do
         local gold=goldBody[var]
         if not tolua.isnull(gold) and not gold:isDisposed() then
-            local fromP,toP = cc.p(gold:getPosition())
-            toP = cc.p(target:getPosition())
+            local fromP = cc.p(gold:getPosition())
+            local toP = cc.p(target:getPosition())
             if cc.pGetDistance(fromP,toP)<=radius then
                 gold:setAttract(target)
                 table.insert(movingObjs,gold)

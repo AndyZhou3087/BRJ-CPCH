@@ -6,10 +6,8 @@ SelectItemCount = 15
 
 GroupSize = cc.size(960,540)   --每一组配置的大小
 
---初始速度
-initSpeed = 32
 --移动速度
-MoveSpeed = initSpeed
+MoveSpeed = 0
 
 --地图背景资源
 GameBgRes = "Common/GameBg.jpg"
@@ -23,7 +21,7 @@ Pixel = 320
 Miles = 10
 
 --金币移动速度
-GOLD_SPEED=10
+GOLD_SPEED=26
 
 --地图当前ZOder
 MAP_ZORDER_MAX=0

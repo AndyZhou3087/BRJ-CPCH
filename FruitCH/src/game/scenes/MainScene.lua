@@ -8,6 +8,7 @@ function MainScene:ctor()
     self:initData()
     self.m_mainUI = MainUI.new()
     self:addChild(self.m_mainUI)
+
 end
 
 --数据初始化

@@ -37,6 +37,14 @@ function CoinElement:getSize()
     return self.m_size
 end
 
+function CoinElement:onEnterFrame()
+    local _x,_y = self:getPosition()
+    self:setPosition(_x-MoveSpeed*0.1,_y)
+    if self:getPositionX()<=-self:getSize().width then
+    	self:dispose()
+    end
+end
+
 --被碰触
 function CoinElement:collision()
 --    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Gold_Sound)
@@ -92,11 +100,6 @@ function CoinElement:dispose(parameters)
         return
     end
     self.m_isDisposed = true
-    
-    if self.m_timer then
-        Scheduler.unscheduleGlobal(self.m_timer)
-        self.m_timer = nil
-    end
     
     self.m_isAttract = false
     self.m_target = nil

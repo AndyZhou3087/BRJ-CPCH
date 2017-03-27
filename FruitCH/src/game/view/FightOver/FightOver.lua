@@ -39,20 +39,19 @@ function FightOver:initWidget()
     self.m_score:setString(totalScore)
 
     self.m_goldCount = cc.uiloader:seekNodeByName(self.m_fightover,"GoldCount")
-    local goldCount = math.floor(GameDataManager.getLevelCoin()/3)+GameDataManager.getGold()
-    self.m_goldCount:setString(goldCount)
+    self.m_goldCount:setString(GameDataManager.getAllFightCoins()+GameDataManager.getGold())
 
     self.m_diaCount = cc.uiloader:seekNodeByName(self.m_fightover,"DiamondCount")
     self.m_diaCount:setString(GameDataManager.getDiamond())
 
     self.diaBtn = cc.uiloader:seekNodeByName(self.m_fightover,"DiamondBtn")
     self.diaBtn:onButtonClicked(function(_event)
-        --        Tools.printDebug("钻石")
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
     end)
 
     self.goldBtn = cc.uiloader:seekNodeByName(self.m_fightover,"GoldBtn")
     self.goldBtn:onButtonClicked(function(_event)
-        --        Tools.printDebug("金币")
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
     end)
 
     for var=1, 3 do
@@ -84,7 +83,8 @@ end
 --过关胜利界面
 function FightOver:toWin()
     local _isFirst = GameDataManager.saveLevelData()  --存储关卡数据
-    
+    GameDataManager.addGold(GameDataManager.getAllFightCoins())
+
 --    if _isFirst == true then
 --        local _leveCon = SelectLevel[self.m_curLevel]
 --        if _leveCon then

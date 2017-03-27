@@ -45,6 +45,13 @@ end
 function MapGroup:onEnterFrame(parameters)
     local x,y = self:getPosition()
     self:setPosition(x-MoveSpeed*0.1,y)
+    if self.m_golds then
+        for key, var in pairs(self.m_golds) do
+            if not tolua.isnull(var) then
+                var:onEnterFrame()
+            end
+        end
+    end
     if self:getPositionX()<=-self:getSize().width then
         if not tolua.isnull(self) then
             if not tolua.isnull(self:getParent()) then
@@ -86,7 +93,7 @@ function MapGroup:initCoins(goldCon)
                     chType = CACHE_TYPE.Copper
                 end
                 if not gold then
-                    gold = CoinElement.new({res = _goldObj.res,type = _type}):addTo(self)
+                    gold = CoinElement.new({res = _goldObj.res,type = _type})
                     gold:setCahceType(chType)
                     gold:retain()
                 else
@@ -121,6 +128,18 @@ end
 function MapGroup:initPosition(_x,_y)
     
     self:setPosition(_x,_y)
+    
+    --金币添加在层上
+    local _parent = self:getParent()
+    if self.m_golds then
+        for key, var in pairs(self.m_golds) do
+            if not tolua.isnull(var) then
+                local x,y = var:getPosition()
+                var:setPosition(x+_x,y+_y)
+                _parent:addChild(var,MAP_ZORDER_MAX)
+            end
+        end
+    end
     
     self:startUpdate()
 end

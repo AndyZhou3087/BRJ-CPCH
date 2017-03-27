@@ -7,8 +7,10 @@ local ShopView = class("ShopView",BaseUI)
 local ShopItemUI=require("game.view.Shop.ShopItemUI")
 local CommonUI = require("game.view.Common.CommonUI")
 
-function ShopView:ctor(parameters)
+function ShopView:ctor(isPause)
     ShopView.super.ctor(self)
+
+    self.m_pause = isPause
 
     local bg = display.newColorLayer(cc.c4b(0,0,0,OPACITY)):addTo(self)
     self.m_shopUi = cc.uiloader:load("json/ShopUI.json")
@@ -16,6 +18,15 @@ function ShopView:ctor(parameters)
     
     local commonui = CommonUI.new({isShop = true}):addTo(self)
     commonui:setPosition(cc.p(10,display.top-60))
+    
+    local Image_2 = cc.uiloader:seekNodeByName(self.m_shopUi,"Image_2")
+    Image_2:setPositionX(display.cx)
+    local Image_3 = cc.uiloader:seekNodeByName(self.m_shopUi,"Image_3")
+    Image_3:setPositionX(display.cx)
+    local Image_4 = cc.uiloader:seekNodeByName(self.m_shopUi,"Image_4")
+    Image_4:setPositionX(display.cx)
+    local Image_5 = cc.uiloader:seekNodeByName(self.m_shopUi,"Image_5")
+    Image_5:setPositionX(display.cx)
 
     local listContent = cc.uiloader:seekNodeByName(self.m_shopUi,"Panel_List")
     self.m_listSize = listContent:getCascadeBoundingBox().size
@@ -142,6 +153,9 @@ end
 
 --关闭界面调用
 function ShopView:toClose(_clean)
+    if GameController.isInPause() and not self.m_pause then
+        GameController.resumeGame()
+    end
     ShopView.super.toClose(self,_clean)
 end
 

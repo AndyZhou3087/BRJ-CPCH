@@ -15,6 +15,20 @@ function CommonUI:ctor(parm)
     self.CommonUI = cc.uiloader:load("json/CommonUI.json")
     self:addChild(self.CommonUI)
     
+    local backbtn = cc.uiloader:seekNodeByName(self.CommonUI,"Backbtn")
+    backbtn:setPositionX(display.right-60)
+    backbtn:onButtonClicked(function(event)
+        Tools.printDebug("-----------返回")
+        self:getParent():toClose(true)
+    end)
+    
+    local Image_3 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_3")
+    Image_3:setPositionX(display.right-60-170)
+    local Image_2 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_2")
+    Image_2:setPositionX(display.cx+15)
+    local Image_1 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_1")
+    Image_1:setPositionX(display.left+190)
+    
     local powerbtn = cc.uiloader:seekNodeByName(self.CommonUI,"Powerbtn")
     powerbtn:onButtonClicked(function(event)
         Tools.printDebug("-----------体力购买")
@@ -31,12 +45,6 @@ function CommonUI:ctor(parm)
     diamondbtn:onButtonClicked(function(event)
         Tools.printDebug("-----------钻石购买")
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
-    end)
-    
-    local backbtn = cc.uiloader:seekNodeByName(self.CommonUI,"Backbtn")
-    backbtn:onButtonClicked(function(event)
-        Tools.printDebug("-----------返回")
-        self:getParent():toClose(true)
     end)
     
     --若为商城则不显示钻石金币购买按钮

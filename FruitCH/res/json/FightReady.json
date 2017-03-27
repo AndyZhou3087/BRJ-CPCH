@@ -532,7 +532,7 @@
                       "fontName": "微软雅黑",
                       "fontSize": 16,
                       "hAlignment": 0,
-                      "text": "表现:",
+                      "text": "分数:",
                       "touchScaleEnable": false,
                       "vAlignment": 0
                     }
@@ -723,7 +723,7 @@
                   "tag": 1331179414,
                   "touchAble": false,
                   "useMergedTexture": false,
-                  "visible": true,
+                  "visible": false,
                   "width": 80,
                   "x": -159,
                   "y": 91,
@@ -773,7 +773,7 @@
                   "tag": 1331179416,
                   "touchAble": false,
                   "useMergedTexture": false,
-                  "visible": true,
+                  "visible": false,
                   "width": 44,
                   "x": 181,
                   "y": 90,

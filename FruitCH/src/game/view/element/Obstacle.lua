@@ -161,8 +161,8 @@ function Obstacle:executeMove(parameters)
     local toFadeOut 
     toFadeOut = function(parameters)
         if not tolua.isnull(self.tip_1) then
-            transition.fadeOut(self.tip_1,{time=Flash_Skeep_Time,onComplete=function()
-                transition.fadeIn(self.tip_1,{time=Flash_Skeep_Time,onComplete=function()
+            transition.fadeOut(self.tip_1,{time=Flash_Skeep_Time/(MoveSpeed/SelectLevel[GameDataManager.getCurLevelId()].speed),onComplete=function()
+                transition.fadeIn(self.tip_1,{time=Flash_Skeep_Time/(MoveSpeed/SelectLevel[GameDataManager.getCurLevelId()].speed),onComplete=function()
                     toFadeOut()
                 end})
             end})
@@ -196,16 +196,23 @@ function Obstacle:collision(_type)
     if self.m_vo.m_type == OBSTACLE_TYPE.special then
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = true,att = self.m_vo.m_att})
     else
+        if GameController.isInState(PLAYER_STATE.Defence) then
+            GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})
+            self.obcon:setVisible(false)
+            self.m_dEffect:setVisible(true)
+            self.m_dEffect:getAnimation():play("xiaoshi",0,0)
+            if self.m_vo.m_type == OBSTACLE_TYPE.fly then
+                self:stopAllActions()
+            end
+            return
+        end
         if GameController.getCurPlayer():getJumpState() then
---            if self.m_vo.m_type == OBSTACLE_TYPE.hide or self.m_vo.m_type == OBSTACLE_TYPE.static then
                 self.obcon:setVisible(false)
                 self.m_dEffect:setVisible(true)
                 self.m_dEffect:getAnimation():play("xiaoshi",0,0)
                 if self.m_vo.m_type == OBSTACLE_TYPE.fly then
                 	self:stopAllActions()
                 end
---            end
---        	self:dispose()
         	return
         end
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})

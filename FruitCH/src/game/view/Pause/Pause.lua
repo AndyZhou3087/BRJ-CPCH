@@ -12,6 +12,15 @@ function Pause:ctor(parm)
     local _pause = cc.uiloader:load("json/PauseUI.json")
     self:addChild(_pause)
     
+    local diaBtn = cc.uiloader:seekNodeByName(_pause,"DiamondBtn")
+    diaBtn:onButtonClicked(function(_event)
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
+    end)
+
+    local goldBtn = cc.uiloader:seekNodeByName(_pause,"GoldBtn")
+    goldBtn:onButtonClicked(function(_event)
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
+    end)
     
     --继续游戏
     local ContinueBtn=cc.uiloader:seekNodeByName(_pause,"ContinueBtn")

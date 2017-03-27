@@ -11,6 +11,15 @@ Payment=
         Gift_2 = 6, --10元限购礼包
         Power_1 = 7, --无限体力
         Power_2 = 8, --5点体力
+        Role_2 = 9,
+        Role_3 = 10,
+        Role_4 = 11,
+        Role_5 = 12,
+        RoleLevel_1 = 13,
+        RoleLevel_2 = 14,
+        RoleLevel_3 = 15,
+        RoleLevel_4 = 16,
+        RoleLevel_5 = 17,
 --        --获取对应物品价格,单位:分，如果是钻石商品则额外会返回钻石数量
 --        getPrice = function(_itemId)
 --            if Payment.Diamond_1==_itemId then

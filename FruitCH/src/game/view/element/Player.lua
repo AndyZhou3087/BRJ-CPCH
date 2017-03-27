@@ -26,12 +26,27 @@ function Player:ctor()
     self.m_curModle = GameDataManager.getFightRole()
     local modle = RoleConfig[self.m_curModle].armatureName
     self:createModle(modle)
---    self:sprinting()
 
     self.p_siz=cc.size(self.m_armature:getCascadeBoundingBox().size.width*0.7,self.m_armature:getCascadeBoundingBox().size.height)
     self:addBody(cc.p(10,50),self.p_siz)
     
+    self.m_twoJump = false
+    self.m_isMagnet = false
+    local actSkill = RoleConfig[self.m_curModle].skillAct
+    for var=1, #actSkill do
+        if actSkill[var].type == PLAYER_ACT_TYPE.Twojump then
+    		self.m_twoJump = true
+        elseif actSkill[var].type == PLAYER_ACT_TYPE.Magnet then
+            self:magnetSkill(actSkill[var].radius)
+        elseif actSkill[var].type == PLAYER_ACT_TYPE.Protect then
+            self:protectSkill()
+    	end
+    end
+    
+    --受伤害
     GameDispatcher:addListener(EventNames.EVENT_PLAYER_ATTACKED,handler(self,self.playerAttacked))
+    --开局冲刺
+    GameDispatcher:addListener(EventNames.EVENT_START_SPRINT,handler(self,self.sprinting))
 
     --角色暂停和恢复
 --    GameDispatcher:addListener(EventNames.EVENT_PLAYER_PAUSE,handler(self,self.pause))
@@ -118,7 +133,7 @@ function Player:toMove(parameters)
             self.touchCount = 0
         end})
     else
-        if self.touchCount == 2 then
+        if self.touchCount == 2 and self.m_twoJump then
             self:stopAllActions()
             local direction = 1
             local m_pY
@@ -198,6 +213,10 @@ function Player:getSize(parameters)
     return self.p_siz
 end
 
+function Player:getAreaSize(parameters)
+    return self.p_siz
+end
+
 function Player:update(dt,_x,_y)
     if self.m_isMagnet then
         GameController.detect(self,cc.p(_x,_y),self.m_radius)
@@ -220,6 +239,11 @@ function Player:relive(parameters)
 end
 
 function Player:playerAttacked(parm)
+    if self:isInState(PLAYER_STATE.Defence) then
+    	self:clearBuff(PLAYER_STATE.Defence)
+    	return
+    end
+
     if self.m_jump and not parm.data.isSpecial then
         return
     end
@@ -255,15 +279,45 @@ function Player:death()
 
 end
 
+--开局冲刺
 function Player:sprinting(parameters)
+
+    if self:isDead() then
+    	return
+    end
+    Tools.printDebug("-----------开局冲刺")
     --冲刺特效
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_spdeffect = ccs.Armature:create("chongci")
     self.m_spdeffect:getAnimation():playWithIndex(0)
     self.m_spdeffect:setPosition(-10,60)
-
+    
     self:toPlay(PLAYER_ACTION.Run,0)
     self:addChild(self.m_spdeffect,10)
+    
+    self.oldX,self.oldY = self:getPosition()
+    self:setPosition(cc.p(display.cx,display.cy))
+    
+    self:addBuff({type=PLAYER_STATE.StartSprint,time = parameters.data.time})
+    self.initSpeed = MoveSpeed
+    MoveSpeed = parameters.data.speed
+    self.m_handler = Tools.delayCallFunc(parameters.data.time,function()
+        self:clearBuff(PLAYER_STATE.StartSprint)
+    end)
+    
+end
+
+--吸金币
+function Player:magnetSkill(radius)
+    self:addBuff({type=PLAYER_STATE.Magnet})
+    self.m_radius = radius
+    self.m_isMagnet = true
+end
+
+--护盾技能
+function Player:protectSkill(parameters)
+    self:addBuff({type=PLAYER_STATE.Defence})
+    --护盾特效
 end
 
 
@@ -299,19 +353,21 @@ function Player:clearBuff(_type)
     end
 
     if bIsClear==true then
---        if _type==PLAYER_STATE.spring then
---            if self.m_handler then
---                Scheduler.unscheduleGlobal(self.m_handler)
---                self.m_handler = nil
---            end
---
---            if not tolua.isnull(self.m_armature) then
---                self:toPlay(PLAYER_ACTION.Run)
---                GameDispatcher:dispatch(EventNames.EVENT_FIGHT_TIER)
---            end
---            AudioManager.stopSoundEffect(AudioManager.Sound_Effect_Type.Spring_Sound)
---
---        end
+        if _type==PLAYER_STATE.StartSprint then
+            if self.m_handler then
+                Scheduler.unscheduleGlobal(self.m_handler)
+                self.m_handler = nil
+            end
+            if not tolua.isnull(self.m_spdeffect) then
+                self.m_spdeffect:removeFromParent()
+                self.m_spdeffect = nil
+            end
+            self:toPlay(PLAYER_ACTION.Run)
+            self:setPosition(cc.p(self.oldX,self.oldY))
+            self.oldX,self.oldY = nil,nil
+            MoveSpeed = self.initSpeed
+            self.initSpeed = nil
+        end
     end
 
 end
@@ -388,11 +444,9 @@ end
 
 function Player:dispose()
 
---    if self.m_handler then
---        Scheduler.unscheduleGlobal(self.m_handler)
---        self.m_handler = nil
---    end
     GameDispatcher:removeListenerByName(EventNames.EVENT_PLAYER_ATTACKED)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_START_SPRINT)
+    
     self.m_isDead = false
     GameController.isDead = false
     self.m_jump = false
@@ -402,6 +456,11 @@ function Player:dispose()
     if self.m_flyHandler then
         Scheduler.unscheduleGlobal(self.m_flyHandler)
         self.m_flyHandler = nil
+    end
+    
+    if self.m_handler then
+        Scheduler.unscheduleGlobal(self.m_handler)
+        self.m_handler = nil
     end
 
     if self.m_dropLifeHandle then
