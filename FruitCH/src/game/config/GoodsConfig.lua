@@ -47,6 +47,7 @@ GoodsConfig[2]=
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25}   --道具价格{type:购买类型1金币，2钻石，price为价格}
+        speed = 200,
     }
 
 GoodsConfig[3]=
@@ -89,7 +90,8 @@ GoodsConfig[6]=
         res = "ui/Prop_2.png",
         reward = {{id=1,count=1},},
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25}
+        cost = {type = COST_TYPE.Gold,price = 25},
+        content = {{goodId = 1,count=9},{goodId = 2,count=9},{goodId = 3,count=9},{goodId = 4,count=9},}
     }
     
 --游戏中道具   
@@ -113,7 +115,8 @@ GoodsConfig[8]=
         res = "ui/Prop_2.png",
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25}
+        cost = {type = COST_TYPE.Gold,price = 25},
+        scale = 1.5,  --巨人放大倍数
     }
     
 GoodsConfig[9]=

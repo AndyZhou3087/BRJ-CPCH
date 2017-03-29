@@ -27,7 +27,7 @@ GOLD_SPEED=26
 MAP_ZORDER_MAX=0
 
 --阴影程度
-OPACITY=166
+OPACITY=120
 
 --商城是否打开
 OPEN_SHOP = false
@@ -85,19 +85,6 @@ ELEMENT_TAG=
         OBSTACLE = 4,    --障碍
         GOLD_TAG = 5,   --金币
         GOOD_TAG = 6,    --道具
-    }
-
-GOON_TAG =
-    {
-        MadCow  =1, --疯牛
-        TopSpeed=2, --急速飞行
-        Protect =3, --保护罩
-        Springs =4, --弹簧
-        DropLife = 5,--掉血
-        InitTime=6,
-        KeepTime= 7,
-        All = 8,
-
     }
 
 --缓存元素类型
