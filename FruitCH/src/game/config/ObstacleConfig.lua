@@ -10,6 +10,8 @@ OBSTACLE_TYPE =
     hide = 2,   --隐藏
     fly = 3,    --飞行
     special = 4,    --特殊
+    ice = 5,  --冰块障碍物
+    spring = 6,  --弹簧
 }
 
 ObstacleConfig[1]=
@@ -49,9 +51,31 @@ ObstacleConfig[4]=
     {
         id = 4,
         type = OBSTACLE_TYPE.special,    --障碍类型
-        isAnimate = true,           --是否为动画资源
+        isAnimate = false,           --是否为动画资源
         armatureName = "muban_tanhuang",
         res = "ui/obscale_1.png",     --资源路径
+        att = 1,
+    }
+    
+ObstacleConfig[5]=
+    {
+        id = 5,
+        type = OBSTACLE_TYPE.ice,    --障碍类型
+        isAnimate = false,           --是否为动画资源
+        armatureName = "muban_tanhuang",
+        res = "ui/obscale_1.png",     --资源路径
+        att = 1,
+        cutSpeed = 15,  --此为需要减去的速度值，比如原本32的速度，减去15，速度则为为17
+        length = 250,   --滑行距离，单位：px
+    }
+    
+ObstacleConfig[6]=
+    {
+        id = 6,
+        type = OBSTACLE_TYPE.spring,    --障碍类型
+        isAnimate = false,           --是否为动画资源
+        armatureName = "muban_tanhuang",
+        res = "ui/obscale_3.png",     --资源路径
         att = 1,
     }
     

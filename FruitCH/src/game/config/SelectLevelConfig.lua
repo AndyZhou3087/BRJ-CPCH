@@ -37,6 +37,15 @@ SelectLevel[1]=
     goods={0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
     gap = 500,    --每组之间的间隔差距，单位:像素
     speed = 32,  --每一关卡速度
+    getStar = function(score)     --星级分数配置
+        if score >= 300 then
+        	return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+    end,
 }
 
 SelectLevel[2]= 
@@ -54,6 +63,15 @@ SelectLevel[2]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[3]= 

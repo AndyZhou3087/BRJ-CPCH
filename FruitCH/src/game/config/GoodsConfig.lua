@@ -126,6 +126,7 @@ GoodsConfig[9]=
         discrebe = "金币转换",
         res = "ui/Prop_2.png",
         msg = "化身重甲疯牛，所向披靡",     --道具信息
+        time = 50,
         cost = {type = COST_TYPE.Gold,price = 25}
     }
     
@@ -137,7 +138,8 @@ GoodsConfig[10]=
         res = "ui/Prop_2.png",
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25}
+        cost = {type = COST_TYPE.Gold,price = 25},
+        speed = 300,
     }
     
 GoodsConfig[11]=
