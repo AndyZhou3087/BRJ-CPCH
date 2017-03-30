@@ -13,8 +13,12 @@ local BackGroundMove = require("game.custom.BackGroundMove")
 local MapGroup = require("game.view.map.MapGroup")
 
 function MapLayer:ctor(parameters)
-
-    local lvSpeed = SelectLevel[GameDataManager.getCurLevelId()].speed
+    
+    local levelCon = SelectLevel[GameDataManager.getCurLevelId()]
+    if not levelCon then
+    	return
+    end
+    local lvSpeed = levelCon.speed
     MoveSpeed = lvSpeed
     GameController.setSpeed(MoveSpeed)
     self.m_backbg = BackGroundMove.new(GameBgRes,0,MoveSpeed):addTo(self)
@@ -48,6 +52,10 @@ function MapLayer:ctor(parameters)
     self:addChild(self.m_player,MAP_ZORDER_MAX+1)
     self.m_player:setPosition(display.cx-100,display.cy-240)
     GameController.setCurPlayer(self.m_player)
+    
+    if levelCon.isClip then
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
+    end
 
 end
 

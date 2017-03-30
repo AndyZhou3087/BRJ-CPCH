@@ -56,7 +56,7 @@ function GameScene:onEnter()
     GameController.setCurMapLayer(self.m_map)
 
     self.m_fightView = MapView.new()
-    self:addChild(self.m_fightView)
+    self:addChild(self.m_fightView,UI_ZORDER.VIEW_ZORDER)
 
     Tools.delayCallFunc(0.001,function()
         self.m_map:initPhyPos()

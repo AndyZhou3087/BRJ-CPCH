@@ -25,6 +25,16 @@ EventNames.EVENT_OPEN_ROLEVIEW="event_open_roleview"
 --随机奖励道具界面
 EventNames.EVENT_OPEN_REWARDPROP = "event_open_rewardprop"
 
+--[[
+裁剪（遮罩）
+mould: "ui/uiImg/xxx.png"  裁剪模板(图片) 
+pos:    控件的坐标,转换世界坐标后的值 (:convertToWorldSpace(cc.p(0,0))) 
+width : 控件的宽
+height : 控件的高
+backFuciton: 回调函数
+]]
+EventNames.EVENT_OPEN_CLIPP = "event_open_clipp"
+
 --=====================场景内
 
 --时间变化

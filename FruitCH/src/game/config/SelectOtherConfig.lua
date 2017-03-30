@@ -14,5 +14,5 @@ SelectOtherConfig=
         {res="Select/Select_1.png",x=450,y=250,},
         {res="Select/Select_1.png",x=500,y=300,},
         {res="Select/Select_1.png",x=600,y=320,},
-        {res="Select/Select_1.png",x=1000,y=440,},--(最后一个坐标Y必须为440)
+        {res="Select/Select_1.png",x=1000,y=440,},--(Y坐标必须有一个为440)
 }

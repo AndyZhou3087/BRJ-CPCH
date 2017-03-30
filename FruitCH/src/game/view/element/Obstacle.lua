@@ -41,6 +41,9 @@ function Obstacle:ctor(id,py)
             if self.m_vo.m_type == OBSTACLE_TYPE.ice then
                 _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.1)
                 offset = cc.p(0,-30)
+            elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
+                _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.2,self.obcon:getCascadeBoundingBox().size.height*0.2)
+                offset = cc.p(-20,-20)
             end       
             self:addBody(obCon,_size,offset)
 
@@ -71,7 +74,7 @@ function Obstacle:ctor(id,py)
         self.m_dEffect:setVisible(false)
         self.m_dEffect:getAnimation():setMovementEventCallFunc(handler(self,self.armatureMoveEvent))
 
-        if self.m_vo.m_type ~= OBSTACLE_TYPE.fly and self.m_vo.m_type ~= OBSTACLE_TYPE.special then
+        if self.m_vo.m_type ~= OBSTACLE_TYPE.fly and self.m_vo.m_type ~= OBSTACLE_TYPE.special and self.m_vo.m_type ~= OBSTACLE_TYPE.ice then
             if self.m_posY>display.cy then
                 self:setScaleY(-1)
             else

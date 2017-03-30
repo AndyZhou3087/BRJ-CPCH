@@ -9,6 +9,7 @@ local LoadingView = require("game.view.loading.LoadingView")
 local ShopView = require("game.view.Shop.ShopView")
 local RoleView = require("game.view.role.RoleView")
 local RewardUI = require("game.view.fightReady.RewardUI")
+local ClippingView=require("game.view.clipping.ClippingView")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -34,6 +35,9 @@ function UIController:ctor()
     
     --打开奖励界面
     GameDispatcher:addListener(EventNames.EVENT_OPEN_REWARDPROP,handler(self,self.openRewardView))
+    
+    --打开遮罩界面
+    GameDispatcher:addListener(EventNames.EVENT_OPEN_CLIPP,handler(self,self.openClipp))
 end
 
 --打开战斗准备界面
@@ -76,6 +80,12 @@ end
 function UIController:openRewardView(parameters)
     local _rewardUI = RewardUI.new(parameters.data)
     _rewardUI:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+--打开遮罩界面
+function UIController:openClipp(parameters)
+    local _clippUI = ClippingView.new(parameters.data)
+    _clippUI:show(UI_ZORDER.CLIP_ZORDER)
 end
 
 return UIController

@@ -69,6 +69,7 @@ GAMEOVER_TYPE =
 --界面层级配置
 UI_ZORDER =
     {
+        CLIP_ZORDER = 5,  --遮罩层级
         VIEW_ZORDER = 10,  --普通界面层级
         ALERT_ZORDER = 20,  --弹框界面层级
         TIPS_ZORDER = 30,  --提示信息层级

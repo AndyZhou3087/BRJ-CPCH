@@ -132,7 +132,7 @@ function FightReadyUI:initProp(par)
     end
 
     self.listView:removeAllItems()
-    Tools.delayCallFunc(0.1,function()
+--    Tools.delayCallFunc(0.1,function()
         for var = 1,self.m_maxNum do
         --显示每关配置的选用道具
             local _goodsCon = self.m_goods[var]
@@ -151,7 +151,7 @@ function FightReadyUI:initProp(par)
             end
         end
         self.listView:reload()
-    end)
+--    end)
 end
 
 --获取道具数据

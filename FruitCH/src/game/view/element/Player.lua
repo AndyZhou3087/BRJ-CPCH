@@ -107,6 +107,7 @@ function Player:isDead(parameters)
 	return self.m_vo.m_hp<=0
 end
 
+
 --闯关胜利后滑行一段距离
 function Player:LevelWin()
     GameController.isWin = true
@@ -145,6 +146,7 @@ end
 
 --角色移动
 function Player:toMove(isSpring)
+    
     if self:isInState(PLAYER_STATE.Slow) then
         self:clearBuff(PLAYER_STATE.Slow)
     end
