@@ -8,6 +8,7 @@ local FightOver = require("game.view.FightOver.FightOver")
 local LoadingView = require("game.view.loading.LoadingView")
 local ShopView = require("game.view.Shop.ShopView")
 local RoleView = require("game.view.role.RoleView")
+local RewardUI = require("game.view.fightReady.RewardUI")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -30,6 +31,9 @@ function UIController:ctor()
     
     --打开角色界面
     GameDispatcher:addListener(EventNames.EVENT_OPEN_ROLEVIEW,handler(self,self.openRoleView))
+    
+    --打开奖励界面
+    GameDispatcher:addListener(EventNames.EVENT_OPEN_REWARDPROP,handler(self,self.openRewardView))
 end
 
 --打开战斗准备界面
@@ -67,6 +71,11 @@ end
 function UIController:openRoleView(parameters)
     local _roleUI = RoleView.new(parameters.data)
     _roleUI:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+function UIController:openRewardView(parameters)
+    local _rewardUI = RewardUI.new(parameters.data)
+    _rewardUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

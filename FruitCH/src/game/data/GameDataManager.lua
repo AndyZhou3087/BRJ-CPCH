@@ -225,20 +225,32 @@ function GameDataManager.useGoodsExp(_goodsId)
     if goodsCon then
         if goodsCon.type == GOODS_TYPE.StartSprint then
             Tools.printDebug("使用开局冲刺")
+            GameController.setStartProp(_goodsId,false)
             GameDispatcher:dispatch(EventNames.EVENT_START_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
-        elseif goodsCon.type == GOODS_TYPE.TopSpeed then
-            Tools.printDebug("使用急速飞行")
-            GameDispatcher:dispatch(EventNames.EVENT_TOP_FLY,{time = goodsCon.time,index = goodsCon.speedIndex,radius = goodsCon.radius})
-        elseif goodsCon.type == GOODS_TYPE.DoubleScore then
-            Tools.printDebug("使用双倍得分")
-            GameController.doubleScore = 2
-        elseif goodsCon.type == GOODS_TYPE.Relive then
-            Tools.printDebug("生命接力")
-            --  GameDataManager.addGoods(_goodsId,1)
-            GameDispatcher:dispatch(EventNames.EVENT_LIFE,{time = goodsCon.time})
-        elseif goodsCon.type == GOODS_TYPE.Protect then
-            Tools.printDebug("使用保护罩")
-            GameDispatcher:dispatch(EventNames.EVENT_PROTECT,{time = goodsCon.time})
+        elseif goodsCon.type == GOODS_TYPE.DeadSprint then
+            Tools.printDebug("使用死亡冲刺")
+            GameController.setStartProp(_goodsId,false)
+            GameDispatcher:dispatch(EventNames.EVENT_DEAD_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
+        elseif goodsCon.type == GOODS_TYPE.StartProtect then
+            Tools.printDebug("使用开局护盾")
+            GameController.setStartProp(_goodsId,false)
+            GameDispatcher:dispatch(EventNames.EVENT_START_PROTECT,{time = goodsCon.time})
+        elseif goodsCon.type == GOODS_TYPE.DeadComtinue then
+            Tools.printDebug("死亡接力")
+            GameController.setStartProp(_goodsId,false)
+            GameDispatcher:dispatch(EventNames.EVENT_DEAD_RELAY)
+        elseif goodsCon.type == GOODS_TYPE.Magnet then
+            Tools.printDebug("吸铁石")
+            GameDispatcher:dispatch(EventNames.EVENT_MANGET,{time = goodsCon.time,radius = goodsCon.radius})
+        elseif goodsCon.type == GOODS_TYPE.GrantDrink then
+            Tools.printDebug("巨人药水")
+            GameDispatcher:dispatch(EventNames.EVENT_GRANT_DRINK,{time = goodsCon.time,scale = goodsCon.scale})
+        elseif goodsCon.type == GOODS_TYPE.LimitSprint then
+            Tools.printDebug("极限冲刺")
+            GameDispatcher:dispatch(EventNames.EVENT_LIMIT_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
+        elseif goodsCon.type == GOODS_TYPE.ConverGold then
+            Tools.printDebug("金币转换")
+            GameDispatcher:dispatch(EventNames.EVENT_TRANSFORM_GOLD,{time = goodsCon.time})
         end
         return true
     else
@@ -273,6 +285,52 @@ function GameDataManager.resetGoodsNum(_goodsId)
     GameDataManager.SaveData()
 end
 
+--===================场景道具暂停恢复=====================
+local gameProp = {}
+function GameDataManager.setGamePropTime(_type,originTime,_speed)
+    local pTime = math.ceil(Tools.getSysTime())
+    if not gameProp[_type] then
+        gameProp[_type] = {}
+    end
+    gameProp[_type].time = pTime
+    gameProp[_type].m_Time = originTime
+    if _speed then
+        gameProp[_type].speed = _speed
+    end
+    Tools.printDebug("FruitPaoku..初始时间：",gameProp[_type].m_Time,gameProp[_type].time)
+end
+
+function GameDataManager.setGamePauseTime(_type)
+    local pTime = math.ceil(Tools.getSysTime())
+    gameProp[_type].pTime = pTime
+    Tools.printDebug("FruitPaoku..暂停时间：",gameProp[_type].pTime)
+end
+
+function GameDataManager.getLeftTime(_type)
+    if not gameProp[_type] then
+		return 0
+	end
+    local leftTime = gameProp[_type].m_Time - (gameProp[_type].pTime - gameProp[_type].time)
+    Tools.printDebug("FruitPaoku..剩余时间：",leftTime)
+    return leftTime
+end
+
+function GameDataManager.getMapSpeed(_type)
+    if not gameProp[_type] then
+        return 0
+    end
+    if not gameProp[_type].speed then
+    	return 0
+    end
+    return gameProp[_type].speed
+end
+
+function GameDataManager.resetGameTime(parameters)
+	gameProp = {}
+end
+
+--=====================end=============================
+
 --===================角色信息相关=========================
 --初始化角色信息
 function GameDataManager.initPlayerVo()
@@ -302,6 +360,10 @@ function GameDataManager.unLockModle(_roleId)
     _modleVo.roleId = _roleId
     modleDic[_roleId] = _modleVo
     _modleVo.level = GameDataManager.updateUserLv(_roleId,RoleConfig[_roleId].initLv)
+end
+--角色皮肤数
+function GameDataManager.getRoleModelCount()
+	return #modleDic
 end
 
 --是否拥有相应角色
@@ -363,7 +425,7 @@ function GameDataManager.getMoneyRate(_roleId,_lv)
     end
 end
 
---获取当前角色被动技能磁铁时间
+--获取当前角色被动技能时间
 function GameDataManager.getUnActSkillTime(_roleId,_lv,type)
     local _roleLvObj = RoleLvs[_roleId][_lv]
     local _basic
@@ -500,7 +562,7 @@ function GameDataManager.getHistoryScore(_levelId)
     return fightData[_levelId].score
 end
 
---增加当前关卡获得金币(此时不含加成)
+--增加当前关卡获得铜币(此时不含加成)
 local curLevelCoin = 0
 function GameDataManager.addLevelCoin(_coin)
     curLevelCoin = curLevelCoin + _coin
@@ -511,10 +573,20 @@ function GameDataManager.getLevelCoin()
     return curLevelCoin
 end
 
+--获取当前关卡星级
+function GameDataManager.getLevelStar(_levelId)
+    local _data = fightData[_levelId]
+    if _data then
+        return _data.star
+    end
+    return 0
+end
+
 --存储关卡数据
 --return1:是否首次过关，return2:当前星级
 function GameDataManager.saveLevelData()
     local isFirst=false
+    local curStar = 1
     local _data = fightData[curLevelId]
     if not _data then
         _data = clone(LevelVo)
@@ -530,11 +602,14 @@ function GameDataManager.saveLevelData()
         if old < GameDataManager.getAllScore() then
             _data.score = GameDataManager.getAllScore()
         end
-        --保存游戏最高分数(更适用于无尽模式)
---        if GameDataManager.getAllScore() > GameDataManager.getRecord()then
---            Tools.printDebug("刷新记录",GameDataManager.getAllScore())
---            GameDataManager.saveRecord(GameDataManager.getAllScore())
---        end
+        
+        curStar = _levCon.getStar(GameDataManager.getAllScore())
+        
+        --如果此次星级高于上次则记录
+        if curStar > _data.star then
+            _data.star = curStar
+        end
+        _data.isPass = true
     end
 
     return isFirst

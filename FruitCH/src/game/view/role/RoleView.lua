@@ -190,7 +190,7 @@ function RoleView:updateRoleLv(id,level)
     self.m_roleLv = GameDataManager.getRoleLevel(id)
     self.RoleLV:setString("LV."..self.m_roleLv)
     
-    Tools.delayCallFunc(0.1,function()
+    Tools.delayCallFunc(0.2,function()
         for var=1, #self.RoleUnActSkill do
             local basic = GameDataManager.getUnActSkillTime(id,level,self.RoleUnActSkill[var].type)
             local total = GameDataManager.getUnActSkillTime(id,#RoleLvs[id],self.RoleUnActSkill[var].type)

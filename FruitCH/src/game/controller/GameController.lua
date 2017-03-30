@@ -10,6 +10,9 @@ GameController.overFrame = false
 GameController.isDead = false
 GameController.isWin = false
 
+--额外吸附物品
+GameController.Adsorb_Ex_Goods = 1
+
 local _isPause = false
 local _curSpeed = 0
 
@@ -42,10 +45,10 @@ function GameController.pauseGame(isEvent)
 --    display.pause()
     _isPause=true
     MoveSpeed = 0  --地图移动速度
---    if isEvent then
---        GameController.setGoodsCurTime()
---        GameDispatcher:dispatch(EventNames.EVENT_PLAYER_PAUSE)
---    end
+    if isEvent then
+        GameDispatcher:dispatch(EventNames.EVENT_PLAYER_PAUSE)
+        GameDispatcher:dispatch(EventNames.EVENT_OBSCALE_FLYPAUSE)
+    end
 end
 
 --游戏恢复
@@ -55,10 +58,10 @@ function GameController.resumeGame(isEvent)
     _isPause=false
     MoveSpeed = _curSpeed
     TimeUtil.init()
---    if isEvent then
---        GameDispatcher:dispatch(EventNames.EVENT_PLAYER_REGAIN)
---        GameController.reSetGoodsTime()
---    end
+    if isEvent then
+        GameDispatcher:dispatch(EventNames.EVENT_PLAYER_REGAIN)
+        GameDispatcher:dispatch(EventNames.EVENT_OBSCALE_FLYRESUM)
+    end
 end
 
 function GameController.isInPause()
@@ -238,31 +241,34 @@ function GameController.detect(target,targetPos,radius,type)
         end
     end
 
-    for var=#goodBody,1,-1 do
-        local good=goodBody[var]
-        if not tolua.isnull(good) then
-            local fromP,toP
-            local parent=target:getParent()
-            local pw= good:convertToWorldSpace(cc.p(0,0))
-            fromP=parent:convertToNodeSpace(pw)
-            toP=targetPos
-            if cc.pGetDistance(fromP,toP)<=radius then
-                good:setAttract(target)
-                good:setRetain()
-                good:removeFromParent(false)
+    if type == GameController.Adsorb_Ex_Goods then
+        for var=#goodBody,1,-1 do
+            local good=goodBody[var]
+            if not tolua.isnull(good) then
+                local fromP,toP
+                local parent=target:getParent()
+                local pw= good:convertToWorldSpace(cc.p(0,0))
+                fromP=parent:convertToNodeSpace(pw)
+                toP=targetPos
+                if cc.pGetDistance(fromP,toP)<=radius then
+                    good:setAttract(target)
+                    good:setRetain()
+                    good:removeFromParent(false)
 
-                parent:addChild(good,MAP_ZORDER_MAX)
-                good:setPosition(fromP.x,fromP.y)
+                    parent:addChild(good,MAP_ZORDER_MAX)
+                    good:setPosition(fromP.x,fromP.y)
 
-                table.insert(movingObjs,good)
+                    table.insert(movingObjs,good)
+                    table.remove(goodBody,var)
+
+                    GameController._coinCheckMove(good,fromP,toP,var,goodBody)
+                end
+            else
                 table.remove(goodBody,var)
-
-                GameController._coinCheckMove(good,fromP,toP,var,goodBody)
             end
-        else
-            table.remove(goodBody,var)
         end
     end
+    
 end
 
 function GameController.stopDetect()
@@ -291,113 +297,6 @@ function GameController._coinCheckMove(_node,_fromP,_toP,_index,_table)
         _node:collision()
         table.remove(movingObjs,_index)
     end
-end
-
-
---=============================道具使用时间流程
-
---重置道具时间点
-function GameController.reSetGoodsTime()
-    if GameController.isInState(PLAYER_STATE.topfly) then
-        GameController.setGoodsKeepTime(GOON_TAG.TopSpeed,GameController.getGoodsGoonTime(GOON_TAG.TopSpeed))
-        GameController.setGoodsInitTime(GOON_TAG.TopSpeed)
-    end
-    if GameController.isInState(PLAYER_STATE.spring) then
-        GameController.setGoodsKeepTime(GOON_TAG.Springs,GameController.getGoodsGoonTime(GOON_TAG.Springs))
-        GameController.setGoodsInitTime(GOON_TAG.Springs)
-    end
-    if GameController.isInState(PLAYER_STATE.protect) then
-        GameController.setGoodsKeepTime(GOON_TAG.Protect,GameController.getGoodsGoonTime(GOON_TAG.Protect))
-        GameController.setGoodsInitTime(GOON_TAG.Protect)
-    end
-
-    if GameController.isInState(PLAYER_STATE.DropLife) then
-        GameController.setGoodsKeepTime(GOON_TAG.DropLife,GameController.getGoodsGoonTime(GOON_TAG.DropLife))
-        GameController.setGoodsInitTime(GOON_TAG.DropLife)
-    end
-end
-
---1
---设置道具的使用时间(1,道具编号（GameConfig中获得）,2,道具使用的时间)
-function GameController.setGoodsKeepTime(_propId,_time)
-    GOON_GOODS[_propId].keepTime = _time
-    Tools.printDebug("当前使用的道具总时间",_time)
-end
-
---初始化单个缓存的道具信息[持续时间]
-function GameController.initGoodsKeepTime(_propId)
-    GOON_GOODS[_propId].keepTime = 0
-end
-
---2
---获取当前使用道具的时间截点
-function GameController.setGoodsInitTime(_propId)
-    Tools.printDebug("初始使用道具截点",math.ceil(Tools.getSysTime()))
-    GOON_GOODS[_propId].initTime = math.ceil(Tools.getSysTime())
-end
-
---初始化单个缓存的道具信息[初始时间]
-function GameController.initGoodsTime(_propId)
-    GOON_GOODS[_propId].initTime = 0
-end
-
---3
---获取当前道具是否能继续使用(添加角色时跳过此步)
---得到道具是否可以继续使用
-function GameController.getGoodsType(_propId)
-    local curTime = GOON_GOODS[_propId].keepTime -(GameController.getGoodsCurTime()-GOON_GOODS[_propId].InitTime)
-    if  curTime>0 then
-        GOON_GOODS[_propId].type = true
-    end
-    Tools.printDebug("当前道具能否继续使用状态",GOON_GOODS[_propId].type)
-    return GOON_GOODS[_propId].type
-end
-
---4
---获取当前(还可以继续使用的时间)(添加角色时)
-function GameController.getGoodsGoonTime(_propId)
-    local m_Time = GOON_GOODS[_propId].keepTime -(GameController.getGoodsCurTime()-GOON_GOODS[_propId].initTime)
-    Tools.printDebug("当前道具剩余时间",m_Time)
-    return m_Time
-end
-
-function GameController.getGoodsLastTime(_propId)
-    Tools.printDebug("当前道具剩余时间",GOON_GOODS[_propId].keepTime -(math.ceil(Tools.getSysTime())-GOON_GOODS[_propId].initTime))
-    return GOON_GOODS[_propId].keepTime -(math.ceil(Tools.getSysTime())-GOON_GOODS[_propId].initTime)
-end
-
---辅助 -- 得到当前时间
-function GameController.getGoodsCurTime()
-    return pauseTime
-end
-
-function GameController.setGoodsCurTime(parameters)
-    pauseTime = math.ceil(Tools.getSysTime())
-    Tools.printDebug("当前使用道具截点",pauseTime)
-end
-
---初始化缓存的道具信息(全部道具)
-function GameController.initGoodsPoolAll(_initMsg)
-    if _initMsg == GOON_TAG.ALL then
-        for var = 1,4 do
-            GOON_GOODS[var].type=false
-        end
-    end
-    if _initMsg == GOON_TAG.InitTime then
-        for var = 1,4 do
-            GOON_GOODS[var].initTime=0
-        end
-    end
-    if _initMsg == GOON_TAG.KeepTime then
-        for var = 1,4 do
-            GOON_GOODS[var].keepTime =0
-        end
-    end
-end
-
---初始化缓存的道具信息(单个)
-function GameController.initGoodsPool(_goosId)
-    GOON_GOODS[_goosId].type = true
 end
 
 function GameController.clearBody(parameters)

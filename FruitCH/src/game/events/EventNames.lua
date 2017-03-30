@@ -22,6 +22,9 @@ EventNames.EVENT_OPEN_SHOP="event_open_shop"
 --打开角色界面
 EventNames.EVENT_OPEN_ROLEVIEW="event_open_roleview"
 
+--随机奖励道具界面
+EventNames.EVENT_OPEN_REWARDPROP = "event_open_rewardprop"
+
 --=====================场景内
 
 --时间变化
@@ -55,5 +58,43 @@ EventNames.EVENT_ROLE_CHANGE = "event_role_change"
 
 --开局冲刺
 EventNames.EVENT_START_SPRINT = "event_start_sprint"
+
+--死亡冲刺
+EventNames.EVENT_DEAD_SPRINT = "event_dead_sprint"
+
+--开局护盾
+EventNames.EVENT_START_PROTECT = "event_start_protect"
+
+--死亡接力
+EventNames.EVENT_DEAD_RELAY = "event_dead_relay"
+
+--吸铁石
+EventNames.EVENT_MANGET = "event_manget"
+
+--巨人药水
+EventNames.EVENT_GRANT_DRINK = "event_grant_drink"
+
+--角色暂停
+EventNames.EVENT_PLAYER_PAUSE = "event_player_pause"
+
+--角色恢复
+EventNames.EVENT_PLAYER_REGAIN = "event_player_regain"
+
+--极限冲刺
+EventNames.EVENT_LIMIT_SPRINT = "event_limit_sprint"
+
+--金币转换
+EventNames.EVENT_TRANSFORM_GOLD = "event_transform_gold"
+
+--速度减慢
+EventNames.EVENT_SLOW_SPEED = "event_slow_speed"
+
+--飞行障碍物暂停
+EventNames.EVENT_OBSCALE_FLYPAUSE = "event_obscale_flypause"
+--飞行障碍物恢复
+EventNames.EVENT_OBSCALE_FLYRESUM = "event_obscale_flyresum"
+
+--弹簧障碍物
+EventNames.EVENT_OBSCALE_SPRING = "event_obscale_spring"
 
 return EventNames

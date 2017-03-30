@@ -7,7 +7,7 @@ local Pause = class("Pause",BaseUI)
 function Pause:ctor(parm)
     Pause.super.ctor(self)
     local bg = display.newColorLayer(cc.c4b(0,0,0,OPACITY)):addTo(self)
-    GameController.pauseGame() --游戏暂停
+    GameController.pauseGame(true) --游戏暂停
 
     local _pause = cc.uiloader:load("json/PauseUI.json")
     self:addChild(_pause)
@@ -25,7 +25,7 @@ function Pause:ctor(parm)
     --继续游戏
     local ContinueBtn=cc.uiloader:seekNodeByName(_pause,"ContinueBtn")
     ContinueBtn:onButtonClicked(function(event)
-        GameController.resumeGame()
+        GameController.resumeGame(true)
         self:toClose(true)
     end)
     

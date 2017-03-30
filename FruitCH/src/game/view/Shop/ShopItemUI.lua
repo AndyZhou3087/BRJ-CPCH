@@ -11,7 +11,9 @@ function ShopItemUI:ctor(shopId)
     self:setNodeEventEnabled(true)
 
     for var=1, 4 do
-    	self:initContent(ShopConfig[(shopId-1)*4+var],cc.p(-8+220*(var-1),0))
+        if ShopConfig[(shopId-1)*4+var] then
+            self:initContent(ShopConfig[(shopId-1)*4+var],cc.p(-8+220*(var-1),0))
+        end
     end
 
 end
@@ -137,7 +139,15 @@ function ShopItemUI:initContent(shopConfig,pos)
                             GameDataManager.addDiamond(shopConfig.content.diamond)
                         end
                         if shopConfig.content.prop then
-                            GameDataManager.addGoods(shopConfig.content.prop.id,shopConfig.content.prop.count)
+                            for var=1, shopConfig.content.prop do
+                                local arr = shopConfig.content.prop[var]
+                                GameDataManager.addGoods(arr.id,arr.count)
+                            end
+                        end
+                        if shopConfig.content.role then
+                            GameDataManager.unLockModle(shopConfig.content.role.id)
+                            --可每日领取奖励
+                            
                         end
                         GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
                     else

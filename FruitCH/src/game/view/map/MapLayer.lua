@@ -111,10 +111,10 @@ end
 --触摸
 function MapLayer:touchFunc(event)
     if GameController.isWin or GameController.isDead then
-        return true
+        return
     end
-    if GameController.isInState(PLAYER_STATE.StartSprint) then
-    	return true
+    if GameController.isInState(PLAYER_STATE.StartSprint) or GameController.isInState(PLAYER_STATE.DeadSprint) then
+    	return
     end
     if event.name == "began" or event.name == "added" then
         self.m_player:toPlay(PLAYER_ACTION.Jump,0)
@@ -188,13 +188,9 @@ function MapLayer:collisionBeginCallBack(parameters)
     	return false
     end
     
-    if obstacleTag == ELEMENT_TAG.OBSTACLE then
+    if obstacleTag == ELEMENT_TAG.OBSTACLE or obstacleTag == ELEMENT_TAG.GOLD_TAG or obstacleTag == ELEMENT_TAG.GOOD_TAG then
     	obstacle:collision()
     	return true
-    end
-    if obstacleTag == ELEMENT_TAG.GOLD_TAG then
-        obstacle:collision()
-        return true
     end
 
     return true
@@ -217,8 +213,10 @@ function MapLayer:onEnterFrame(dt)
     --移动金币
     GameController.attract()
 
-    local bpx,bpy = self.m_player:getPosition()
-    self.m_player:update(dt,bpx,bpy)
+    if not tolua.isnull(self.m_player) then
+        local bpx,bpy = self.m_player:getPosition()
+        self.m_player:update(dt,bpx,bpy)
+    end
 
     --跑了多少米换算公式
    self.pexel = self.pexel + MoveSpeed*0.1/(Pixel/Miles)
@@ -270,7 +268,7 @@ function MapLayer:dispose(parameters)
         self.m_timer = nil
     end
 
-    if self.m_player then
+    if not tolua.isnull(self.m_player) then
         self.m_player:dispose()
     end
     

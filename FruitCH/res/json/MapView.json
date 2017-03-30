@@ -145,7 +145,7 @@
               "customProperty": "",
               "flipX": false,
               "flipY": false,
-              "height": 40,
+              "height": 44,
               "ignoreSize": true,
               "layoutParameter": null,
               "opacity": 255,
@@ -162,7 +162,7 @@
               "touchAble": false,
               "useMergedTexture": false,
               "visible": true,
-              "width": 40,
+              "width": 44,
               "x": -81,
               "y": -2,
               "capInsetsHeight": 1,
@@ -171,13 +171,13 @@
               "capInsetsY": 0,
               "fileName": null,
               "fileNameData": {
-                "path": "Common/Common_gold.png",
+                "path": "Common/Common_copper.png",
                 "plistFile": "",
                 "resourceType": 0
               },
               "scale9Enable": false,
-              "scale9Height": 40,
-              "scale9Width": 40
+              "scale9Height": 44,
+              "scale9Width": 44
             }
           },
           {
@@ -324,8 +324,8 @@
           "ignoreSize": false,
           "layoutParameter": null,
           "opacity": 255,
-          "positionPercentX": 0.457291633,
-          "positionPercentY": 0.92037046,
+          "positionPercentX": 0.45625,
+          "positionPercentY": 0.9203704,
           "positionType": 0,
           "rotation": 0,
           "scaleX": 1,
@@ -558,7 +558,7 @@
           "layoutParameter": null,
           "opacity": 255,
           "positionPercentX": 0.6979167,
-          "positionPercentY": 0.92037046,
+          "positionPercentY": 0.9203704,
           "positionType": 0,
           "rotation": 0,
           "scaleX": 1,

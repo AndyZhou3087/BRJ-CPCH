@@ -13,6 +13,7 @@ function MapView:ctor(parameters)
 
     --得到当前关卡
     self.m_currentl = GameDataManager.getCurLevelId()
+    self.mcurLevelCoin = 0
     
     local Image_3_0 = cc.uiloader:seekNodeByName(self.m_mapView,"Image_3_0")
     Image_3_0:setPositionX(display.right-290)
@@ -38,9 +39,10 @@ function MapView:ctor(parameters)
     self.m_Diamond = cc.uiloader:seekNodeByName(self.m_mapView,"Diamond")
     self.m_Diamond:setString(GameDataManager.getDiamond())
     local DiamondBtn = cc.uiloader:seekNodeByName(self.m_mapView,"DiamondBtn")
+    DiamondBtn:setVisible(false)
     DiamondBtn:onButtonClicked(function(_event)
         Tools.printDebug("-----------钻石购买")
-        GameController.pauseGame()
+        GameController.pauseGame(true)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
     end)
 
@@ -48,9 +50,10 @@ function MapView:ctor(parameters)
     self.m_goldNum = cc.uiloader:seekNodeByName(self.m_mapView,"Gold") --金币数量
     self.m_goldNum:setString(self.mcurLevelCoin)
     local GoldBtn = cc.uiloader:seekNodeByName(self.m_mapView,"GoldBtn")
+    GoldBtn:setVisible(false)
     GoldBtn:onButtonClicked(function(_event)
         Tools.printDebug("-----------金币购买")
-        GameController.pauseGame()
+        GameController.pauseGame(true)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
     end)
     

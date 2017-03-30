@@ -16,6 +16,7 @@ require("game.config.ObsGroupConfig")
 require("game.config.ObstacleConfig")
 require("game.config.GoodGroupConfig")
 require("game.config.ShopConfig")
+require("game.config.SelectOtherConfig")
 
 PoolManager = require("game.tools.PoolManager")
 TimeUtil = require("game.tools.TimeUtil")

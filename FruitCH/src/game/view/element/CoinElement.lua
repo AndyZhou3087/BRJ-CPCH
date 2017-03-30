@@ -40,6 +40,17 @@ end
 function CoinElement:onEnterFrame()
     local _x,_y = self:getPosition()
     self:setPosition(_x-MoveSpeed*0.1,_y)
+    if self:getPositionX()<=display.right and self.m_type ~= Coin_Type.Coin_Gold then
+    	if GameController.isInState(PLAYER_STATE.TransformGold) and not self.m_trans then
+    	   self.m_trans = true
+           local old = self.m_img
+           self.m_img = PhysicSprite.new("Common/Common_gold.png"):addTo(self)
+           old:removeFromParent()
+    	end
+        if not GameController.isInState(PLAYER_STATE.TransformGold) then
+            self.m_trans = false
+    	end
+    end
     if self:getPositionX()<=-self:getSize().width then
     	self:dispose()
     end
@@ -48,6 +59,12 @@ end
 --被碰触
 function CoinElement:collision()
 --    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Gold_Sound)
+    if GameController.isInState(PLAYER_STATE.TransformGold) then
+    	GameDataManager.addLevelCoin(3)
+        self:dispose()
+        return
+    end
+
     if self.m_type == Coin_Type.Coin_Copper then
         GameDataManager.addLevelCoin(1)
     elseif self.m_type == Coin_Type.Coin_Silver then
@@ -56,7 +73,7 @@ function CoinElement:collision()
         GameDataManager.addLevelCoin(3)
     end
     GameDataManager.addCurrencyCount(self.m_type,1)
-     --关卡获得金币 
+
     self:dispose()
 end
 
@@ -100,6 +117,8 @@ function CoinElement:dispose(parameters)
         return
     end
     self.m_isDisposed = true
+    
+    self.m_trans = nil
     
     self.m_isAttract = false
     self.m_target = nil

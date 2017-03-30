@@ -60,10 +60,11 @@ function GameScene:onEnter()
 
     Tools.delayCallFunc(0.001,function()
         self.m_map:initPhyPos()
-        for key, var in pairs(GameController.getStartProp()) do
-            if var.isSelect then
-        		GameDataManager.useGoods(var.id)
-        	end
+        if GameController.getStartPropById(1) then
+        	GameDataManager.useGoods(1)
+        end
+        if GameController.getStartPropById(3) then
+        	GameDataManager.useGoods(3)
         end
     end)
 

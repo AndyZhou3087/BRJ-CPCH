@@ -5,19 +5,27 @@ end)
 
 function SelectItem:ctor(parameters)
     self.parm = parameters
-
-    self.chapterBtn = cc.ui.UIPushButton.new(parameters.res, {scale9 = true})
-        :setButtonSize(parameters.rect[1],parameters.rect[2])
-        :onButtonClicked(function(event)
-            Tools.printDebug("chjh button click")
-            Tools.printDebug("----------关卡：",parameters._id)
-            self:initLevelVo(parameters._id)
-        end)
-        :addTo(self)
-    self.chapterBtn:setTouchSwallowEnabled(false)
-    self.chapterBtn:setAnchorPoint(0,0)
-    self.chapterBtn:setPosition(cc.p(parameters.pos.x,parameters.pos.y))
     
+    self.m_json = cc.uiloader:load("json/SelectItem.json")
+    self:addChild(self.m_json)
+
+    self.SelectBtn = cc.uiloader:seekNodeByName(self.m_json,"SelectBtn")
+    self.SelectBtn:setTouchSwallowEnabled(false)
+    self.SelectBtn:onButtonClicked(function(event)
+        Tools.printDebug("chjh button click")
+        Tools.printDebug("----------关卡：",parameters._id)
+        self:initLevelVo(parameters._id)
+    end)
+    
+    local LevelCount = cc.uiloader:seekNodeByName(self.m_json,"LevelCount")
+    LevelCount:setString(parameters._id)
+    
+    self.starArr = {}
+    for var=1, 3 do
+        self.starArr[var] = cc.uiloader:seekNodeByName(self.m_json,"Star_"..var)
+        self.starArr[var]:setVisible(false)
+    end
+
     self:initLevelData()
     
 end
@@ -30,16 +38,18 @@ function SelectItem:initLevelVo(level)
 end
 
 function SelectItem:initLevelData(level)
-    if not GameDataManager.getFightData(self.parm._id-1) then
-        self.chapterBtn:setButtonEnabled(false)
-        self.chapterBtn:setColor(cc.c3b(0,0,0))
-        if self.parm._id == 1 then
-            self.chapterBtn:setButtonEnabled(true)
-            self.chapterBtn:setColor(cc.c3b(255,255,255))
+    if not GameDataManager.getFightData(self.parm._id) then
+        self.SelectBtn:setButtonEnabled(false)
+        if GameDataManager.getFightData(self.parm._id-1) then
+            self.SelectBtn:setButtonEnabled(true)
         end
     else
-        self.chapterBtn:setButtonEnabled(true)
-        self.chapterBtn:setColor(cc.c3b(255,255,255))
+        self.SelectBtn:setButtonEnabled(true)
+        local stars = GameDataManager.getLevelStar(self.parm._id)
+        for var=1, stars do
+            self.starArr[var]:setVisible(true)
+        end
+        
     end
 end
 

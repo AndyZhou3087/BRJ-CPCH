@@ -41,36 +41,83 @@ function PropItem:initPropData()
     end
     pcount:setString(self.propCon.cost.price)
     
+    --使用图标
+    local useLabel = cc.uiloader:seekNodeByName(self.propUI,"UseBtn")
+    useLabel:setTouchSwallowEnabled(false)
+    useLabel:setButtonEnabled(false)
+    if self.propCon.id~=5 and self.propCon.id~=6 then
+        useLabel:setButtonImage("disabled","ui/UseLabel.png")
+    else
+        useLabel:setButtonImage("disabled","ui/buy_label.png")
+    end
+    
+    
     --使用按钮
     local useBtn = cc.uiloader:seekNodeByName(self.propUI,"Buybtn")
     useBtn:setTouchSwallowEnabled(false)
     useBtn:onButtonClicked(function(event)
-        if not self.propCon.isSelect then
-            if GameDataManager.getGoodsNum(self.propCon.id)>0 then
-                self.propCon.isSelect = true
-                Tools.printDebug("----已使用道具")
-            else
-                if self.propCon.cost.type == COST_TYPE.Gold then
-                    if GameDataManager.getGold()>=self.propCon.cost.price then
---                        GameDataManager.costGold(self.propCon.cost.price)
-                        self.propCon.isSelect = true
-                        Tools.printDebug("----已使用道具")
-                    else
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
-                    end
-                elseif self.propCon.cost.type == COST_TYPE.Diamond then
-                    if GameDataManager.getDiamond()>=self.propCon.cost.price then
---                        GameDataManager.costDiamond(self.propCon.cost.price)
-                        self.propCon.isSelect = true
-                        Tools.printDebug("----已使用道具")
-                    else
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
+        if self.propCon.id~=5 and self.propCon.id~=6 then
+            if not self.propCon.isSelect then
+                if GameDataManager.getGoodsNum(self.propCon.id)>0 then
+                    self.propCon.isSelect = true
+                    Tools.printDebug("----已使用道具")
+                else
+                    if self.propCon.cost.type == COST_TYPE.Gold then
+                        if GameDataManager.getGold()>=self.propCon.cost.price then
+                            --                        GameDataManager.costGold(self.propCon.cost.price)
+                            self.propCon.isSelect = true
+                            Tools.printDebug("----已使用道具")
+                        else
+                            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
+                        end
+                    elseif self.propCon.cost.type == COST_TYPE.Diamond then
+                        if GameDataManager.getDiamond()>=self.propCon.cost.price then
+                            --                        GameDataManager.costDiamond(self.propCon.cost.price)
+                            self.propCon.isSelect = true
+                            Tools.printDebug("----已使用道具")
+                        else
+                            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
+                        end
                     end
                 end
+            else
+                self.propCon.isSelect = false
+                Tools.printDebug("----已放弃使用道具")
             end
         else
-            self.propCon.isSelect = false
-            Tools.printDebug("----已放弃使用道具")
+            if self.propCon.cost.type == COST_TYPE.Gold then
+                if GameDataManager.getGold()>=self.propCon.cost.price then
+                    GameDataManager.costGold(self.propCon.cost.price)
+                    if self.propCon.id == 5 then
+                        local id = math.random(1,4)
+                        GameDataManager.addGoods(id,1)
+                        GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
+                    else
+                        for var=1, #self.propCon.content do
+                            local arr = self.propCon.content[var]
+                            GameDataManager.addGoods(arr.id,arr.count)
+                        end
+                    end
+                else
+                    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
+                end
+            elseif self.propCon.cost.type == COST_TYPE.Diamond then
+                if GameDataManager.getDiamond()>=self.propCon.cost.price then
+                    GameDataManager.costDiamond(self.propCon.cost.price)
+                    if self.propCon.id == 5 then
+                        local id = math.random(1,4)
+                        GameDataManager.addGoods(id,1)
+                        GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
+                    else
+                        for var=1, #self.propCon.content do
+                            local arr = self.propCon.content[var]
+                            GameDataManager.addGoods(arr.id,arr.count)
+                        end
+                    end
+                else
+                    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
+                end
+            end
         end
     end)
 end
