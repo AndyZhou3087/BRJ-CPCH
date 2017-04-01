@@ -50,6 +50,12 @@ function SelectUI:init(parameters)
         :onScroll(handler(self, self.scrollListener))
         :addTo(self)
         
+    for var=1, #SelectOtherConfig do
+        local otherConfig = SelectOtherConfig[var]
+        local sprite = display.newSprite(otherConfig.res):addTo(emptyNode)
+        sprite:setAnchorPoint(0,0)
+        sprite:pos(otherConfig.x,otherConfig.y)
+    end
     for var=1, #SelectLevel do
         local selConfig = SelectLevel[var]
         local sel = SelectItem.new(selConfig):addTo(emptyNode)
@@ -57,14 +63,14 @@ function SelectUI:init(parameters)
         sel:setContentSize(100, 100)
         sel:pos(selConfig.pos.x,selConfig.pos.y)
     end
+
     
-    for var=1, #SelectOtherConfig do
-        local otherConfig = SelectOtherConfig[var]
-        local sprite = display.newSprite(otherConfig.res):addTo(emptyNode)
-        sprite:setAnchorPoint(0,0)
-        sprite:pos(otherConfig.x,otherConfig.y)
-    end
-    
+    --签到
+    Tools.delayCallFunc(0.1,function()
+        if not GameDataManager.isDateSign() and GameController.getSignPop() then
+        	GameDispatcher:dispatch(EventNames.EVENT_OPEN_SIGNUI)
+        end
+    end)
 end
 
 function SelectUI:scrollListener(event)

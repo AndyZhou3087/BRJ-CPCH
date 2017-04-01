@@ -14,6 +14,7 @@ function FightReadyUI:ctor(parm)
     --启用监听
     self:setNodeEventEnabled(true)
 
+    self.m_mode = parm
     --阴影层
     local bg = display.newColorLayer(cc.c4b(0,0,0,120)):addTo(self)
     self.m_size_ = bg:getCascadeBoundingBox().size
@@ -36,7 +37,7 @@ function FightReadyUI:ctor(parm)
         end
     elseif parm == GAME_TYPE.EndlessMode then
         Tools.printDebug("无尽模式")
---        GameDataManager.resetLevelData()  --重置关卡数据
+        GameDataManager.resetLevelData()  --重置关卡数据
     else
         Tools.printDebug("readyView no mode!!!")
     end
@@ -63,8 +64,7 @@ function FightReadyUI:ctor(parm)
     startGame:onButtonClicked(function(event)
         Tools.printDebug("-----------开始游戏")
         GameDataManager.generatePlayerVo()  --产生新的角色数据对象
-        if GameDataManager.costPower(_levelCon.costPower) then
-        	if parm == GAME_TYPE.LevelMode then
+        if parm == GAME_TYPE.LevelMode and GameDataManager.costPower(_levelCon.costPower) then
                 for key, var in ipairs(self.m_goods) do
                     if var.isSelect then
                         GameDataManager.useGoods(var.id)
@@ -80,19 +80,25 @@ function FightReadyUI:ctor(parm)
                 GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
                 app:enterGameScene()
                 self:toClose(true)
-                --        elseif parm == GAME_TYPE.EndlessMode and GameDataManager.costPower(EndlessMode.costPower) then      
-                --            GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
-                --            for key, var in ipairs(self.m_goods) do
-                --                if var.isSelect then
-                --                    local curId = var.id
-                --                    GameDataManager.useGoods(var.id)
-                --                end           
-                --            end
-                --            app:enterFightScene()
-                --            self:toClose(true)
+        elseif parm == GAME_TYPE.EndlessMode and GameDataManager.costPower(EndlessMode.costPower) then      
+            GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
+            for key, var in ipairs(self.m_goods) do
+                if var.isSelect then
+                    GameDataManager.useGoods(var.id)
+                    if var.cost.type == COST_TYPE.Gold then
+                        GameDataManager.costGold(var.cost.price)
+                    elseif var.cost.type == COST_TYPE.Diamond then
+                        GameDataManager.costDiamond(var.cost.price)
+                    end
+                    GameDataManager.addGoods(var.id,1)
+                    GameController.setStartProp(var.id,var.isSelect)
+                end           
             end
+            startGame:setButtonEnabled(false)
+            app:enterGameScene()
+            self:toClose(true)
         else
-            print("体力不足！！",GameDataManager.getPower())
+            Tools.printDebug("体力不足！！",parm == GAME_TYPE.EndlessMode and GameDataManager.costPower(EndlessMode.costPower))
             startGame:setButtonEnabled(true)
             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="体力不足"})
 --            GameDispatcher:dispatch(EventNames.EVENT_OPEN_POWER,{})
@@ -157,17 +163,19 @@ end
 --获取道具数据
 function FightReadyUI:makeGoodsData(parameters)
     local _dataList = {}
-    local _levelCon = SelectLevel[GameDataManager.getCurLevelId()] 
-    if _levelCon then
-        Tools.printDebug("关卡模式道具配置")
-        local _curGoodsArr = _levelCon.startGoods
-        for key, var in ipairs(_curGoodsArr) do
-            local _goodsCon = clone(GoodsConfig[var])
-            if _goodsCon then
-                _goodsCon.isSelect = false
-                table.insert(_dataList,_goodsCon)
-            else
-                Tools.printDebug("not exist")
+    if self.m_mode == GAME_TYPE.LevelMode then
+        local _levelCon = SelectLevel[GameDataManager.getCurLevelId()] 
+        if _levelCon then
+            Tools.printDebug("关卡模式道具配置")
+            local _curGoodsArr = _levelCon.startGoods
+            for key, var in ipairs(_curGoodsArr) do
+                local _goodsCon = clone(GoodsConfig[var])
+                if _goodsCon then
+                    _goodsCon.isSelect = false
+                    table.insert(_dataList,_goodsCon)
+                else
+                    Tools.printDebug("not exist")
+                end
             end
         end
     else

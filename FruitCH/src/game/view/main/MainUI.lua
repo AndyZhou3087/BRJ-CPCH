@@ -28,6 +28,7 @@ function MainUI:init(parameters)
     end)
     Endlessbtn:onButtonClicked(function(event)
         GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE.EndlessMode)
     end)
     
     local Levelbtn = cc.uiloader:seekNodeByName(self.m_json,"Levelbtn")
@@ -40,6 +41,7 @@ function MainUI:init(parameters)
             GameDataManager.setCurLevelId(1,1)
         end
         GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
+        GameController.setSignPop(true)
         app:enterSelectScene()
     end)
 

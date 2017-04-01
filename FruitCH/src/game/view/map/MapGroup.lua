@@ -31,10 +31,16 @@ function MapGroup:ctor(_idx,_levelCon)
     local _obstacle
     local _coins
     local _goods
-    _obstacle = Obstacles[_levelCon.obstacle[_idx]] or {}
-    _coins = Coins[_levelCon.coins[_idx]] or {}
-    _goods = GroupGoods[_levelCon.goods[_idx]] or {}
-    
+    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+        _obstacle = Obstacles[_levelCon.obstacle[_idx]] or {}
+        _coins = Coins[_levelCon.coins[_idx]] or {}
+        _goods = GroupGoods[_levelCon.goods[_idx]] or {}
+    else
+        _obstacle = Obstacles[_levelCon.obstacle] or {}
+        _coins = Coins[_levelCon.coins] or {}
+        _goods = GroupGoods[_levelCon.goods] or {}
+    end
+
     self:initElement(_obstacle)
 
     self:initCoins(_coins)

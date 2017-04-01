@@ -89,6 +89,8 @@ function PropItem:initPropData()
                 if GameDataManager.getGold()>=self.propCon.cost.price then
                     GameDataManager.costGold(self.propCon.cost.price)
                     if self.propCon.id == 5 then
+                        --控制随机数种子
+                        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
                         local id = math.random(1,4)
                         GameDataManager.addGoods(id,1)
                         GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
@@ -105,6 +107,8 @@ function PropItem:initPropData()
                 if GameDataManager.getDiamond()>=self.propCon.cost.price then
                     GameDataManager.costDiamond(self.propCon.cost.price)
                     if self.propCon.id == 5 then
+                        --控制随机数种子
+                        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
                         local id = math.random(1,4)
                         GameDataManager.addGoods(id,1)
                         GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)

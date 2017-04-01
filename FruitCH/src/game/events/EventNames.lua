@@ -25,6 +25,9 @@ EventNames.EVENT_OPEN_ROLEVIEW="event_open_roleview"
 --随机奖励道具界面
 EventNames.EVENT_OPEN_REWARDPROP = "event_open_rewardprop"
 
+--签到界面
+EventNames.EVENT_OPEN_SIGNUI = "event_open_signui"
+
 --[[
 裁剪（遮罩）
 mould: "ui/uiImg/xxx.png"  裁剪模板(图片) 
@@ -34,6 +37,9 @@ height : 控件的高
 backFuciton: 回调函数
 ]]
 EventNames.EVENT_OPEN_CLIPP = "event_open_clipp"
+
+--取消遮罩
+EventNames.EVENT_CLOSE_CLIP = "event_close_clip"
 
 --=====================场景内
 

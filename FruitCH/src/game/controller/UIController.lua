@@ -10,6 +10,7 @@ local ShopView = require("game.view.Shop.ShopView")
 local RoleView = require("game.view.role.RoleView")
 local RewardUI = require("game.view.fightReady.RewardUI")
 local ClippingView=require("game.view.clipping.ClippingView")
+local SignUI = require("game.view.sign.SignUI")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -38,6 +39,9 @@ function UIController:ctor()
     
     --打开遮罩界面
     GameDispatcher:addListener(EventNames.EVENT_OPEN_CLIPP,handler(self,self.openClipp))
+    
+    --签到界面
+    GameDispatcher:addListener(EventNames.EVENT_OPEN_SIGNUI,handler(self,self.openSign))
 end
 
 --打开战斗准备界面
@@ -86,6 +90,12 @@ end
 function UIController:openClipp(parameters)
     local _clippUI = ClippingView.new(parameters.data)
     _clippUI:show(UI_ZORDER.CLIP_ZORDER)
+end
+
+--打开签到
+function UIController:openSign(parameters)
+    local _signUI = SignUI.new(parameters.data)
+    _signUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

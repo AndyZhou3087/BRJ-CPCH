@@ -14,7 +14,12 @@ local MapGroup = require("game.view.map.MapGroup")
 
 function MapLayer:ctor(parameters)
     
-    local levelCon = SelectLevel[GameDataManager.getCurLevelId()]
+    local levelCon
+    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+        levelCon = SelectLevel[GameDataManager.getCurLevelId()]
+    else
+        levelCon = EndlessMode
+    end
     if not levelCon then
     	return
     end
@@ -32,19 +37,23 @@ function MapLayer:ctor(parameters)
     
     GameDataManager.resetLevelData()
     
-    --上边界
---    self.edgeTop = display.newNode()
---    local topBody = cc.PhysicsBody:createEdgeSegment(cc.p(0,display.height-50),cc.p(display.width,display.height-50),cc.PhysicsMaterial(0, 0, 0),2)
---    topBody:setTag(ELEMENT_TAG.Edge_Top)
---    self.edgeTop:setPhysicsBody(topBody)
---    self:addChild(self.edgeTop)
---
---    --下边界
---    self.edgeDown = display.newNode()
---    local downBody = cc.PhysicsBody:createEdgeSegment(cc.p(0,20),cc.p(display.width,20),cc.PhysicsMaterial(0, 0, 0),2)
---    downBody:setTag(ELEMENT_TAG.Edge_Down)
---    self.edgeDown:setPhysicsBody(downBody)
---    self:addChild(self.edgeDown)
+    
+    if GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+        --预先组合排序
+        self.m_conD = GameController.getSorting(ConfigD)
+        self.m_conC = GameController.getSorting(ConfigC)
+        self.m_conB = GameController.getSorting(ConfigB)
+        self.m_conA = GameController.getSorting(ConfigA)
+        self.m_conS = GameController.getSorting(ConfigS)
+        --预先计算总权重值
+        self.m_weightD = GameController.getTotalWeight(ConfigD)
+        self.m_weightC = GameController.getTotalWeight(ConfigC)
+        self.m_weightB = GameController.getTotalWeight(ConfigB)
+        self.m_weightA = GameController.getTotalWeight(ConfigA)
+        self.m_weightS = GameController.getTotalWeight(ConfigS)
+        --是否遮罩
+        self.m_clip = false
+    end
 
     self.m_isDelay = false
     
@@ -53,10 +62,9 @@ function MapLayer:ctor(parameters)
     self.m_player:setPosition(display.cx-100,display.cy-240)
     GameController.setCurPlayer(self.m_player)
     
-    if levelCon.isClip then
+    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode and levelCon.isClip then
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
     end
-
 end
 
 function MapLayer:initRooms()
@@ -64,16 +72,18 @@ function MapLayer:initRooms()
         self.m_levelCon = SelectLevel[GameDataManager.getCurLevelId()]
         self.curRooms = self.m_levelCon.obstacle
     elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
-        -- self.endlessCon = EndlessMode.room_Type
-        -- self.m_levelCon = self.endlessCon
-        -- self.curRooms = self.endlessCon
+        --控制随机数种子
+        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+        self.m_levelCon = ConfigD[GameController.getDataIdByWeight(self.m_weightD,self.m_conD)]
     end
-    
+
     if self.m_levelCon then
         self.m_roomsNum = MAP_GROUP_INIT_NUM
-        self.m_roomAmount=#self.curRooms
-        if self.m_roomsNum > self.m_roomAmount then
-            self.m_roomsNum = self.m_roomAmount
+        if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            self.m_roomAmount=#self.curRooms
+            if self.m_roomsNum > self.m_roomAmount then
+                self.m_roomsNum = self.m_roomAmount
+            end
         end
     else
         Tools.printDebug("chjh error 找不到id=%d的关卡配置",GameDataManager.getCurLevelId())
@@ -93,11 +103,15 @@ function MapLayer:initRooms()
 end
 
 function MapLayer:addNewGroup(parameters)
-    if self.m_roomsNum >= self.m_roomAmount then
+    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode and self.m_roomsNum >= self.m_roomAmount then
         MoveSpeed = 0
         self.m_player:LevelWin()
         return
     end
+    if GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+        self:addEndlessGroup()
+    end
+    
     self.m_roomsNum = self.m_roomsNum + 1
     Tools.printDebug("----------加载组数：",self.m_roomsNum)
     local _x,_y = 0,0
@@ -113,6 +127,20 @@ function MapLayer:addNewGroup(parameters)
 
     if #self.group >= MAP_GROUP_INIT_NUM then
         local _group = table.remove(self.group,1)
+    end
+end
+
+function MapLayer:addEndlessGroup(parameters)
+    if self.pexel >= EndlessMode.DistanceS.move then
+        self.m_levelCon = ConfigS[GameController.getDataIdByWeight(self.m_weightS,self.m_conS)]
+    elseif self.pexel >= EndlessMode.DistanceA.move then
+        self.m_levelCon = ConfigA[GameController.getDataIdByWeight(self.m_weightA,self.m_conA)]
+    elseif self.pexel >= EndlessMode.DistanceB.move then
+        self.m_levelCon = ConfigB[GameController.getDataIdByWeight(self.m_weightB,self.m_conB)]
+    elseif self.pexel >= EndlessMode.DistanceC.move then
+        self.m_levelCon = ConfigC[GameController.getDataIdByWeight(self.m_weightC,self.m_conC)]
+    else
+        self.m_levelCon = ConfigD[GameController.getDataIdByWeight(self.m_weightD,self.m_conD)]
     end
 end
 
@@ -228,6 +256,49 @@ function MapLayer:onEnterFrame(dt)
 
     --跑了多少米换算公式
    self.pexel = self.pexel + MoveSpeed*0.1/(Pixel/Miles)
+   if GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+        if self.pexel >= EndlessMode.DistanceS.move then
+            if not self.m_clip and EndlessMode.DistanceS.isClip then
+                self.m_clip = true
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
+            elseif not EndlessMode.DistanceS.isClip and self.m_clip then
+                self.m_clip = false
+                GameDispatcher:dispatch(EventNames.EVENT_CLOSE_CLIP)
+            end
+        elseif self.pexel >= EndlessMode.DistanceA.move then
+            if not self.m_clip and EndlessMode.DistanceA.isClip then
+                self.m_clip = true
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
+            elseif not EndlessMode.DistanceA.isClip and self.m_clip then
+                self.m_clip = false
+                GameDispatcher:dispatch(EventNames.EVENT_CLOSE_CLIP)
+            end
+        elseif self.pexel >= EndlessMode.DistanceB.move then
+            if not self.m_clip and EndlessMode.DistanceB.isClip then
+                self.m_clip = true
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
+            elseif not EndlessMode.DistanceB.isClip and self.m_clip then
+                self.m_clip = false
+                GameDispatcher:dispatch(EventNames.EVENT_CLOSE_CLIP)
+            end
+        elseif self.pexel >= EndlessMode.DistanceC.move then
+            if not self.m_clip and EndlessMode.DistanceC.isClip then
+                self.m_clip = true
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
+            elseif not EndlessMode.DistanceC.isClip and self.m_clip then
+                self.m_clip = false
+                GameDispatcher:dispatch(EventNames.EVENT_CLOSE_CLIP)
+            end
+        elseif self.pexel >= EndlessMode.DistanceD.move then
+            if not self.m_clip and EndlessMode.DistanceD.isClip then
+                self.m_clip = true
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_CLIPP)
+            elseif not EndlessMode.DistanceD.isClip and self.m_clip then
+                self.m_clip = false
+                GameDispatcher:dispatch(EventNames.EVENT_CLOSE_CLIP)
+            end
+        end
+   end
 
    local cur = math.floor(self.pexel)
     GameDataManager.addLevelScore(cur)

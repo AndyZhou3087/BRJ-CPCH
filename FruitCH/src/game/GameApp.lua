@@ -6,6 +6,12 @@ require("framework.init")
 require("game.events.EventNames")
 
 require("game.config.GameConfig")
+require("game.config.EndlessModeConfig")
+require("game.config.ConfigA")
+require("game.config.ConfigB")
+require("game.config.ConfigC")
+require("game.config.ConfigD")
+require("game.config.ConfigS")
 require("game.config.PaymentConfig")
 require("game.config.RoleLelelConfig")
 require("game.config.RoleConfig")
@@ -17,6 +23,7 @@ require("game.config.ObstacleConfig")
 require("game.config.GoodGroupConfig")
 require("game.config.ShopConfig")
 require("game.config.SelectOtherConfig")
+require("game.config.SignRewardConfig")
 
 PoolManager = require("game.tools.PoolManager")
 TimeUtil = require("game.tools.TimeUtil")
@@ -63,13 +70,12 @@ function GameApp:ctor()
     DataPersistence.insertAttribute("recover_power_endTime",0) --距体力回满结束时间戳
     
     --设置签到
-    DataPersistence.insertAttribute("user_sign",{signs=0,day=2014,month=8,year=10})
+    DataPersistence.insertAttribute("user_sign",{signs=0,day=10,month=8,year=2014})
     DataPersistence.insertAttribute("sign_reward",1)
 end
 
 function GameApp:run()
     cc.FileUtils:getInstance():addSearchPath("res/")
---   self:enterScene("GameScene")
     if DataPersistence.init() then
         self:enterScene("MainScene")
     end
@@ -80,9 +86,13 @@ function GameApp:enterSelectScene(parameters)
     self:enterScene("SelectScene")
 end
 
+function GameApp:enterTransScene(parameters)
+    cc.FileUtils:getInstance():addSearchPath("res/")--切换场景时可能删除了资源路径
+    self:enterScene("TransScene")
+end
+
 function GameApp:enterGameScene(parameters)
-    cc.Director:getInstance():purgeCachedData()
---    self:enterScene("GameScene")
+
     Tools.delayCallFunc(0.01,function()
         self.m_fightScene = GameScene.new(handler(self,self.checkEnterFight))
         --物理场景太二了，不加retain会立马给我清除了

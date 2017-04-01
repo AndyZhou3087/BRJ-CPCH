@@ -28,6 +28,15 @@ local movingObjs={} --移动中的对象数组
 local goldBody={}
 local goodBody={}
 
+local signPop = false
+--设置签到弹出
+function GameController.setSignPop(isPop)
+	signPop = isPop
+end
+function GameController.getSignPop(parameters)
+	return signPop
+end
+
 --设置地图滚动速度
 function GameController.setSpeed(_speed)
     _curSpeed = _speed
@@ -124,46 +133,46 @@ function GameController.resetStartProp(parameters)
 end
 
 --组合排序
---function GameController.getSorting(arr)
---   local configArr = {}
---   for key, var in pairs(arr) do
---        table.insert(configArr,var)
---   end
---   for vr=1, #configArr do
---        for var=vr+1, #configArr do
---            if configArr[vr].probability > configArr[var].probability then
---            	local temp
---                temp = configArr[vr]
---                configArr[vr] = configArr[var]
---                configArr[var] = temp
---            end
---        end
---   end
---   return configArr
---end
-----组合总权重
---function GameController.getTotalWeight(arr)
---	local _weight = 0
---	for var=1, #arr do
---        _weight = _weight + arr[var].probability
---	end
---	return _weight
---end
-----按权重抽取一组数据
---function GameController.getDataIdByWeight(_wegt,sorArr)
---    local weight = math.random(1,_wegt)
---    local t = 0
---    --得到当前id
---    local id = 0
---    for var=1, #sorArr do
---        t = t + sorArr[var].probability
---        if t >= weight then
---            id = sorArr[var]._id
---            return id
---        end
---    end
---    return id
---end
+function GameController.getSorting(arr)
+   local configArr = {}
+   for key, var in pairs(arr) do
+        table.insert(configArr,var)
+   end
+   for vr=1, #configArr do
+        for var=vr+1, #configArr do
+            if configArr[vr].probability > configArr[var].probability then
+            	local temp
+                temp = configArr[vr]
+                configArr[vr] = configArr[var]
+                configArr[var] = temp
+            end
+        end
+   end
+   return configArr
+end
+--组合总权重
+function GameController.getTotalWeight(arr)
+	local _weight = 0
+	for var=1, #arr do
+        _weight = _weight + arr[var].probability
+	end
+	return _weight
+end
+--按权重抽取一组数据
+function GameController.getDataIdByWeight(_wegt,sorArr)
+    local weight = math.random(1,_wegt)
+    local t = 0
+    --得到当前id
+    local id = 0
+    for var=1, #sorArr do
+        t = t + sorArr[var].probability
+        if t >= weight then
+            id = sorArr[var]._id
+            return id
+        end
+    end
+    return id
+end
 
 
 --添加金币

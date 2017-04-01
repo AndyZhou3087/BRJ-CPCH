@@ -4,6 +4,8 @@
 local BaseUI = require("game.view.BaseUI")
 local FightOver = class("FightOver",BaseUI)
 
+local Scheduler = require("framework.scheduler")
+
 function FightOver:ctor(parm)
     FightOver.super.ctor(self)
 
@@ -46,12 +48,12 @@ function FightOver:initWidget()
 
     self.diaBtn = cc.uiloader:seekNodeByName(self.m_fightover,"DiamondBtn")
     self.diaBtn:onButtonClicked(function(_event)
-        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
     end)
 
     self.goldBtn = cc.uiloader:seekNodeByName(self.m_fightover,"GoldBtn")
     self.goldBtn:onButtonClicked(function(_event)
-        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
     end)
 
     for var=1, 3 do
@@ -73,6 +75,7 @@ function FightOver:initWidget()
     self.backBtn = cc.uiloader:seekNodeByName(self.m_fightover,"Backbtn")
     self.backBtn:onButtonClicked(function(_event)
         self:toClose(true)
+        GameController.setSignPop(true)
         GameController.resumeGame()
         app:enterSelectScene()
     end)
@@ -85,6 +88,8 @@ end
 --过关胜利界面
 function FightOver:toWin()
     local _isFirst = GameDataManager.saveLevelData()  --存储关卡数据
+    self.initGoldCount = GameDataManager.getGold()
+    self.getGoldCount = 0
     GameDataManager.addGold(GameDataManager.getAllFightCoins())
 
     local _leveCon = SelectLevel[self.m_curLevel]
@@ -117,12 +122,8 @@ function FightOver:toWin()
     self.GetGold:setString("获得金币："..GameDataManager.getAllFightCoins())
 
     self.Continuebtn:onButtonClicked(function(_event)
---        if GameDataManager.getUlockLevelsNum() <= 1 and _isFirst == true then
---            app:enterMainScene()
---            self:toClose(true)
---            return
---        end
         if  self.m_curLevel < #SelectLevel then
+            GameController.setSignPop(false)
             GameController.resumeGame()
             GameDataManager.setCurLevelId(self.m_curLevel+1,self.m_levelIdx+1)
             app:enterSelectScene()
@@ -136,8 +137,10 @@ function FightOver:toWin()
         else
         
         end
-
     end)
+    
+    --金币更新效果
+    self.updateGoleHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.05)
 end
 
 function FightOver:toFail()
@@ -151,6 +154,7 @@ function FightOver:toFail()
     self.RecordScore:setString("历史最高分:"..Tools.StringToComma(GameDataManager.getHistoryScore(self.m_curLevel), ","))
 
     self.Continuebtn:onButtonClicked(function(_event)
+        GameController.setSignPop(false)
         GameController.resumeGame()
         app:enterSelectScene()
         Tools.delayCallFunc(0.01,function()
@@ -164,9 +168,30 @@ function FightOver:toFail()
     end)
 end
 
+function FightOver:onEnterFrame(parameters)
+    self.initGoldCount = self.initGoldCount + 1
+    self.getGoldCount = self.getGoldCount + 1
+    self.GetGold:setString("获得金币："..self.getGoldCount)
+    self.m_goldCount:setString(self.initGoldCount)
+    if self.getGoldCount >= GameDataManager.getAllFightCoins() then
+        self.getGoldCount = GameDataManager.getAllFightCoins()
+        self.initGoldCount = GameDataManager.getGold()
+        self.GetGold:setString("获得金币："..self.getGoldCount)
+        self.m_goldCount:setString(self.initGoldCount)
+        if self.updateGoleHandler then
+            Scheduler.unscheduleGlobal(self.updateGoleHandler)
+            self.updateGoleHandler = nil
+        end
+    end
+end
+
 
 function FightOver:onCleanup()
     AudioManager.setFightSoundEnable(true)
+    if self.updateGoleHandler then
+        Scheduler.unscheduleGlobal(self.updateGoleHandler)
+        self.updateGoleHandler = nil
+    end
 end
 
 --添加到舞台时调用
@@ -175,6 +200,10 @@ end
 
 --关闭界面调用
 function FightOver:toClose(_clean)
+    if self.updateGoleHandler then
+        Scheduler.unscheduleGlobal(self.updateGoleHandler)
+        self.updateGoleHandler = nil
+    end
     FightOver.super.toClose(self,_clean)
 end
 

@@ -164,11 +164,11 @@ function Player:toMove(isSpring)
         else
             direction = -1
         end
-        self:setScaleY(direction*-1)
         transition.moveBy(self,{time=0.4,x=0,y=direction*440,onComplete=function()
             self.m_jump = false
             self.m_run = true
             self.touchCount = 0
+            self:setScaleY(direction*-1)
         end})
     else
         if self.touchCount == 2 and (self.m_twoJump or isSpring) then
@@ -182,11 +182,11 @@ function Player:toMove(isSpring)
                 direction = -1
                 m_pY = display.cy+200
             end
-            self:setScaleY(direction)
             transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.m_jump = false
                 self.m_run = true
                 self.touchCount = 0
+                self:setScaleY(direction)
             end})
         end
     end

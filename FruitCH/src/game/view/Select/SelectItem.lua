@@ -40,7 +40,8 @@ end
 function SelectItem:initLevelData(level)
     if not GameDataManager.getFightData(self.parm._id) then
         self.SelectBtn:setButtonEnabled(false)
-        if GameDataManager.getFightData(self.parm._id-1) then
+        if GameDataManager.getFightData(self.parm._id-1) or self.parm._id==1 then
+            Tools.printDebug("------回到关卡界面..选择关卡：",self.parm._id)
             self.SelectBtn:setButtonEnabled(true)
         end
     else

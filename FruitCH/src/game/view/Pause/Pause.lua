@@ -32,6 +32,7 @@ function Pause:ctor(parm)
     --重新开始
     local RestartBtn=cc.uiloader:seekNodeByName(_pause,"RestartBtn")
     RestartBtn:onButtonClicked(function(event)
+        GameController.setSignPop(false)
         GameController.resumeGame()
         app:enterSelectScene()
         Tools.delayCallFunc(0.01,function()
@@ -44,8 +45,8 @@ function Pause:ctor(parm)
     
     local BackBtn=cc.uiloader:seekNodeByName(_pause,"BackBtn")
     BackBtn:onButtonClicked(function(event)
+        GameController.setSignPop(true)
         GameController.resumeGame()
-        self:toClose(true)
         app:enterSelectScene()
     end)
     

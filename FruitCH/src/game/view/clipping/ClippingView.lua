@@ -43,6 +43,7 @@ function ClippingView:ctor()
         end
     end)
 
+    GameDispatcher:addListener(EventNames.EVENT_CLOSE_CLIP,handler(self,self.closeClip))
 end
 
 function ClippingView:onEnterFrame(parameters)
@@ -58,11 +59,16 @@ function ClippingView:onEnterFrame(parameters)
     self.sprite:setPosition(cc.p(posX+100,posY))
 end
 
+function ClippingView:closeClip(parameters)
+	self:toClose(true)
+end
+
 function ClippingView:onCleanup(parameters)
     if self.m_timer then
         Scheduler.unscheduleGlobal(self.m_timer)
         self.m_timer = nil
     end
+    GameDispatcher:removeListenerByName(EventNames.EVENT_CLOSE_CLIP)
 end
 
 --关闭界面调用
@@ -71,6 +77,7 @@ function ClippingView:toClose(_clean)
         Scheduler.unscheduleGlobal(self.m_timer)
         self.m_timer = nil
     end
+    GameDispatcher:removeListenerByName(EventNames.EVENT_CLOSE_CLIP)
     ClippingView.super.toClose(self,_clean)
 end
 

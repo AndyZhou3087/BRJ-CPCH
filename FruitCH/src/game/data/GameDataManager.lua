@@ -40,7 +40,7 @@ function GameDataManager.init()
 --    --初始化物品数据
     GameDataManager.initGoodsData()
     --初始化签到信息
---    GameDataManager.initSignData()
+    GameDataManager.initSignData()
 end
 
 function GameDataManager.isMusicOpen()
@@ -669,18 +669,47 @@ end
 --===================签到信息=========================
 local signList={}
 
-function GameDataManager.reward(parameters)
-    signList.curTable.m_rand = math.random(1,table.getn(SignReward))
-end
-
-function GameDataManager.getReward(parameters)
-    return signList.curTable.m_rand
-end
-
 --初始化签到信息
 function GameDataManager.initSignData()
     signList.curTable = DataPersistence.getAttribute("user_sign")
-    signList.curTable.m_rand = DataPersistence.getAttribute("sign_reward")
+    signList.m_rand = DataPersistence.getAttribute("sign_reward")
+end
+
+--当天是否签到
+function GameDataManager.isDateSign()
+    if signList.curTable.year==TimeUtil.getDate().year and signList.curTable.month==TimeUtil.getDate().month and signList.curTable.day==TimeUtil.getDate().day then
+        return true
+    else
+        return false
+    end
+end
+--获得签到的次数
+function GameDataManager.getSignCount()
+    if not signList.curTable.signs then
+    	return 0
+    end
+    return signList.curTable.signs
+end
+
+--更新签到
+function GameDataManager.updateSign()
+    signList.curTable.day = TimeUtil.getDate().day
+    signList.curTable.month = TimeUtil.getDate().month
+    signList.curTable.year = TimeUtil.getDate().year
+    signList.curTable.signs = signList.curTable.signs+1
+end
+
+function GameDataManager.reward()
+    signList.m_rand = math.random(1,#SignReward)
+end
+
+--获取奖励组
+function GameDataManager.getReward()
+    if not SignReward[signList.m_rand] then
+        Tools.printDebug("------找不到此签到奖励组",signList.m_rand)
+    	return
+    end
+    return SignReward[signList.m_rand]
 end
 
 function GameDataManager.resetSign()   --签到7天重置
@@ -691,32 +720,9 @@ function GameDataManager.resetSign()   --签到7天重置
         signList.curTable.signs = 0
         GameDataManager.reward()
         return true
-else
-    return false
-end
-end
---当天是否签到
-function GameDataManager.isDateSign()
-    if signList.curTable.day==TimeUtil.getDate().day and signList.curTable.month==TimeUtil.getDate().month and signList.curTable.year==TimeUtil.getDate().year then
-        return true
     else
-
-        --       GameDataManager.setWarning("sign")
-        GameDispatcher:dispatch(EventNames.EVENT_UPDATE_SIGNSTART)
         return false
     end
-end
---获得签到的次数
-function GameDataManager.getSignCount()
-    return signList.curTable.signs
-end
-
---更新签到
-function GameDataManager.updateSign()
-    signList.curTable.day = TimeUtil.getDate().day
-    signList.curTable.month = TimeUtil.getDate().month
-    signList.curTable.year = TimeUtil.getDate().year
-    signList.curTable.signs = signList.curTable.signs+1
 end
 --===================End=========================
 
@@ -801,6 +807,9 @@ function GameDataManager.SaveData(parameters)
     DataPersistence.updateAttribute("user_power",userData.power)
     DataPersistence.updateAttribute("user_score",userData.points)    --玩家积分
     DataPersistence.updateAttribute("cur_roleID",playerVo.m_roleId)
+    
+    DataPersistence.updateAttribute("user_sign",signList.curTable)--存储签到数据
+    DataPersistence.updateAttribute("sign_reward",signList.m_rand)
 
     local modleList = {}
     for key, var in pairs(modleDic) do
