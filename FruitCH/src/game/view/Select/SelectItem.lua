@@ -47,6 +47,7 @@ function SelectItem:initLevelData(level)
     else
         self.SelectBtn:setButtonEnabled(true)
         local stars = GameDataManager.getLevelStar(self.parm._id)
+        Tools.printDebug("------回到关卡界面..选择关卡：",stars)
         for var=1, stars do
             self.starArr[var]:setVisible(true)
         end
