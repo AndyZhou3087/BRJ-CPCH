@@ -24,6 +24,7 @@ require("game.config.GoodGroupConfig")
 require("game.config.ShopConfig")
 require("game.config.SelectOtherConfig")
 require("game.config.SignRewardConfig")
+require("game.config.AchieveConfig")
 
 PoolManager = require("game.tools.PoolManager")
 TimeUtil = require("game.tools.TimeUtil")
@@ -72,6 +73,9 @@ function GameApp:ctor()
     --设置签到
     DataPersistence.insertAttribute("user_sign",{signs=0,day=10,month=8,year=2014})
     DataPersistence.insertAttribute("sign_reward",1)
+    
+    --设置成就
+    DataPersistence.insertAttribute("achieve",{})
 end
 
 function GameApp:run()
@@ -84,6 +88,11 @@ end
 function GameApp:enterSelectScene(parameters)
     cc.FileUtils:getInstance():addSearchPath("res/")--切换场景时可能删除了资源路径
     self:enterScene("SelectScene")
+end
+
+function GameApp:enterMainScene(parameters)
+    cc.FileUtils:getInstance():addSearchPath("res/")--切换场景时可能删除了资源路径
+    self:enterScene("MainScene")
 end
 
 function GameApp:enterTransScene(parameters)

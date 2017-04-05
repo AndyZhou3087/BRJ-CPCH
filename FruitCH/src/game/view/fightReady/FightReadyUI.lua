@@ -60,6 +60,12 @@ function FightReadyUI:ctor(parm)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_ROLEVIEW)
     end)
     
+    local achievebtn = cc.uiloader:seekNodeByName(self.FightReady,"AchieveBtn")
+    achievebtn:onButtonClicked(function(event)
+        Tools.printDebug("-----------成就任务")
+--        GameDispatcher:dispatch(EventNames.EVENT_ACHIEVE_QUEST)
+    end)
+    
     local startGame = cc.uiloader:seekNodeByName(self.FightReady,"StartGame")
     startGame:onButtonClicked(function(event)
         Tools.printDebug("-----------开始游戏")

@@ -122,11 +122,26 @@ function FightOver:toWin()
     self.GetGold:setString("获得金币："..GameDataManager.getAllFightCoins())
 
     self.Continuebtn:onButtonClicked(function(_event)
-        if  self.m_curLevel < #SelectLevel then
+        if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            if  self.m_curLevel < #SelectLevel then
+                GameController.setSignPop(false)
+                GameController.resumeGame()
+                GameDataManager.setCurLevelId(self.m_curLevel+1,self.m_levelIdx+1)
+                app:enterSelectScene()
+                Tools.delayCallFunc(0.01,function()
+                    GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+                end)
+                Tools.delayCallFunc(0.5,function()
+                    GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
+                end)
+                self:toClose(true)
+            else
+
+            end
+        elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
             GameController.setSignPop(false)
             GameController.resumeGame()
-            GameDataManager.setCurLevelId(self.m_curLevel+1,self.m_levelIdx+1)
-            app:enterSelectScene()
+            app:enterMainScene()
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
             end)
@@ -134,8 +149,6 @@ function FightOver:toWin()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
             end)
             self:toClose(true)
-        else
-        
         end
     end)
     
@@ -154,17 +167,29 @@ function FightOver:toFail()
     self.RecordScore:setString("历史最高分:"..Tools.StringToComma(GameDataManager.getHistoryScore(self.m_curLevel), ","))
 
     self.Continuebtn:onButtonClicked(function(_event)
-        GameController.setSignPop(false)
-        GameController.resumeGame()
-        app:enterSelectScene()
-        Tools.delayCallFunc(0.01,function()
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
-        end)
-        Tools.delayCallFunc(0.5,function()
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
-        end)
-        self:toClose(true)
-
+        if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.setSignPop(false)
+            GameController.resumeGame()
+            app:enterSelectScene()
+            Tools.delayCallFunc(0.01,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+            end)
+            Tools.delayCallFunc(0.5,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
+            end)
+            self:toClose(true)
+        elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+            GameController.setSignPop(false)
+            GameController.resumeGame()
+            app:enterMainScene()
+            Tools.delayCallFunc(0.01,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+            end)
+            Tools.delayCallFunc(0.5,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
+            end)
+            self:toClose(true)
+        end
     end)
 end
 

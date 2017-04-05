@@ -11,6 +11,7 @@ local RoleView = require("game.view.role.RoleView")
 local RewardUI = require("game.view.fightReady.RewardUI")
 local ClippingView=require("game.view.clipping.ClippingView")
 local SignUI = require("game.view.sign.SignUI")
+local AchieveQuest = require("game.view.AchieveQuest.AchieveQuest")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -42,6 +43,9 @@ function UIController:ctor()
     
     --签到界面
     GameDispatcher:addListener(EventNames.EVENT_OPEN_SIGNUI,handler(self,self.openSign))
+    
+    --成就任务界面
+    GameDispatcher:addListener(EventNames.EVENT_ACHIEVE_QUEST,handler(self,self.openAchideve))
 end
 
 --打开战斗准备界面
@@ -96,6 +100,11 @@ end
 function UIController:openSign(parameters)
     local _signUI = SignUI.new(parameters.data)
     _signUI:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+function UIController:openAchideve(parameters)
+    local _achUI = AchieveQuest.new(parameters.data)
+    _achUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

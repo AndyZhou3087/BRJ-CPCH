@@ -41,6 +41,9 @@ EventNames.EVENT_OPEN_CLIPP = "event_open_clipp"
 --取消遮罩
 EventNames.EVENT_CLOSE_CLIP = "event_close_clip"
 
+--成就任务界面
+EventNames.EVENT_ACHIEVE_QUEST = "event_achieve_quest"
+
 --=====================场景内
 
 --时间变化

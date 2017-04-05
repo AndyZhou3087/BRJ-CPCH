@@ -32,22 +32,39 @@ function Pause:ctor(parm)
     --重新开始
     local RestartBtn=cc.uiloader:seekNodeByName(_pause,"RestartBtn")
     RestartBtn:onButtonClicked(function(event)
-        GameController.setSignPop(false)
-        GameController.resumeGame()
-        app:enterSelectScene()
-        Tools.delayCallFunc(0.01,function()
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
-        end)
-        Tools.delayCallFunc(0.5,function()
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
-        end)
+        if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.setSignPop(false)
+            GameController.resumeGame()
+            app:enterSelectScene()
+            Tools.delayCallFunc(0.01,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+            end)
+            Tools.delayCallFunc(0.5,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
+            end)
+        elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+            GameController.setSignPop(false)
+            GameController.resumeGame()
+            app:enterMainScene()
+            Tools.delayCallFunc(0.01,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+            end)
+            Tools.delayCallFunc(0.5,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
+            end)
+            self:toClose(true)
+        end
     end)
     
     local BackBtn=cc.uiloader:seekNodeByName(_pause,"BackBtn")
     BackBtn:onButtonClicked(function(event)
         GameController.setSignPop(true)
         GameController.resumeGame()
-        app:enterSelectScene()
+        if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            app:enterSelectScene()
+        elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+            app:enterMainScene()
+        end
     end)
     
     --启用onCleanup函数

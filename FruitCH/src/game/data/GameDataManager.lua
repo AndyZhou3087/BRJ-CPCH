@@ -41,6 +41,8 @@ function GameDataManager.init()
     GameDataManager.initGoodsData()
     --初始化签到信息
     GameDataManager.initSignData()
+    --初始化游戏成就
+    GameDataManager.initAchieveData()
 end
 
 function GameDataManager.isMusicOpen()
@@ -346,7 +348,7 @@ function GameDataManager.initPlayerVo()
         playerVo.m_sprintTime = roleConfig.sprintTime    --冲刺时间
         playerVo.m_magnetTime = roleConfig.magnetTime   --磁铁时间
         playerVo.m_giantTime = roleConfig.giantTime   --巨人时间
-        playerVo.m_transTime = roleConfig.transTime   --转黄时间
+        playerVo.m_transTime = roleConfig.transTime   --转换时间
         playerVo.m_cloudTime = roleConfig.cloudTime    --浮云时间
     end
 end
@@ -726,6 +728,31 @@ function GameDataManager.resetSign()   --签到7天重置
 end
 --===================End=========================
 
+--===================游戏成就====================
+local achieve = {}
+function GameDataManager.initAchieveData(parameters)
+	local achieveArr = DataPersistence.getAttribute("achieve")
+    for key, var in pairs(achieveArr) do
+        achieve[var.id] = var
+    end
+end
+
+function GameDataManager.setFinishAchieveData(id,_state)
+    if not achieve[id] then
+		achieve[id] = {}
+	end
+    achieve[id].state = _state
+end
+
+function GameDataManager.getAchieveState(id)
+    if not achieve[id] then
+		return ACHIEVE_STATE.Unfinished
+	end
+    return achieve[id].state
+end
+
+--===================end=========================
+
 --=============================================================礼包相关
 local oem={}
 
@@ -822,6 +849,12 @@ function GameDataManager.SaveData(parameters)
         table.insert(fightArr,var)
     end
     DataPersistence.updateAttribute("fight_data",fightArr)
+    
+    local achieveArr = {}
+    for key, var in pairs(achieve) do
+        table.insert(achieveArr,var)
+    end
+    DataPersistence.updateAttribute("achieve",achieveArr)
 
     --物品相关
     DataPersistence.updateAttribute("goods_list",goodsList)
