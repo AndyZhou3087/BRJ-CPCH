@@ -15,7 +15,7 @@ SelectLevel={}
 --    powerAward = 0,   --体力奖励
 --    --开局前道具展示 
 --    goods = {9,10,11,12},
---   
+--    map = {1,1,1,1,0},    --地图组，此id对应MapGroupConfig中配置文件，0表示无地图组
 --    obstacle=13,   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
 --    coins = 0,    --金币, 此id对应CoinsConfig配置文件，填0表示无
 --    goods=0,      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
@@ -27,14 +27,15 @@ SelectLevel[1]=
     _id=1, 
     res = "Select/Select_1.png",
     rect = {102,81},
-    pos = {x = 100,y = 100},
+    pos = {x = 0,y = 400},
     costPower=1,
     coinAward=false, --金币奖励
     powerAward=false, --体力奖励
     startGoods={1,2,3,4,5}, --开局道具
-    obstacle={14,13,13,0},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-    coins = {1,1,1,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-    goods={0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
+    map = {1,1,1,1,0},    --地图组，此id对应MapGroupConfig中配置文件，0表示无地图组
+--    obstacle={13,13,13,0},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
+--    coins = {3,3,3,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
+--    goods={1,1,1,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
     gap = 500,    --每组之间的间隔差距，单位:像素
     speed = 32,  --每一关卡速度
     getStar = function(score)     --星级分数配置
@@ -90,6 +91,15 @@ SelectLevel[3]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[4]= 
@@ -107,6 +117,15 @@ SelectLevel[4]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[5]= 
@@ -124,6 +143,15 @@ SelectLevel[5]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[6]= 
@@ -141,6 +169,15 @@ SelectLevel[6]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[7]= 
@@ -158,6 +195,15 @@ SelectLevel[7]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[8]= 
@@ -175,6 +221,15 @@ SelectLevel[8]=
         goods={0,0,0,0,0,0,0,0,0},     --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
     
 SelectLevel[9]= 
@@ -192,6 +247,15 @@ SelectLevel[9]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[10]= 
@@ -209,6 +273,15 @@ SelectLevel[10]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[11]= 
@@ -226,6 +299,15 @@ SelectLevel[11]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[12]= 
@@ -243,6 +325,15 @@ SelectLevel[12]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[13]= 
@@ -250,7 +341,7 @@ SelectLevel[13]=
         _id=13, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 840,y = 500},
+        pos = {x = 840,y = 400},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -260,6 +351,15 @@ SelectLevel[13]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[14]= 
@@ -267,7 +367,7 @@ SelectLevel[14]=
         _id=14, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 900,y = 510},
+        pos = {x = 900,y = 380},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -277,6 +377,15 @@ SelectLevel[14]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[15]= 
@@ -284,7 +393,7 @@ SelectLevel[15]=
         _id=15, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 910,y = 520},
+        pos = {x = 910,y = 350},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -294,6 +403,15 @@ SelectLevel[15]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }
 
 SelectLevel[16]= 
@@ -301,7 +419,7 @@ SelectLevel[16]=
         _id=16, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 100,y = 130},
+        pos = {x = 1200,y = 130},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -311,4 +429,39 @@ SelectLevel[16]=
         goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
         gap = 500,    --每组之间的间隔差距，单位:像素
         speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
+    }
+    
+SelectLevel[17]= 
+    { 
+        _id=17, 
+        res = "Select/Select_1.png",
+        rect = {102,81},
+        pos = {x = 1400,y = 440},
+        costPower=1,
+        coinAward=false, --金币奖励
+        powerAward=false, --体力奖励
+        startGoods={0,0,0,0,0,0}, --开局道具
+        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
+        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
+        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
+        gap = 500,    --每组之间的间隔差距，单位:像素
+        speed = 32,  --每一关卡速度
+        getStar = function(score)     --星级分数配置
+            if score >= 300 then
+                return 3
+        elseif score >= 200 then
+            return 2
+        else
+            return 1
+        end
+        end,
     }

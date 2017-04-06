@@ -70,7 +70,7 @@ end
 function MapLayer:initRooms()
     if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
         self.m_levelCon = SelectLevel[GameDataManager.getCurLevelId()]
-        self.curRooms = self.m_levelCon.obstacle
+        self.curRooms = self.m_levelCon.map
     elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
         --控制随机数种子
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))

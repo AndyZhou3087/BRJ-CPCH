@@ -14,17 +14,18 @@ function CoinElement:ctor(parm)
     
     self.m_type = parm.type
     
-    self.m_img = PhysicSprite.new(parm.res):addTo(self)
+    self.m_img = PhysicSprite.new("Common/"..parm.res):addTo(self)
+    self.m_img:setAnchorPoint(cc.p(0,0))
     self.m_size = self.m_img:getCascadeBoundingBox().size
-    self:addBody()
+    self:addBody(cc.p(20,20))
 
     self.m_isAttract=false   --是否被吸引
     self.m_group = 0
     
 end
 
-function CoinElement:addBody(parameters)
-    self.m_body=cc.PhysicsBody:createBox(self.m_size,Special_MATERIAL)
+function CoinElement:addBody(_offset)
+    self.m_body=cc.PhysicsBody:createBox(self.m_size,Special_MATERIAL,_offset)
     self.m_body:setCategoryBitmask(0x1111)
     self.m_body:setContactTestBitmask(0x1111)
     self.m_body:setCollisionBitmask(0x0000)

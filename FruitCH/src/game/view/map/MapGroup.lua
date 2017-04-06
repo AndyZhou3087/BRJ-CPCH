@@ -32,13 +32,57 @@ function MapGroup:ctor(_idx,_levelCon)
     local _coins
     local _goods
     if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
-        _obstacle = Obstacles[_levelCon.obstacle[_idx]] or {}
-        _coins = Coins[_levelCon.coins[_idx]] or {}
-        _goods = GroupGoods[_levelCon.goods[_idx]] or {}
+--        _obstacle = Obstacles[_levelCon.obstacle[_idx]] or {}
+--        _coins = Coins[_levelCon.coins[_idx]] or {}
+--        _goods = GroupGoods[_levelCon.goods[_idx]] or {}
+        if not MapGroupConfig[_levelCon.map[_idx]] then
+        	return
+        end
+        local map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map[_idx]])
+        local gold = map:getObjectGroup("gold")
+        local good = map:getObjectGroup("good")
+        local obscale = map:getObjectGroup("obscale")
+        if gold then
+            _coins = gold:getObjects()
+        else
+            _coins = {}
+        end
+        if good then
+            _goods = good:getObjects()
+        else
+            _goods = {}
+        end
+        if obscale then
+            _obstacle = obscale:getObjects()
+        else
+            _obstacle = {}
+        end
     else
-        _obstacle = Obstacles[_levelCon.obstacle] or {}
-        _coins = Coins[_levelCon.coins] or {}
-        _goods = GroupGoods[_levelCon.goods] or {}
+--        _obstacle = Obstacles[_levelCon.obstacle] or {}
+--        _coins = Coins[_levelCon.coins] or {}
+--        _goods = GroupGoods[_levelCon.goods] or {}
+        if not MapGroupConfig[_levelCon.map] then
+            return
+        end
+        local map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map])
+        local gold = map:getObjectGroup("gold")
+        local good = map:getObjectGroup("good")
+        local obscale = map:getObjectGroup("obscale")
+        if gold then
+            _coins = gold:getObjects()
+        else
+            _coins = {}
+        end
+        if good then
+            _goods = good:getObjects()
+        else
+            _goods = {}
+        end
+        if obscale then
+            _obstacle = obscale:getObjects()
+        else
+            _obstacle = {}
+        end
     end
 
     self:initElement(_obstacle)
@@ -71,8 +115,8 @@ end
 function MapGroup:initElement(_obstacle)
     for var=1,#_obstacle do
         local _element = _obstacle[var]
-        local obstacle = ObstacleElement.new(_element.obsId,_element.y)
-        obstacle:setPosition(_element.x,_element.y)
+        local obstacle = ObstacleElement.new(tonumber(_element.name),tonumber(_element.y))--TiledMap中以左上角为原点,游戏中左下为原点
+        obstacle:setPosition(tonumber(_element.x),tonumber(_element.y))
         self:addChild(obstacle)
         table.insert(self.m_obstacle,obstacle)
         table.insert(self.m_blocks,obstacle)
@@ -85,8 +129,7 @@ function MapGroup:initCoins(goldCon)
         for var=1,#goldCon do
             local _goldObj = goldCon[var]
             if _goldObj then
-                local _num = _goldObj.value or 1
-                local _type = _goldObj.type or Coin_Type.Coin_Gold
+                local _type = tonumber(_goldObj.type) or Coin_Type.Coin_Gold
                 local gold,chType
                 if _type == Coin_Type.Coin_Gold then
                     gold = PoolManager.getCacheObjByType(CACHE_TYPE.Coin)
@@ -99,13 +142,13 @@ function MapGroup:initCoins(goldCon)
                     chType = CACHE_TYPE.Copper
                 end
                 if not gold then
-                    gold = CoinElement.new({res = _goldObj.res,type = _type})
+                    gold = CoinElement.new({res = _goldObj.name,type = _type})
                     gold:setCahceType(chType)
                     gold:retain()
                 else
                     gold:setCoinType(_type)
                 end
-                gold:setPosition(_goldObj.x,_goldObj.y)
+                gold:setPosition(tonumber(_goldObj.x),tonumber(_goldObj.y))
                 gold:setGroup(self.m_index)
                 table.insert(self.m_golds,gold)
                 GameController.addGoldBody(gold)
@@ -117,8 +160,8 @@ end
 function MapGroup:initGoods(_goods)
     for var=1,#_goods do
         local _element = _goods[var]
-        local goods = GoodsElement.new(_element.id)
-        goods:setPosition(_element.x,_element.y)
+        local goods = GoodsElement.new(tonumber(_element.name))  --name为id
+        goods:setPosition(tonumber(_element.x),tonumber(_element.y))
         self:addChild(goods)
         table.insert(self.m_goods,goods)
         table.insert(self.m_blocks,goods)

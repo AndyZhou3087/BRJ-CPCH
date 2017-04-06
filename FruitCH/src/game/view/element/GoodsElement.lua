@@ -23,13 +23,14 @@ function GoodsElement:ctor(_id)
 --    effect:getAnimation():playWithIndex(0)
 --    effect=cc.POSITION_TYPE_GROUPED
     self.m_img = PhysicSprite.new(self.m_goodsCon.res):addTo(self)
-    self:addBody()
+    self.m_img:setAnchorPoint(cc.p(0,0))
+    self:addBody(cc.p(20,25))
 
 end  
 
-function GoodsElement:addBody()
+function GoodsElement:addBody(_offset)
     local size=self.m_img:getCascadeBoundingBox()
-    self.m_body=cc.PhysicsBody:createBox(size,Special_MATERIAL)
+    self.m_body=cc.PhysicsBody:createBox(size,Special_MATERIAL,_offset)
     self.m_body:setCategoryBitmask(0x1111)
     self.m_body:setContactTestBitmask(0x1111)
     self.m_body:setCollisionBitmask(0x0000)

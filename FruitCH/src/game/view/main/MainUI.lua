@@ -52,6 +52,7 @@ function MainUI:init(parameters)
     end)
     
     self.m_unlockNum = GameDataManager.getUlockLevelsNum()
+    
 end
 
 function MainUI:MusicSoundSet( ... )

@@ -2,9 +2,10 @@ ConfigD = {}
 
 ConfigD[1] = {
     _id= 1,
-    obstacle=13,   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-    coins = 0,    --金币, 此id对应CoinsConfig配置文件，填0表示无
-    goods=0,      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
+    map = 1, --此id对应MapGroupConfig中配置文件，填0表示无
+--    obstacle=13,   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
+--    coins = 0,    --金币, 此id对应CoinsConfig配置文件，填0表示无
+--    goods=0,      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
     gap = 100,    --每组之间的间隔差距，单位:像素
     probability = 60,    --权重
 }

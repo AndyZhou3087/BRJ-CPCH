@@ -77,7 +77,11 @@ function FightOver:initWidget()
         self:toClose(true)
         GameController.setSignPop(true)
         GameController.resumeGame()
-        app:enterSelectScene()
+        if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            app:enterSelectScene()
+        elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+            app:enterMainScene()
+        end
     end)
 
     self.Continuebtn = cc.uiloader:seekNodeByName(self.m_fightover,"Continuebtn")
