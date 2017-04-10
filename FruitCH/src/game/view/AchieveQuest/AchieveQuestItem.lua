@@ -8,121 +8,113 @@ end)
 function AchieveQuestItem:ctor(parameters)
 
     self.m_type = parameters.type
-    self.m_con = parameters.shopCon
+    self.m_con = parameters.config
 
-    if self.m_type == SHOPUI_TYPE.PropUI then
-
-    elseif self.m_type == SHOPUI_TYPE.MoneyUI then
-
-    end
-
+    self:initCotent(self.m_type)
+    
+    --启用onCleanup函数
+    self:setNodeEventEnabled(true)
+    GameDispatcher:addListener(EventNames.EVENT_GET_ACHIEVE,handler(self,self.changeState))
 end
 
---道具
-function AchieveQuestItem:initProp(parameters)
-    local content = cc.uiloader:load("ui/propListItem.json")
+--成就任务
+function AchieveQuestItem:initCotent(_type)
+    local content = cc.uiloader:load("json/QuestAchieveItem.json")
     self:addChild(content)
     content:setPosition(cc.p(0,0))
     --图片
-    local bottom = cc.uiloader:seekNodeByName(content,"Button_2")
-    bottom:setTouchSwallowEnabled(false)
-    bottom:setButtonEnabled(false)
-    bottom:setButtonImage("disabled",self.m_con.img)
+    local img = cc.uiloader:seekNodeByName(content,"img")
+    img:setTouchSwallowEnabled(false)
+    img:setButtonEnabled(false)
+    img:setButtonImage("disabled",self.m_con.res)
     --文字
-    local label = cc.uiloader:seekNodeByName(content,"Button_3")
-    label:setTouchSwallowEnabled(false)
-    label:setButtonEnabled(false)
-    label:setButtonImage("disabled",self.m_con.labelImage)
+    local Title = cc.uiloader:seekNodeByName(content,"Title")
+    Title:setString(self.m_con.title)
     --道具功能描述
-    local word = cc.uiloader:seekNodeByName(content,"Label_4")
-    word:setString(self.m_con.detail)
-    word:setWidth(200)
-    word:getContentSize()
-    --    local _lable = display.newTTFLabel({
-    --        text=self.m_con.detail,
-    --        size = 20,
-    --        color = cc.c3b(139, 36, 19),
-    --        align = cc.TEXT_ALIGNMENT_LEFT,
-    --    })
-    --    _lable:setAnchorPoint(0,0.5)
-    --    _lable:setPosition(cc.p(142,73))
-    --    content:addChild(_lable)
-    --    _lable:getContentSize()
+    local Des = cc.uiloader:seekNodeByName(content,"Des")
+    Des:setString(self.m_con.des)
     --购买价格
-    local pcount = cc.uiloader:seekNodeByName(content,"AtlasLabel_7")
-    pcount:setString(self.m_con.price)
-    --购买按钮
-    local btnBuy = cc.uiloader:seekNodeByName(content,"Button_5")
-    btnBuy:setTouchSwallowEnabled(false)
-    btnBuy:onButtonClicked(function(event)
-        if GameDataManager.getGoodsNum(self.m_con.id)<999 then
-            if GameDataManager.getDiamond()>=self.m_con.price then
-                AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Buy_Sound)
-                GameDataManager.costDiamond(self.m_con.price)
-                GameDataManager.addGoods(self.m_con.id,1)
-                GameDataManager.addPoints(self.m_con.price*Diamond_Points)--花费钻石买道具赠送积分
-                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text="购买成功"})
-            else
-                GameDispatcher:dispatch(EventNames.EVENT_OPEN_PROPUI,self.m_con)
-            end
+    local RewardImg = cc.uiloader:seekNodeByName(content,"RewardImg")
+    RewardImg:setTouchSwallowEnabled(false)
+    RewardImg:setButtonEnabled(false)
+    local Count = cc.uiloader:seekNodeByName(content,"Count")
+    if self.m_con.rewardType == REWARD_TYPE.Gold then
+        RewardImg:setButtonImage("disabled","Common/Common_gold.png")
+        Count:setString(self.m_con.reward)
+    elseif self.m_con.rewardType == REWARD_TYPE.Diamond then
+        RewardImg:setButtonImage("disabled","Common/Common_diamond.png")
+        Count:setString(self.m_con.reward)
+    else
+        local id = self.m_con.reward.goodsId
+        RewardImg:setButtonImage("disabled",GoodsConfig[id].res)
+        Count:setString(self.m_con.reward.count)
+    end
+    
+    --领取按钮
+    self.Finished = cc.uiloader:seekNodeByName(content,"Finished")
+    self.Finished:setTouchSwallowEnabled(false)
+    self.Finished:onButtonClicked(function(event)
+        if self.m_con.rewardType == REWARD_TYPE.Gold then
+            GameDataManager.addGold(self.m_con.reward)
+        elseif self.m_con.rewardType == REWARD_TYPE.Diamond then
+            GameDataManager.addDiamond(self.m_con.reward)
         else
-            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="道具数量已达上限"})
+            GameDataManager.addGoods(self.m_con.reward.goodsId,self.m_con.reward.count)
+        end
+        if self.m_type == 1 then
+            GameDataManager.setFinishTaskData(self.m_con.id,ACHIEVE_STATE.Receive)
+        else
+            GameDataManager.setFinishAchieveData(self.m_con.id,ACHIEVE_STATE.Receive)
         end
     end)
-
-end
-
---金币
-function AchieveQuestItem:initMoney(parameters)
-    local content = cc.uiloader:load("ui/moneyListItem.json")
-    self:addChild(content)
-    content:setPosition(cc.p(0,0))
-    --图片
-    local bottom = cc.uiloader:seekNodeByName(content,"Button_12")
-    bottom:setTouchSwallowEnabled(false)
-    bottom:setButtonEnabled(false)
-    bottom:setButtonImage("disabled",self.m_con.image)
-    --所得金币
-    local count = cc.uiloader:seekNodeByName(content,"AtlasLabel_6")
-    count:setString(self.m_con.quantity)
-    --购买价格
-    local pcount = cc.uiloader:seekNodeByName(content,"AtlasLabel_10")
-    pcount:setString(self.m_con.price)
-    --购买按钮
-    local btnBuy = cc.uiloader:seekNodeByName(content,"Button_7")
-    btnBuy:setTouchSwallowEnabled(false)
-    btnBuy:onButtonClicked(function(event)
-        if GameDataManager.getDiamond()>=self.m_con.price then
-            GameDataManager.costDiamond(self.m_con.price)
-            GameDataManager.addGold(self.m_con.quantity)
-            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+    self.Unfinished = cc.uiloader:seekNodeByName(content,"Unfinished")
+    if _type == 2 then
+        if GameDataManager.getAchieveState(self.m_con.id) == ACHIEVE_STATE.Unfinished then
+            self.Unfinished:setVisible(true)
+            self.Finished:setVisible(false)
+        elseif GameDataManager.getAchieveState(self.m_con.id) == ACHIEVE_STATE.Finished then
+            self.Unfinished:setVisible(false)
+            self.Finished:setVisible(true)
         else
-            app:alert({
-                type=Alert_Type.Type_Two,
-                content="是否花费"..self.m_con.price.."钻购买"..self.m_con.quantity.."金币？",
-                okFunc=function(parameters)
-                    if GameDataManager.getDiamond()>=self.m_con.price then
-                        GameDataManager.costDiamond(self.m_con.price)
-                        GameDataManager.addGold(self.m_con.quantity)
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
-                    else
-                        GameDispatcher:dispatch(EventNames.EVENT_DIAMOND_LESS)
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足，请购买钻石"})
-                    end
-                end,
-                cancleFunc=function(parameters)
-                end,
-                isClose = true
-            })
+            self.Unfinished:setVisible(false)
+            self.Finished:setVisible(false)
         end
-    end)
-end
-
-function AchieveQuestItem:onCleanup(parameters)
+    elseif _type == 1 then
+        if GameDataManager.getTaskState(self.m_con.id) == ACHIEVE_STATE.Unfinished then
+            self.Unfinished:setVisible(true)
+            self.Finished:setVisible(false)
+        elseif GameDataManager.getTaskState(self.m_con.id) == ACHIEVE_STATE.Finished then
+            self.Unfinished:setVisible(false)
+            self.Finished:setVisible(true)
+        else
+            self.Unfinished:setVisible(false)
+            self.Finished:setVisible(false)
+        end
+    end
     
 end
 
+function AchieveQuestItem:changeState(parameters)
+    if self.m_con.id == parameters.id then
+        if parameters.state == ACHIEVE_STATE.Unfinished then
+            self.Unfinished:setVisible(true)
+            self.Finished:setVisible(false)
+        elseif parameters.state == ACHIEVE_STATE.Finished then
+            self.Unfinished:setVisible(false)
+            self.Finished:setVisible(true)
+        else
+            self.Unfinished:setVisible(false)
+            self.Finished:setVisible(false)
+        end
+	end
+end
+
+function AchieveQuestItem:onCleanup(parameters)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_GET_ACHIEVE)
+end
+
 function AchieveQuestItem:toClose(_clean)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_GET_ACHIEVE)
     self:removeFromParent(_clean)
 end
 

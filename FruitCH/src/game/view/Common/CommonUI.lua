@@ -111,6 +111,10 @@ function CommonUI:powerChanged(parameters)
         for var=_power+1, 5 do
             self["red_"..var]:setVisible(false)
         end
+    else
+        for var=1, 5 do
+            self["red_"..var]:setVisible(true)
+        end
     end
     if _power < USER_POWER_MAX then
         self:toCheckPower(GameDataManager.getPowerEndTime()-TimeUtil.getTimeStamp())

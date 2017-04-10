@@ -12,6 +12,7 @@ local RewardUI = require("game.view.fightReady.RewardUI")
 local ClippingView=require("game.view.clipping.ClippingView")
 local SignUI = require("game.view.sign.SignUI")
 local AchieveQuest = require("game.view.AchieveQuest.AchieveQuest")
+local ReviveView = require("game.view.revive.ReviveUI")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -46,6 +47,9 @@ function UIController:ctor()
     
     --成就任务界面
     GameDispatcher:addListener(EventNames.EVENT_ACHIEVE_QUEST,handler(self,self.openAchideve))
+    
+    --复活界面
+    GameDispatcher:addListener(EventNames.EVENT_REVIVE_VIEW,handler(self,self.openRevive))
 end
 
 --打开战斗准备界面
@@ -105,6 +109,11 @@ end
 function UIController:openAchideve(parameters)
     local _achUI = AchieveQuest.new(parameters.data)
     _achUI:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+function UIController:openRevive(parameters)
+    local _reviveUI = ReviveView.new(parameters.data)
+    _reviveUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

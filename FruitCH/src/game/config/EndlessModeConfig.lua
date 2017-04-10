@@ -8,21 +8,26 @@ EndlessMode={
 DistanceD={
     move = 0,--单位:米(按照像素换算公式)
     isClip = true,
+    speed = 32,
 },
 DistanceC={
     move = 30,
     isClip = false,
+        speed = 320,
 },
 DistanceB={
     move = 2000,
     isClip = false,
+        speed = 32,
 },
 DistanceA={
     move = 10000,
     isClip = false,
+        speed = 32,
 },
 DistanceS={
     move = 20000,
     isClip = false,
+        speed = 32,
 },
 }

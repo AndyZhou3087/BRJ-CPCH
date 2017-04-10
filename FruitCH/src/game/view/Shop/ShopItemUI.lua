@@ -104,71 +104,79 @@ function ShopItemUI:initContent(shopConfig,pos)
     btnBuy:setTouchSwallowEnabled(false)
     btnBuy:onButtonClicked(function(event)
         Tools.printDebug("-----------购买类型:",shopConfig.type)
-        if shopConfig.type == SHOPITEM_TYPE.Gold then
-        	if shopConfig.price.type == SHOPITEM_BUY.Diamond then
-                if GameDataManager.getDiamond() >= shopConfig.price.rate then
-                    GameDataManager.costDiamond(shopConfig.price.rate)
-                    GameDataManager.addGold(shopConfig.content)
-                else
-                    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text="钻石不足"})
-        		end
-        	end
-        elseif shopConfig.type == SHOPITEM_TYPE.Diamond then
-            if shopConfig.price.type == SHOPITEM_BUY.RMB then
-                local payId = shopConfig.price.payId
-                local oId = SDKUtil.getOrderId(payId)
-                SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
-                    if SDKUtil.PayResult.Success == _res then
-                        GameDataManager.addDiamond(shopConfig.content)
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
-                    else
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+        app:alert({
+            type=Alert_Type.Type_Two,
+            okFunc=function(parameters)
+                if shopConfig.type == SHOPITEM_TYPE.Gold then
+                    if shopConfig.price.type == SHOPITEM_BUY.Diamond then
+                        if GameDataManager.getDiamond() >= shopConfig.price.rate then
+                            GameDataManager.costDiamond(shopConfig.price.rate)
+                            GameDataManager.addGold(shopConfig.content)
+                        else
+                            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text="钻石不足"})
+                        end
                     end
-                end})
-            end
-        elseif shopConfig.type == SHOPITEM_TYPE.Gift then
-            if shopConfig.price.type == SHOPITEM_BUY.RMB then
-                local payId = shopConfig.price.payId
-                local oId = SDKUtil.getOrderId(payId)
-                SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
-                    if SDKUtil.PayResult.Success == _res then
-                        if shopConfig.content.gold then
-                        	GameDataManager.addGold(shopConfig.content.gold)
-                        end
-                        if shopConfig.content.diamond then
-                            GameDataManager.addDiamond(shopConfig.content.diamond)
-                        end
-                        if shopConfig.content.prop then
-                            for var=1, shopConfig.content.prop do
-                                local arr = shopConfig.content.prop[var]
-                                GameDataManager.addGoods(arr.id,arr.count)
+                elseif shopConfig.type == SHOPITEM_TYPE.Diamond then
+                    if shopConfig.price.type == SHOPITEM_BUY.RMB then
+                        local payId = shopConfig.price.payId
+                        local oId = SDKUtil.getOrderId(payId)
+                        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
+                            if SDKUtil.PayResult.Success == _res then
+                                GameDataManager.addDiamond(shopConfig.content)
+                                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                            else
+                                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
                             end
-                        end
-                        if shopConfig.content.role then
-                            GameDataManager.unLockModle(shopConfig.content.role.id)
-                            --可每日领取奖励
-                            
-                        end
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
-                    else
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+                        end})
                     end
-                end})
-            end
-        elseif shopConfig.type == SHOPITEM_TYPE.Power then
-            if shopConfig.price.type == SHOPITEM_BUY.RMB then
-                local payId = shopConfig.price.payId
-                local oId = SDKUtil.getOrderId(payId)
-                SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
-                    if SDKUtil.PayResult.Success == _res then
-                        GameDataManager.addPower(shopConfig.content)
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
-                    else
-                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+                elseif shopConfig.type == SHOPITEM_TYPE.Gift then
+                    if shopConfig.price.type == SHOPITEM_BUY.RMB then
+                        local payId = shopConfig.price.payId
+                        local oId = SDKUtil.getOrderId(payId)
+                        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
+                            if SDKUtil.PayResult.Success == _res then
+                                if shopConfig.content.gold then
+                                    GameDataManager.addGold(shopConfig.content.gold)
+                                end
+                                if shopConfig.content.diamond then
+                                    GameDataManager.addDiamond(shopConfig.content.diamond)
+                                end
+                                if shopConfig.content.prop then
+                                    for var=1, shopConfig.content.prop do
+                                        local arr = shopConfig.content.prop[var]
+                                        GameDataManager.addGoods(arr.id,arr.count)
+                                    end
+                                end
+                                --                        if shopConfig.content.role then
+                                --                            GameDataManager.unLockModle(shopConfig.content.role.id)
+                                --                            --可每日领取奖励
+                                --                            
+                                --                        end
+                                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                            else
+                                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+                            end
+                        end})
                     end
-                end})
-            end
-        end
+                elseif shopConfig.type == SHOPITEM_TYPE.Power then
+                    if shopConfig.price.type == SHOPITEM_BUY.RMB then
+                        local payId = shopConfig.price.payId
+                        local oId = SDKUtil.getOrderId(payId)
+                        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
+                            if SDKUtil.PayResult.Success == _res then
+                                GameDataManager.addPower(shopConfig.content)
+                                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                            else
+                                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+                            end
+                        end})
+                    end
+                end
+            end,
+            cancleFunc=function(parameters)
+            end,
+            isClose = true
+        })
     end)
 
 end

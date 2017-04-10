@@ -43,7 +43,7 @@ ObstacleConfig[3]=
         armatureName = "",
         res = "ui/obscale_2.png",     --资源路径
         att = 1,
-        dispx = 300,   --与角色相距多少像素时出现(单位：像素)
+        dispx = 400,   --与屏幕相距多少像素时出现(单位：像素)
         speed = 2,   --飞行速度，即固定距离飞行的时间(单位：秒)
     }
     
@@ -51,10 +51,12 @@ ObstacleConfig[4]=
     {
         id = 4,
         type = OBSTACLE_TYPE.special,    --障碍类型
-        isAnimate = false,           --是否为动画资源
-        armatureName = "muban_tanhuang",
+        isAnimate = true,           --是否为动画资源
+        armatureName = "nan5",
         res = "ui/obscale_1.png",     --资源路径
         att = 1,
+        dispx = 500,   --与屏幕相距多少像素时出现(单位：像素)
+        speed = 3,   --飞行速度，即固定距离飞行的时间(单位：秒)
     }
     
 ObstacleConfig[5]=
@@ -73,8 +75,8 @@ ObstacleConfig[6]=
     {
         id = 6,
         type = OBSTACLE_TYPE.spring,    --障碍类型
-        isAnimate = false,           --是否为动画资源
-        armatureName = "muban_tanhuang",
+        isAnimate = true,           --是否为动画资源
+        armatureName = "tanh",
         res = "ui/obscale_3.png",     --资源路径
         att = 1,
     }

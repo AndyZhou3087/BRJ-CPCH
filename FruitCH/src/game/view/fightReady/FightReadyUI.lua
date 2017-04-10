@@ -63,7 +63,7 @@ function FightReadyUI:ctor(parm)
     local achievebtn = cc.uiloader:seekNodeByName(self.FightReady,"AchieveBtn")
     achievebtn:onButtonClicked(function(event)
         Tools.printDebug("-----------成就任务")
---        GameDispatcher:dispatch(EventNames.EVENT_ACHIEVE_QUEST)
+        GameDispatcher:dispatch(EventNames.EVENT_ACHIEVE_QUEST)
     end)
     
     local startGame = cc.uiloader:seekNodeByName(self.FightReady,"StartGame")

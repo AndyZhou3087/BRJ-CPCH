@@ -43,11 +43,12 @@ RoleConfig={}
 RoleConfig[1]=
     {
         id = 1,
-        skillAct = {{type=PLAYER_ACT_TYPE.Magnet,radius = 300,},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
+        skillAct = {},    --主动技能
         armatureName = "nv_pao",   --动画工程名
         roleName = "囧囧",     --角色名称
         roleImg = "ui/role_2.png",   --角色图片
         roleDes = "aaaaaaaaaaa",  --角色描述
+        roleRevive = "ui/Revive_role2.png",
         lock = {},--解锁所需条件
         diamondPrice = 10,   --钻石购买价格
         coinPrice = 2500,    --金币购买价格
@@ -70,11 +71,12 @@ RoleConfig[1]=
 RoleConfig[2]=
     {
         id = 2,
-        skillAct = {{type=PLAYER_ACT_TYPE.Magnet},{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
+        skillAct = {{type=PLAYER_ACT_TYPE.Magnet,radius = 300,}},    --主动技能
         armatureName = "nan3",   --动画工程名
         roleName = "囧囧",     --角色名称
         roleImg = "ui/role_1.png",   --角色图片
         roleDes = "aaaaaaaaaaa",  --角色描述
+        roleRevive = "ui/Revive_role1.png",
         lock = {},--解锁所需条件
         diamondPrice = 10,   --钻石购买价格
         coinPrice = 2500,    --金币购买价格
@@ -98,11 +100,12 @@ RoleConfig[2]=
 RoleConfig[3]=
     {
         id = 3,
-        skillAct = {{type=PLAYER_ACT_TYPE.Magnet},{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
+        skillAct = {{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
         armatureName = "nan4",   --动画工程名
         roleName = "囧囧",     --角色名称
         roleImg = "ui/role_4.png",   --角色图片
         roleDes = "aaaaaaaaaaa",  --角色描述
+        roleRevive = "ui/Revive_role5.png",
         lock = {},--解锁所需条件
         diamondPrice = 10,   --钻石购买价格
         coinPrice = 2500,    --金币购买价格
@@ -126,11 +129,12 @@ RoleConfig[3]=
 RoleConfig[4]=
     {
         id = 4,
-        skillAct = {{type=PLAYER_ACT_TYPE.Magnet},{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
+        skillAct = {{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
         armatureName = "nan5",   --动画工程名
         roleName = "囧囧",     --角色名称
         roleImg = "ui/role_5.png",   --角色图片
         roleDes = "aaaaaaaaaaa",  --角色描述
+        roleRevive = "ui/Revive_role4.png",
         lock = {},--解锁所需条件
         diamondPrice = 10,   --钻石购买价格
         coinPrice = 2500,    --金币购买价格
@@ -154,11 +158,12 @@ RoleConfig[4]=
 RoleConfig[5]=
     {
         id = 5,
-        skillAct = {{type=PLAYER_ACT_TYPE.Magnet},{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
+        skillAct = {{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
         armatureName = "nan6",   --动画工程名
         roleName = "囧囧",     --角色名称
         roleImg = "ui/role_3.png",   --角色图片
         roleDes = "aaaaaaaaaaa",  --角色描述
+        roleRevive = "ui/Revive_role3.png",
         lock = {},--解锁所需条件
         diamondPrice = 10,   --钻石购买价格
         coinPrice = 2500,    --金币购买价格

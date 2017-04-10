@@ -72,6 +72,8 @@ function Player:ctor()
     --角色暂停和恢复
     GameDispatcher:addListener(EventNames.EVENT_PLAYER_PAUSE,handler(self,self.pause))
     GameDispatcher:addListener(EventNames.EVENT_PLAYER_REGAIN,handler(self,self.regain))
+    --角色复活
+    GameDispatcher:addListener(EventNames.EVENT_ROLE_REVIVE,handler(self,self.revive))
 
 end
 
@@ -300,8 +302,10 @@ function Player:deadFlash(parameters)
             GameDataManager.useGoods(4)
         else
             self:death()
+            --复活界面
+            GameDispatcher:dispatch(EventNames.EVENT_REVIVE_VIEW)
             --弹结算界面
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type = GAMEOVER_TYPE.Fail})
+--            GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type = GAMEOVER_TYPE.Fail})
         end
     end)
     
@@ -319,6 +323,7 @@ function Player:death()
 
     self.m_isDead = true
     GameController.isDead = true
+    self.m_armature:setVisible(false)
 
     --清除所有buff
     for var=#self.m_buffArr,1,-1  do
@@ -328,6 +333,46 @@ function Player:death()
         end
     end
     self.m_buffArr = {}
+
+end
+
+--角色复活
+function Player:revive(parameters)
+
+    --清除所有状态
+    for var=#self.m_buffArr,1,-1  do
+        local _buff = self.m_buffArr[var]
+        if _buff~=nil then
+            self:clearBuff(_buff:getType())
+        end
+    end
+    self.m_buffArr = {}
+
+    self.m_hp = self.m_vo.m_hp
+    self.m_armature:setVisible(true)
+    self:toPlay(PLAYER_ACTION.Run)
+
+    self.m_isDead = false
+    GameController.isWin = false
+    GameController.isDead = false
+    GameController.isWin = false
+    self.m_jump = false
+    self.m_run = true
+
+    self.m_twoJump = false
+    self.m_isMagnet = false
+    local actSkill = RoleConfig[self.m_curModle].skillAct
+    for var=1, #actSkill do
+        if actSkill[var].type == PLAYER_ACT_TYPE.Twojump then
+            self.m_twoJump = true
+        elseif actSkill[var].type == PLAYER_ACT_TYPE.Magnet then
+            self:magnetSkill(actSkill[var].radius)
+        elseif actSkill[var].type == PLAYER_ACT_TYPE.Protect then
+            self:protectSkill()
+        end
+    end
+    
+    GameController.resumeGame()
 
 end
 
@@ -895,6 +940,7 @@ function Player:dispose()
     GameDispatcher:removeListenerByName(EventNames.EVENT_TRANSFORM_GOLD)
     GameDispatcher:removeListenerByName(EventNames.EVENT_SLOW_SPEED)
     GameDispatcher:removeListenerByName(EventNames.EVENT_OBSCALE_SPRING)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_REVIVE)
     
     self.m_isDead = false
     GameController.isDead = false

@@ -22,6 +22,7 @@ function Obstacle:ctor(id,py)
         self.m_id=obCon.id
         self.m_posY = py
         self.obcon = nil
+        self.isAnimate = obCon.isAnimate
         local _size = nil
         local offset = cc.p(0,0)
         
@@ -29,13 +30,26 @@ function Obstacle:ctor(id,py)
             ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/"..obCon.armatureName.."0.png", "armature/"..obCon.armatureName.."0.plist" , "armature/"..obCon.armatureName..".ExportJson" )
             self.obcon = ccs.Armature:create(obCon.armatureName)
             self:addChild(self.obcon)
+            if self.m_vo.m_type == OBSTACLE_TYPE.special then
+                self.obcon:getAnimation():playWithIndex(0)
+                self.obcon:setScaleX(-1)
+            end
+            self.obcon:setAnchorPoint(cc.p(0,0))
             
-            _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.8,self.obcon:getCascadeBoundingBox().size.height*0.8)
-        
+            _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.9)
+            if self.m_vo.m_type == OBSTACLE_TYPE.spring then
+                _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.2,self.obcon:getCascadeBoundingBox().size.height*0.2)
+                offset = cc.p(30,2)
+            elseif self.m_vo.m_type == OBSTACLE_TYPE.special then
+                offset = cc.p(-50,50)
+            end 
             self:addBody(obCon,_size,offset)
+            
         else
             self.obcon= PhysicSprite.new(obCon.res)
             self:addChild(self.obcon)
+            
+            self.obcon:setAnchorPoint(cc.p(0,0))
             
             _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.9)
             offset = cc.p(30,40)
@@ -45,6 +59,10 @@ function Obstacle:ctor(id,py)
             elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
                 _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.2,self.obcon:getCascadeBoundingBox().size.height*0.2)
                 offset = cc.p(30,2)
+            elseif self.m_vo.m_type == OBSTACLE_TYPE.fly then
+                self.obcon:setAnchorPoint(cc.p(0.5,0.5))
+                self.obcon:setPosition(cc.p(-self.obcon:getCascadeBoundingBox().size.width*0.5,-self.obcon:getCascadeBoundingBox().size.height*0.5))
+                offset = cc.p(-30,-30)
             end       
             self:addBody(obCon,_size,offset)
 
@@ -67,15 +85,13 @@ function Obstacle:ctor(id,py)
             
         end
         
-        self.obcon:setAnchorPoint(cc.p(0,0))
-        
         ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xiaoshi0.png", "armature/xiaoshi0.plist" , "armature/xiaoshi.ExportJson" )
         self.m_dEffect = ccs.Armature:create("xiaoshi")
         self:addChild(self.m_dEffect)
         self.m_dEffect:setVisible(false)
         self.m_dEffect:getAnimation():setMovementEventCallFunc(handler(self,self.armatureMoveEvent))
 
-        if self.m_vo.m_type ~= OBSTACLE_TYPE.fly and self.m_vo.m_type ~= OBSTACLE_TYPE.special and self.m_vo.m_type ~= OBSTACLE_TYPE.ice then
+        if self.m_vo.m_type ~= OBSTACLE_TYPE.fly and self.m_vo.m_type ~= OBSTACLE_TYPE.ice then
             if self.m_posY>display.cy then
                 self:setScaleY(-1)
             else
@@ -87,7 +103,7 @@ function Obstacle:ctor(id,py)
             Scheduler.unscheduleGlobal(self.m_timer)
             self.m_timer = nil
         end
-        if self.m_vo.m_type == OBSTACLE_TYPE.hide or self.m_vo.m_type == OBSTACLE_TYPE.fly then
+        if self.m_vo.m_type == OBSTACLE_TYPE.hide or self.m_vo.m_type == OBSTACLE_TYPE.fly or self.m_vo.m_type == OBSTACLE_TYPE.special then
             self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
             self:setVisible(false)
             if not tolua.isnull(self.tip_1) then
@@ -98,9 +114,9 @@ function Obstacle:ctor(id,py)
             end
         end
         
-        if self.m_vo.m_type == OBSTACLE_TYPE.fly then
-            GameDispatcher:addListener(EventNames.EVENT_OBSCALE_FLYPAUSE,handler(self,self.flyPause))
-            GameDispatcher:addListener(EventNames.EVENT_OBSCALE_FLYRESUM,handler(self,self.flyResum))
+        if self.m_vo.m_type == OBSTACLE_TYPE.fly or self.m_vo.m_type == OBSTACLE_TYPE.special then
+            self.m_pause = GameDispatcher:addListener(EventNames.EVENT_OBSCALE_FLYPAUSE,handler(self,self.flyPause))
+            self.m_resum = GameDispatcher:addListener(EventNames.EVENT_OBSCALE_FLYRESUM,handler(self,self.flyResum))
         end
         
     end
@@ -142,7 +158,7 @@ function Obstacle:onEnterFrame(parameters)
     local x,y = self:getPosition()
     local point = self:getParent():convertToWorldSpace(cc.p(x,y))
     local px,py = GameController.getCurPlayer():getPosition()
-    if point.x <= display.right+400 then
+    if point.x <= display.right+self.m_vo.m_dispx then
         if self.m_vo.m_type == OBSTACLE_TYPE.fly and MoveSpeed~=0 then
             self:setVisible(true)
             if self.m_timer then
@@ -165,6 +181,37 @@ function Obstacle:onEnterFrame(parameters)
             self.m_timer = nil
         end
     end
+    if point.x <= display.right+self.m_vo.m_dispx and self.m_vo.m_type == OBSTACLE_TYPE.special then
+        if MoveSpeed~=0 then
+            self:setVisible(true)
+            if self.m_timer then
+                Scheduler.unscheduleGlobal(self.m_timer)
+                self.m_timer = nil
+            end
+            self:villainMove()
+    	end
+    end
+end
+
+--反派角色
+function Obstacle:villainMove()
+    local _speed
+    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+        _speed = SelectLevel[GameDataManager.getCurLevelId()].speed
+    elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+        _speed = EndlessMode.speed
+    end
+    local fadeOut = cc.FadeOut:create(Flash_Skeep_Time/(MoveSpeed/_speed))
+    local fadeIn = cc.FadeIn:create(Flash_Skeep_Time/(MoveSpeed/_speed))
+    local sqes = cc.Sequence:create(fadeOut,fadeIn)
+    local repeated = cc.Repeat:create(sqes,3)
+    local callfunc = cc.CallFunc:create(function()
+        transition.moveBy(self,{time=self.m_vo.m_speed,x=-display.width-200,y=0,onComplete=function()
+            self:dispose()
+        end})
+    end)
+    local seque = cc.Sequence:create(repeated,callfunc)
+    self.obcon:runAction(seque)
 end
 
 --飞行障碍物执行飞行动画
@@ -223,6 +270,9 @@ function Obstacle:collision(_type)
     elseif self.m_vo.m_type == OBSTACLE_TYPE.ice then
         GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{cutSpeed = self.m_vo.m_cutSpeed,length = self.m_vo.m_length})
     elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
+        if self.isAnimate then
+            self.obcon:getAnimation():playWithIndex(0)
+        end
         GameDispatcher:dispatch(EventNames.EVENT_OBSCALE_SPRING)
     else
         if GameController.isInState(PLAYER_STATE.Defence) or GameController.isInState(PLAYER_STATE.StartProtect) then
@@ -251,8 +301,14 @@ function Obstacle:collision(_type)
 end
 
 function Obstacle:dispose(parameters)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_OBSCALE_FLYPAUSE)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_OBSCALE_FLYRESUM)
+    if self.m_pause then
+        GameDispatcher:removeListenerByHandle(self.m_pause)
+        self.m_pause = nil
+    end
+    if self.m_resum then
+        GameDispatcher:removeListenerByHandle(self.m_resum)
+        self.m_resum = nil
+    end
     
     if self.m_timer then
         Scheduler.unscheduleGlobal(self.m_timer)

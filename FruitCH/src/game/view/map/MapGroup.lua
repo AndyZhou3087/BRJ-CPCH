@@ -41,7 +41,7 @@ function MapGroup:ctor(_idx,_levelCon)
         local map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map[_idx]])
         local gold = map:getObjectGroup("gold")
         local good = map:getObjectGroup("good")
-        local obscale = map:getObjectGroup("obscale")
+        local obscale = map:getObjectGroup("obstacle")
         if gold then
             _coins = gold:getObjects()
         else
@@ -67,7 +67,7 @@ function MapGroup:ctor(_idx,_levelCon)
         local map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map])
         local gold = map:getObjectGroup("gold")
         local good = map:getObjectGroup("good")
-        local obscale = map:getObjectGroup("obscale")
+        local obscale = map:getObjectGroup("obstacle")
         if gold then
             _coins = gold:getObjects()
         else
@@ -115,9 +115,17 @@ end
 function MapGroup:initElement(_obstacle)
     for var=1,#_obstacle do
         local _element = _obstacle[var]
-        local obstacle = ObstacleElement.new(tonumber(_element.name),tonumber(_element.y))--TiledMap中以左上角为原点,游戏中左下为原点
+        local _type = ObstacleConfig[tonumber(_element.name)].type
+        local obstacle = ObstacleElement.new(tonumber(_element.name),tonumber(_element.y))
         obstacle:setPosition(tonumber(_element.x),tonumber(_element.y))
         self:addChild(obstacle)
+        if _type == OBSTACLE_TYPE.special then
+            if tonumber(_element.y)<=display.cy then
+                obstacle:setPosition(tonumber(_element.x),display.cy-240)
+            else
+                obstacle:setPosition(tonumber(_element.x),display.cy+200)
+        	end
+        end
         table.insert(self.m_obstacle,obstacle)
         table.insert(self.m_blocks,obstacle)
     end

@@ -66,6 +66,13 @@ GAMEOVER_TYPE =
     Fail = 2,
 }
 
+--弹窗类型
+Alert_Type=
+    {
+        Type_One = 1,   --只有一个按钮
+        Type_Two = 2    --两个按钮
+    }
+
 --界面层级配置
 UI_ZORDER =
     {

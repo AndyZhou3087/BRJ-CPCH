@@ -24,16 +24,20 @@ require("game.config.ShopConfig")
 require("game.config.SelectOtherConfig")
 require("game.config.SignRewardConfig")
 require("game.config.AchieveConfig")
+require("game.config.TaskConfig")
 
 PoolManager = require("game.tools.PoolManager")
 TimeUtil = require("game.tools.TimeUtil")
 GameController = require("game.controller.GameController")
+Tables = require("game.tools.Tables")
 GameDataManager = require("game.data.GameDataManager")
 AudioManager = require("game.tools.AudioManager")
 LoadResManager = require("game.tools.LoadResManager")
 Tools = require("game.tools.Tools")
 DataPersistence = require("game.tools.DataPersistence")
 SDKUtil = require("game.tools.SDKUtil")
+
+local Alert = require("game.view.dialog.Dialog")
 
 --自定义事件管理类
 require("game.events.GameDispatcher"):getInstance()
@@ -75,6 +79,24 @@ function GameApp:ctor()
     
     --设置成就
     DataPersistence.insertAttribute("achieve",{})
+    
+    --累积使用金币
+    DataPersistence.insertAttribute("useGold_total",0)
+    --累积使用钻石
+    DataPersistence.insertAttribute("useDiamond_total",0)
+    --累积使用道具
+    DataPersistence.insertAttribute("useGood_total",{})
+    
+    --设置每日任务
+    DataPersistence.insertAttribute("dailyTasks",{})
+    --设置是否跨零点
+    DataPersistence.insertAttribute("daily_time",{day=10,month=8,year=2014})
+    --累计奔跑距离
+    DataPersistence.insertAttribute("run_distance",0)
+    --累计每日使用道具
+    DataPersistence.insertAttribute("day_useGood_total",{})
+    --累计获得金币
+    DataPersistence.insertAttribute("getGold_total",0)
 end
 
 function GameApp:run()
@@ -113,6 +135,44 @@ function GameApp:checkEnterFight(parameters)
     if not tolua.isnull(self.m_fightScene) then
         display.replaceScene(self.m_fightScene)
     end
+end
+
+--[[弹窗
+--@param:
+{
+type:弹框类型
+content:弹框内容
+title:弹框标题
+okStr:确认按钮文字
+cancleStr:取消按钮文字
+okFunc:确认回调
+cancleFunc:取消回调
+isClose:点击确认后就关闭毕弹窗
+}
+--]]
+function GameApp:alert(_params)
+    local runScene = display.getRunningScene()
+    if not tolua.isnull(self.m_alert) and self.m_alert:getParent()~=runScene then
+        self.m_alert:toClose(true)
+        self.m_alert = nil
+    end
+    if tolua.isnull(self.m_alert) then
+        self.m_alert = Alert.new(_params.type,_params.okStr,_params.cancleStr,_params.isClose)
+        self.m_alert:show(UI_ZORDER.ALERT_ZORDER)
+    end
+    if _params.title then
+        self.m_alert:setTitle(_params.title)
+    end
+    if _params.content then
+        self.m_alert:setContent(_params.content)
+    end
+    if _params.okFunc then
+        self.m_alert:setOkFunc(_params.okFunc)
+    end
+    if _params.cancleFunc then
+        self.m_alert:setCancleFunc(_params.cancleFunc)
+    end
+    return self.m_alert
 end
 
 return GameApp

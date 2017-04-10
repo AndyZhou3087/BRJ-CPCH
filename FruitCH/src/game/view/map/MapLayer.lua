@@ -133,14 +133,19 @@ end
 function MapLayer:addEndlessGroup(parameters)
     if self.pexel >= EndlessMode.DistanceS.move then
         self.m_levelCon = ConfigS[GameController.getDataIdByWeight(self.m_weightS,self.m_conS)]
+        MoveSpeed = EndlessMode.DistanceS.speed
     elseif self.pexel >= EndlessMode.DistanceA.move then
         self.m_levelCon = ConfigA[GameController.getDataIdByWeight(self.m_weightA,self.m_conA)]
+        MoveSpeed = EndlessMode.DistanceA.speed
     elseif self.pexel >= EndlessMode.DistanceB.move then
         self.m_levelCon = ConfigB[GameController.getDataIdByWeight(self.m_weightB,self.m_conB)]
+        MoveSpeed = EndlessMode.DistanceB.speed
     elseif self.pexel >= EndlessMode.DistanceC.move then
         self.m_levelCon = ConfigC[GameController.getDataIdByWeight(self.m_weightC,self.m_conC)]
+        MoveSpeed = EndlessMode.DistanceC.speed
     else
         self.m_levelCon = ConfigD[GameController.getDataIdByWeight(self.m_weightD,self.m_conD)]
+        MoveSpeed = EndlessMode.DistanceD.speed
     end
 end
 
@@ -256,6 +261,9 @@ function MapLayer:onEnterFrame(dt)
 
     --跑了多少米换算公式
    self.pexel = self.pexel + MoveSpeed*0.1/(Pixel/Miles)
+   GameDataManager.saveDayRunDistance(MoveSpeed*0.1/(Pixel/Miles))
+    Tools.printDebug("-----------多少米：",self.pexel)
+   
    if GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
         if self.pexel >= EndlessMode.DistanceS.move then
             if not self.m_clip and EndlessMode.DistanceS.isClip then
@@ -360,6 +368,7 @@ function MapLayer:dispose(parameters)
     GameDataManager.resetLevelData()
     GameController.clearBody()
     GameController.resetStartProp()
+    GameDataManager.resetSingleProp()
     
     self:removeFromParent(true)
 end

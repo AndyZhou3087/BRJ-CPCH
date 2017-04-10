@@ -77,7 +77,8 @@ function TimeUtil._updateTime()
 end
 --跨天变化触发（零点触发）
 function TimeUtil._dayChange(parameters)
---    GameDataManager.isDateSign()
+    GameDataManager.resetSign()
+    GameDataManager.resetDailyTask()
     --更新vip礼包
 --    GameDataManager.updateVipData()
 end

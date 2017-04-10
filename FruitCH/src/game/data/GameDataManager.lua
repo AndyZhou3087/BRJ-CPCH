@@ -16,6 +16,15 @@ local curRoleID = 0 --当前出战角色id
 local music=false
 local sound=false
 
+local totalGold = 0
+local totalDiamond = 0
+local totalGood = {}
+local singleGood = {}
+
+local totalGetGold = 0
+local totalDistance = 0
+local totalDayGood = {}
+
 --初始化玩家数据
 function GameDataManager.init()
     userData.gold = DataPersistence.getAttribute("user_gold")    --金币
@@ -33,6 +42,15 @@ function GameDataManager.init()
     for key, var in pairs(modleList) do
         modleDic[var.roleId] = var
     end
+    
+    totalGold = DataPersistence.getAttribute("useGold_total")
+    totalDiamond = DataPersistence.getAttribute("useDiamond_total")
+    totalGood = DataPersistence.getAttribute("useGood_total")
+    
+    totalGetGold = DataPersistence.getAttribute("getGold_total")
+    totalDayGood = DataPersistence.getAttribute("day_useGood_total")
+    totalDistance = DataPersistence.getAttribute("run_distance")
+    
     GameDataManager.initPlayerVo()
     
     --初始化关卡数据
@@ -43,6 +61,8 @@ function GameDataManager.init()
     GameDataManager.initSignData()
     --初始化游戏成就
     GameDataManager.initAchieveData()
+    --初始化每日任务信息
+    GameDataManager.initDailyTaskData()
 end
 
 function GameDataManager.isMusicOpen()
@@ -67,6 +87,7 @@ function GameDataManager.costGold(_value)
         userData.gold = userData.gold - _value
         Tools.printDebug("当前金币",GameDataManager.getGold())
         GameDispatcher:dispatch(EventNames.EVENT_UPDATE_GOLD)
+        GameDataManager.saveUseGold(_value)
         GameDataManager.SaveData()
         return true
     else
@@ -79,6 +100,7 @@ function GameDataManager.addGold(_value)
     userData.gold = userData.gold + _value
     Tools.printDebug("当前金币",GameDataManager.getGold())
     GameDispatcher:dispatch(EventNames.EVENT_UPDATE_GOLD)
+    GameDataManager.saveGetGold(_value)
     GameDataManager.SaveData()
     return true
 end
@@ -94,6 +116,7 @@ function GameDataManager.costDiamond(_value)
         userData.diamond = userData.diamond-_value
         Tools.printDebug("当前钻石",GameDataManager.getDiamond())
         GameDispatcher:dispatch(EventNames.EVENT_UPDATE_DIAMOND)
+        GameDataManager.saveUseDiamond(_value)
         GameDataManager.SaveData()
         return true
     else
@@ -254,6 +277,9 @@ function GameDataManager.useGoodsExp(_goodsId)
             Tools.printDebug("金币转换")
             GameDispatcher:dispatch(EventNames.EVENT_TRANSFORM_GOLD,{time = goodsCon.time})
         end
+        GameDataManager.saveUseProp(_goodsId,1)
+        GameDataManager.saveSingleProp(_goodsId,1)
+        GameDataManager.saveDayUseProp(_goodsId,1)
         return true
     else
         printf(" error 找不到id=%d的道具配置",_goodsId)
@@ -594,8 +620,9 @@ function GameDataManager.saveLevelData()
         _data = clone(LevelVo)
         fightData[curLevelId] = _data
         isFirst=true
+        GameDataManager.reachStandardLevel(curLevelId)
     end
-
+    
     local _levCon = SelectLevel[curLevelId]
     if _levCon then
         _data.id = curLevelId
@@ -701,6 +728,12 @@ function GameDataManager.updateSign()
     signList.curTable.signs = signList.curTable.signs+1
 end
 
+function GameDataManager.resetSign()
+    signList.curTable.day = TimeUtil.getDate().day
+    signList.curTable.month = TimeUtil.getDate().month
+    signList.curTable.year = TimeUtil.getDate().year
+end
+
 function GameDataManager.reward()
     signList.m_rand = math.random(1,#SignReward)
 end
@@ -741,7 +774,9 @@ function GameDataManager.setFinishAchieveData(id,_state)
     if not achieve[id] then
 		achieve[id] = {}
 	end
+	achieve[id].id = id
     achieve[id].state = _state
+    GameDispatcher:dispatch(EventNames.EVENT_GET_ACHIEVE,{id = id,state = _state})
 end
 
 function GameDataManager.getAchieveState(id)
@@ -751,9 +786,222 @@ function GameDataManager.getAchieveState(id)
     return achieve[id].state
 end
 
+--保存累计使用金币
+function GameDataManager.saveUseGold(_cost)
+    totalGold = totalGold + _cost
+    GameDataManager.reachStandardGold(totalGold)
+end
+--获取总累计使用金币
+function GameDataManager.getTotalUseGold()
+    return totalGold
+end
+
+--保存累计使用钻石
+function GameDataManager.saveUseDiamond(_cost)
+    totalDiamond = totalDiamond + _cost
+    GameDataManager.reachStandardDiamond(totalDiamond)
+end
+--获取总累计使用钻石
+function GameDataManager.getTotalUseDiamond()
+    return totalDiamond
+end
+
+--保存累计使用道具
+function GameDataManager.saveUseProp(id,_cost)
+    if not totalGood[id] then
+    	totalGood[id] = {}
+    	totalGood[id].id = id
+    	totalGood[id].count = 0
+    end
+    totalGood[id].count = totalGood[id].count + _cost
+    GameDataManager.reachStandardGoods(id,totalGood[id].count)
+end
+--获取总累计使用道具
+function GameDataManager.getTotalUseProp(id)
+    if not totalGood[id] then
+    	return 0
+    end
+    return totalGood[id].count
+end
+
+function GameDataManager.saveSingleProp(id,_cost)
+    if not singleGood[id] then
+		singleGood[id] = {}
+        singleGood[id].id = id
+        singleGood[id].count = 0
+	end
+    singleGood[id].count = singleGood[id].count + _cost
+    GameDataManager.reachStandardGoods(id,singleGood[id].count)
+end
+--关卡结束重置
+function GameDataManager.resetSingleProp()
+	singleGood = {}
+end
+
+--是否达到成就道具类型标准
+function GameDataManager.reachStandardGoods(goodId,count)
+    for var=1, #Tables.Achieve[CONDITION_TYPE.TotalProp] do
+        local info = Tables.Achieve[CONDITION_TYPE.TotalProp][var]
+        if GameDataManager.getAchieveState(info.id)== ACHIEVE_STATE.Unfinished and info.useGoodsId == goodId
+            and info.useGoodsCount == count then
+            GameDataManager.setFinishAchieveData(info.id,ACHIEVE_STATE.Finished)
+            break
+        end
+    end
+end
+
+--是否达到成就金币类型标准
+function GameDataManager.reachStandardGold(count)
+    for var=1, #Tables.Achieve[CONDITION_TYPE.TotalGold] do
+        local info = Tables.Achieve[CONDITION_TYPE.TotalGold][var]
+        if GameDataManager.getAchieveState(info.id)== ACHIEVE_STATE.Unfinished and info.useGold <= count then
+            GameDataManager.setFinishAchieveData(info.id,ACHIEVE_STATE.Finished)
+        	break
+        end
+	end
+end
+--是否达到成就钻石类型标准
+function GameDataManager.reachStandardDiamond(count)
+    for var=1, #Tables.Achieve[CONDITION_TYPE.TotalDiamond] do
+        local info = Tables.Achieve[CONDITION_TYPE.TotalDiamond][var]
+        if GameDataManager.getAchieveState(info.id)== ACHIEVE_STATE.Unfinished and info.useDiamond <= count then
+            GameDataManager.setFinishAchieveData(info.id,ACHIEVE_STATE.Finished)
+            break
+        end
+    end
+end
+--是否闯关成功
+function GameDataManager.reachStandardLevel(level)
+    for var=1, #Tables.Achieve[CONDITION_TYPE.Challenge] do
+        local info = Tables.Achieve[CONDITION_TYPE.Challenge][var]
+        if GameDataManager.getAchieveState(info.id)== ACHIEVE_STATE.Unfinished and info.levels == level then
+            GameDataManager.setFinishAchieveData(info.id,ACHIEVE_STATE.Finished)
+            break
+        end
+    end
+end
+
 --===================end=========================
 
---=============================================================礼包相关
+--===================每日任务====================
+local DailyTask = {}
+local dailyTime = {}
+function GameDataManager.initDailyTaskData(parameters)
+    local taskArr = DataPersistence.getAttribute("dailyTasks")
+    for key, var in pairs(taskArr) do
+        DailyTask[var.id] = var
+    end
+    dailyTime = DataPersistence.getAttribute("daily_time")
+    if GameDataManager.isNewDay() then
+    	GameDataManager.resetDailyTask()
+    end
+end
+
+function GameDataManager.setFinishTaskData(id,_state)
+    if not DailyTask[id] then
+        DailyTask[id] = {}
+    end
+    DailyTask[id].id = id
+    DailyTask[id].state = _state
+    GameDispatcher:dispatch(EventNames.EVENT_GET_ACHIEVE,{id = id,state = _state})
+end
+
+function GameDataManager.getTaskState(id)
+    if not DailyTask[id] then
+        return ACHIEVE_STATE.Unfinished
+    end
+    return DailyTask[id].state
+end
+
+--保存每日累计获得金币
+function GameDataManager.saveGetGold(_cost)
+    totalGetGold = totalGetGold + _cost
+    GameDataManager.reachStandardDayGold(totalGold)
+end
+--获取每日累计获得金币
+function GameDataManager.getTotalGetGold()
+    return totalGetGold
+end
+
+--保存每日累计使用道具
+function GameDataManager.saveDayUseProp(id,_cost)
+    if not totalDayGood[id] then
+        totalDayGood[id] = {}
+        totalDayGood[id].id = id
+        totalDayGood[id].count = 0
+    end
+    totalDayGood[id].count = totalDayGood[id].count + _cost
+    GameDataManager.reachStandardDayGoods(id,totalDayGood[id].count)
+end
+--获取总累计使用道具
+function GameDataManager.getTotalDayUseProp(id)
+    if not totalDayGood[id] then
+        return 0
+    end
+    return totalDayGood[id].count
+end
+
+function GameDataManager.saveDayRunDistance(_dis)
+    totalDistance = totalDistance + _dis
+    GameDataManager.reachStandardRunDistance(totalDistance)
+end
+function GameDataManager.getDayRunDistance()
+	return totalDistance
+end
+
+--每日零点重置
+function GameDataManager.resetDailyTask()
+    DailyTask = {}
+    dailyTime.day = TimeUtil.getDate().day
+    dailyTime.month = TimeUtil.getDate().month
+    dailyTime.year = TimeUtil.getDate().year
+end
+
+function GameDataManager.isNewDay()
+    if dailyTime.year==TimeUtil.getDate().year and dailyTime.month==TimeUtil.getDate().month and dailyTime.day==TimeUtil.getDate().day then
+        return false
+    else
+        return true
+    end
+end
+
+--是否达到每日使用道具任务类型标准
+function GameDataManager.reachStandardDayGoods(goodId,count)
+    for var=1, #Tables.DailyTask[TASKCONDITION_TYPE.TotalProp] do
+        local info = Tables.DailyTask[TASKCONDITION_TYPE.TotalProp][var]
+        if GameDataManager.getTaskState(info.id)== ACHIEVE_STATE.Unfinished and info.useGoodsId == goodId
+            and info.useGoodsCount == count then
+            GameDataManager.setFinishTaskData(info.id,ACHIEVE_STATE.Finished)
+            break
+        end
+    end
+end
+
+--是否达到每日获得金币类型标准
+function GameDataManager.reachStandardDayGold(count)
+    for var=1, #Tables.DailyTask[TASKCONDITION_TYPE.TotalGold] do
+        local info = Tables.DailyTask[TASKCONDITION_TYPE.TotalGold][var]
+        if GameDataManager.getTaskState(info.id)== ACHIEVE_STATE.Unfinished and info.getGold <= count then
+            GameDataManager.setFinishTaskData(info.id,ACHIEVE_STATE.Finished)
+            break
+        end
+    end
+end
+
+--是否达到每日奔跑类型标准
+function GameDataManager.reachStandardRunDistance(count)
+    for var=1, #Tables.DailyTask[TASKCONDITION_TYPE.RunDistance] do
+        local info = Tables.DailyTask[TASKCONDITION_TYPE.RunDistance][var]
+        if GameDataManager.getTaskState(info.id)== ACHIEVE_STATE.Unfinished and info.distance <= count then
+            GameDataManager.setFinishTaskData(info.id,ACHIEVE_STATE.Finished)
+            break
+        end
+    end
+end
+
+--===================end=========================
+
+--=========================礼包相关=========================
 local oem={}
 
 --初始礼包信息
@@ -837,6 +1085,24 @@ function GameDataManager.SaveData(parameters)
     
     DataPersistence.updateAttribute("user_sign",signList.curTable)--存储签到数据
     DataPersistence.updateAttribute("sign_reward",signList.m_rand)
+    
+    DataPersistence.updateAttribute("useGold_total",totalGold)
+    DataPersistence.updateAttribute("useDiamond_total",totalDiamond)
+    
+    local propArr = {}
+    for key, var in pairs(totalGood) do
+        table.insert(propArr,var)
+    end
+    DataPersistence.updateAttribute("useGood_total",propArr)
+    
+    DataPersistence.updateAttribute("getGold_total",totalGetGold)
+    DataPersistence.updateAttribute("run_distance",totalDistance)
+    
+    local GoodArr = {}
+    for key, var in pairs(totalDayGood) do
+        table.insert(GoodArr,var)
+    end
+    DataPersistence.updateAttribute("day_useGood_total",GoodArr)
 
     local modleList = {}
     for key, var in pairs(modleDic) do
@@ -855,6 +1121,14 @@ function GameDataManager.SaveData(parameters)
         table.insert(achieveArr,var)
     end
     DataPersistence.updateAttribute("achieve",achieveArr)
+    
+    local taskArr = {}
+    for key, var in pairs(DailyTask) do
+        table.insert(taskArr,var)
+    end
+    DataPersistence.updateAttribute("dailyTasks",taskArr)
+    
+    DataPersistence.updateAttribute("daily_time",dailyTime)
 
     --物品相关
     DataPersistence.updateAttribute("goods_list",goodsList)

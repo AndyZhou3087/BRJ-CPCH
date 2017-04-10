@@ -21,6 +21,15 @@ function AchieveQuest:ctor()
     local Image_2_0 = cc.uiloader:seekNodeByName(self.m_json,"Image_2_0")
     Image_2_0:setPositionX(display.cx)
     
+    local listContent = cc.uiloader:seekNodeByName(self.m_json,"list_panel")
+    self.m_listSize = listContent:getCascadeBoundingBox().size
+    self.lv = cc.ui.UIListView.new {
+        bgScale9 = true,
+        viewRect = cc.rect(0, 0, self.m_listSize.width, self.m_listSize.height),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL}
+        :onTouch(handler(self, self.touchListener))
+        :addTo(listContent)
+    
     local QuestDay = cc.uiloader:seekNodeByName(self.m_json,"QuestDay")
     local Achieve = cc.uiloader:seekNodeByName(self.m_json,"Achieve")
     local QuestLabel = cc.uiloader:seekNodeByName(self.m_json,"QuestLabel")
@@ -34,41 +43,32 @@ function AchieveQuest:ctor()
         Achieve:setButtonEnabled(true)
         QuestLabel:setButtonImage("disabled","ui/Quest_day2.png")
         AchieveLabel:setButtonImage("disabled","ui/Achieve_1.png")
-        self:initContent(1)
+        self:initContent(TaskConfig,1)
     end)
     Achieve:onButtonClicked(function(_event)
         QuestDay:setButtonEnabled(true)
         Achieve:setButtonEnabled(false)
         QuestLabel:setButtonImage("disabled","ui/Quest_day1.png")
         AchieveLabel:setButtonImage("disabled","ui/Achieve_2.png")
-        self:initContent(2)
+        self:initContent(AchieveConfig,2)
     end)
     
-    local listContent = cc.uiloader:seekNodeByName(self.m_json,"list_panel")
-    self.m_listSize = listContent:getCascadeBoundingBox().size
-    self.lv = cc.ui.UIListView.new {
-        bgScale9 = true,
-        viewRect = cc.rect(0, 0, self.m_listSize.width, self.m_listSize.height),
-        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL}
---        :onTouch(handler(self, self.touchListener))
-        :addTo(listContent)
+    self:initContent(TaskConfig,1)
 end
 
-function AchieveQuest:initContent(type)
-    local AchieveQuestCon
-	if type == 1 then  --每日任务
-        
-    elseif type == 2 then  --成就
-        AchieveQuestCon = AchieveConfig
-	end
+function AchieveQuest:touchListener(parameters)
+	
+end
+
+function AchieveQuest:initContent(AchieveQuestCon,type)
     self.lv:removeAllItems()
     Tools.delayCallFunc(0.1,function()
         for i=1,#AchieveQuestCon do
             local item = self.lv:newItem()
             local content = AchieveQuestItem.new({type=type,config=AchieveQuestCon[i]})
             content:setTouchEnabled(false)
-            content:setContentSize(self.m_listSize.width, 100)
-            item:setItemSize(self.m_listSize.width, 100)
+            content:setContentSize(self.m_listSize.width, 95)
+            item:setItemSize(self.m_listSize.width, 95)
             item:addContent(content)
             self.lv:addItem(item)
         end

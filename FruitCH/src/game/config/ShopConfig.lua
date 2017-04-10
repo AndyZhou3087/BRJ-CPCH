@@ -28,7 +28,7 @@ ShopConfig[1]=
     res = "ui/ShopGift.png",   --商品资源
     describe = "hhhh",  --描述
     price = {type=SHOPITEM_BUY.RMB,rate=15,payId = Payment.Gift_1},   --价格
-    content = {gold = 10,diamond = 10,prop={id = 1,count = 1},}   --礼包内容：金币，钻石，道具.没有可不填字段
+        content = {gold = 10,diamond = 10,prop={{id = 1,count = 1}},}   --礼包内容：金币，钻石，道具.没有可不填字段(角色礼包可每日领取)
 }
 
 ShopConfig[2]=
