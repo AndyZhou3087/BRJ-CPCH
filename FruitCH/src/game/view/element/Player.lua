@@ -27,8 +27,9 @@ function Player:ctor()
     local modle = RoleConfig[self.m_curModle].armatureName
     self:createModle(modle)
 
-    self.p_siz=cc.size(self.m_armature:getCascadeBoundingBox().size.width*0.7,self.m_armature:getCascadeBoundingBox().size.height)
-    self:addBody(cc.p(10,50),self.p_siz)
+    self.p_siz=cc.size(80,110)
+    self.p_offset = cc.p(10,60)
+    self:addBody(self.p_offset,self.p_siz)
     
     self.m_twoJump = false
     self.m_isMagnet = false
@@ -68,6 +69,9 @@ function Player:ctor()
     GameDispatcher:addListener(EventNames.EVENT_SLOW_SPEED,handler(self,self.slowSpeed))
     --弹簧
     GameDispatcher:addListener(EventNames.EVENT_OBSCALE_SPRING,handler(self,self.spring))
+    --游戏内护盾
+    GameDispatcher:addListener(EventNames.EVENT_GAME_PROTECT,handler(self,self.gameProtect))
+    
 
     --角色暂停和恢复
     GameDispatcher:addListener(EventNames.EVENT_PLAYER_PAUSE,handler(self,self.pause))
@@ -83,6 +87,7 @@ function Player:createModle(_actionName)
 
     self.m_armature = ccs.Armature:create(_actionName)
     self:addChild(self.m_armature)
+    self:setAnchorPoint(cc.p(0,0))
     self.m_animation = self.m_armature:getAnimation()
     self:toPlay(PLAYER_ACTION.Run)
     self.m_animation:setMovementEventCallFunc(handler(self,self.armatureMoveEvent))
@@ -257,6 +262,10 @@ function Player:getAreaSize(parameters)
     return self.p_siz
 end
 
+function Player:getOffset(parameters)
+    return self.p_offset
+end
+
 function Player:update(dt,_x,_y)
     if self.m_propManget then
         GameController.detect(self,cc.p(_x,_y),self.m_propRadius)
@@ -275,6 +284,10 @@ function Player:playerAttacked(parm)
     	self:clearBuff(PLAYER_STATE.Defence)
     	return
     end
+    if self:isInState(PLAYER_STATE.GameDefence) then
+        self:clearBuff(PLAYER_STATE.GameDefence)
+        return
+    end
     if self:isInState(PLAYER_STATE.StartSprint) or self:isInState(PLAYER_STATE.DeadSprint) then
         return
     end
@@ -288,27 +301,31 @@ function Player:playerAttacked(parm)
     self.m_hp = self.m_hp - parm.data.att
     if self.m_hp <= 0 then
         Tools.printDebug("------------角色死亡..")
+        self:deadSprintFlash()
+    end
+end
+
+function Player:deadSprintFlash(parameters)
+	if GameController.getStartPropById(2) then
+        GameDataManager.useGoods(2)
+    else
+        self:deadContinueFlash()
+    end
+end
+
+function Player:deadContinueFlash()
+	if GameController.getStartPropById(4) then
+        GameDataManager.useGoods(4)
+    else
         self:deadFlash()
     end
 end
 
 --
-function Player:deadFlash(parameters)
-    --
-    Tools.delayCallFunc(0.1,function()
-        if GameController.getStartPropById(2) then
-            GameDataManager.useGoods(2)
-        elseif GameController.getStartPropById(4) then
-            GameDataManager.useGoods(4)
-        else
-            self:death()
-            --复活界面
-            GameDispatcher:dispatch(EventNames.EVENT_REVIVE_VIEW)
-            --弹结算界面
---            GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type = GAMEOVER_TYPE.Fail})
-        end
-    end)
-    
+function Player:deadFlash()
+    self:death()
+    --复活界面
+    GameDispatcher:dispatch(EventNames.EVENT_REVIVE_VIEW)
 end
 
 --角色死亡
@@ -409,6 +426,9 @@ function Player:manget(parameters)
 	if self:isInState(PLAYER_STATE.MagnetProp) then
         return
 	end
+    if self:isInState(PLAYER_STATE.Magnet) then
+        return
+    end
 	
 	self.m_propManget = true
     self.m_propRadius = parameters.data.radius
@@ -419,6 +439,14 @@ function Player:manget(parameters)
     self.m_manHandler = Tools.delayCallFunc(parameters.data.time,function()
         self:clearBuff(PLAYER_STATE.MagnetProp)
     end)
+    
+    --特效
+    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xitieshi0.png", "armature/xitieshi0.plist" , "armature/xitieshi.ExportJson")
+    self.m_manget = ccs.Armature:create("xitieshi")
+    self.m_manget:getAnimation():playWithIndex(0)
+    self.m_manget:setPosition(20,30)
+    self:addChild(self.m_manget)
+    
     GameDataManager.setGamePropTime(PLAYER_STATE.MagnetProp,_time)
 end
 
@@ -434,6 +462,24 @@ function Player:startProtect(parameters)
 --    self.m_proHandler = Tools.delayCallFunc(parameters.data.time,function()
 --        self:clearBuff(PLAYER_STATE.StartProtect)
 --    end)
+end
+
+--游戏内吃到护盾
+function Player:gameProtect(parameters)
+    if self:isDead() then
+        return
+    end
+    if self:isInState(PLAYER_STATE.StartProtect) then
+    	return
+    end
+    if self:isInState(PLAYER_STATE.GameDefence) then
+        self:clearBuff(PLAYER_STATE.GameDefence)
+    end
+    
+    Tools.printDebug("-----游戏内护盾")
+    --护盾特效
+
+    self:addBuff({type=PLAYER_STATE.GameDefence,time = parameters.data.time})
 end
 
 --开局冲刺
@@ -622,6 +668,12 @@ function Player:magnetSkill(radius)
     self:addBuff({type=PLAYER_STATE.Magnet})
     self.m_radius = radius
     self.m_isMagnet = true
+    --特效
+    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xitieshi0.png", "armature/xitieshi0.plist" , "armature/xitieshi.ExportJson")
+    self.m_mangetSelf = ccs.Armature:create("xitieshi")
+    self.m_mangetSelf:getAnimation():playWithIndex(0)
+    self.m_mangetSelf:setPosition(20,30)
+    self:addChild(self.m_mangetSelf)
 end
 
 --护盾技能
@@ -696,13 +748,13 @@ function Player:clearBuff(_type)
             MoveSpeed = self.deadSpeed
             self.deadSpeed = nil
             self.m_scaleY = nil
-            self:deadFlash()
+            self:deadContinueFlash()
             
         elseif _type == PLAYER_STATE.StartProtect then
-            if self.m_proHandler then
-                Scheduler.unscheduleGlobal(self.m_proHandler)
-                self.m_proHandler = nil
-            end
+--            if self.m_proHandler then
+--                Scheduler.unscheduleGlobal(self.m_proHandler)
+--                self.m_proHandler = nil
+--            end
             --移除护盾特效
         
         elseif _type == PLAYER_STATE.MagnetProp then
@@ -711,6 +763,11 @@ function Player:clearBuff(_type)
                 Scheduler.unscheduleGlobal(self.m_manHandler)
                 self.m_manHandler = nil
             end
+            if not tolua.isnull(self.m_manget) then
+                self.m_manget:removeFromParent()
+                self.m_manget = nil
+            end
+            
         elseif _type == PLAYER_STATE.GrankDrink then
             if self.m_grankHandler then
                 Scheduler.unscheduleGlobal(self.m_grankHandler)
@@ -750,6 +807,13 @@ function Player:clearBuff(_type)
             end
             MoveSpeed = self.originSpeed
             self.originSpeed = nil
+        elseif _type == PLAYER_STATE.Magnet then
+            if not tolua.isnull(self.m_mangetSelf) then
+                self.m_mangetSelf:removeFromParent()
+                self.m_mangetSelf = nil
+            end
+        elseif _type == PLAYER_STATE.Defence then
+              
         end
     end
 
@@ -941,6 +1005,7 @@ function Player:dispose()
     GameDispatcher:removeListenerByName(EventNames.EVENT_SLOW_SPEED)
     GameDispatcher:removeListenerByName(EventNames.EVENT_OBSCALE_SPRING)
     GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_REVIVE)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_GAME_PROTECT)
     
     self.m_isDead = false
     GameController.isDead = false

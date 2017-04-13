@@ -8,7 +8,7 @@ function PropItem:ctor(parameters)
 
     self.propUI = cc.uiloader:load("json/PropItem.json")
     self:addChild(self.propUI)
-    self.propUI:setPosition(cc.p(-14,0))
+    self.propUI:setPosition(cc.p(0,0))
     
     self:initPropData()
 end
@@ -33,11 +33,9 @@ function PropItem:initPropData()
     --购买价格
     local pcount = cc.uiloader:seekNodeByName(self.propUI,"Price")
     if self.propCon.cost.type == COST_TYPE.Gold then
-        buy:setButtonImage("disabled","Common/Common_gold.png")
---        buy:setSize(cc.size(30,30))
+        buy:setButtonImage("disabled","Common/Common_gold_small.png")
     elseif self.propCon.cost.type == COST_TYPE.Diamond then
-        buy:setButtonImage("disabled","Common/Common_diamond.png")
---        buy:setSize(cc.size(33,30))
+        buy:setButtonImage("disabled","Common/Common_diamond_small.png")
     end
     pcount:setString(self.propCon.cost.price)
     

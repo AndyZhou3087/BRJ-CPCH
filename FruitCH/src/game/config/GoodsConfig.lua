@@ -17,6 +17,7 @@ GOODS_TYPE =
         ConverGold = 9,    --金币转换
         LimitSprint = 10,    --极限冲刺
         CloudLadder = 11,    --浮云梯
+        GameProtect = 12,   --游戏内护盾
     }
     
 COST_TYPE = 
@@ -147,6 +148,17 @@ GoodsConfig[11]=
         id = 11,
         type = GOODS_TYPE.CloudLadder,       --道具类型
         discrebe = "浮云梯",
+        res = "ui/Prop_2.png",
+        time = 8,   --时间(单位：秒)
+        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        cost = {type = COST_TYPE.Gold,price = 25}
+    }
+    
+GoodsConfig[12]=
+    {
+        id = 12,
+        type = GOODS_TYPE.GameProtect,       --道具类型
+        discrebe = "护盾",
         res = "ui/Prop_2.png",
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息

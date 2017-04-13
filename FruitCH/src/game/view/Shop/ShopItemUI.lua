@@ -40,20 +40,18 @@ function ShopItemUI:initContent(shopConfig,pos)
         Line2:setVisible(true)
         initPrice:setString("原价:"..shopConfig.initPrice)
     end
-    --标题背景
-    local ItemFrame = cc.uiloader:seekNodeByName(content,"ItemFrame")
-    ItemFrame:setTouchSwallowEnabled(false)
-    ItemFrame:setButtonEnabled(false)
-    ItemFrame:setButtonImage("disabled",shopConfig.titleBg)
+--    --标题背景
+--    local ItemFrame = cc.uiloader:seekNodeByName(content,"ItemFrame")
+--    ItemFrame:setTouchSwallowEnabled(false)
+--    ItemFrame:setButtonEnabled(false)
+--    ItemFrame:setButtonImage("disabled",shopConfig.titleBg)
     --标题文字
     local Item_Title = cc.uiloader:seekNodeByName(content,"Item_Title")
-    Item_Title:setTouchSwallowEnabled(false)
-    Item_Title:setButtonEnabled(false)
-    Item_Title:setButtonImage("disabled",shopConfig.titleRes)
+    Item_Title:setString(shopConfig.titleRes)
     --物品资源
     local ItemImg = cc.uiloader:seekNodeByName(content,"ItemImg")
     ItemImg:setTouchSwallowEnabled(false)
-    ItemImg:setButtonEnabled(false)
+    ItemImg:setButtonEnabled(false) 
     ItemImg:setButtonImage("disabled",shopConfig.res)
 
     --道具功能描述

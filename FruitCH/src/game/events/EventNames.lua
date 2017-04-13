@@ -28,6 +28,9 @@ EventNames.EVENT_OPEN_REWARDPROP = "event_open_rewardprop"
 --签到界面
 EventNames.EVENT_OPEN_SIGNUI = "event_open_signui"
 
+--角色礼包界面
+EventNames.EVENT_OPEN_GIFTROLE = "event_open_giftrole"
+
 --[[
 裁剪（遮罩）
 mould: "ui/uiImg/xxx.png"  裁剪模板(图片) 
@@ -124,5 +127,11 @@ EventNames.EVENT_OBSCALE_SPRING = "event_obscale_spring"
 
 --角色复活
 EventNames.EVENT_ROLE_REVIVE = "event_role_revive"
+
+--游戏内护盾
+EventNames.EVENT_GAME_PROTECT = "event_game_protect"
+
+--角色数据更新
+EventNames.EVENT_ROLE_CHANGEDATA = "event_role_changedata"
 
 return EventNames

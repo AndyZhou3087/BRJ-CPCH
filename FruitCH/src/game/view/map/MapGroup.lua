@@ -88,7 +88,7 @@ function MapGroup:ctor(_idx,_levelCon)
     self:initElement(_obstacle)
 
     self:initCoins(_coins)
-    self:initGoods(_goods)
+--    self:initGoods(_goods)
     
 end
 
@@ -213,6 +213,12 @@ function MapGroup:startUpdate(parameters)
 end
 
 function MapGroup:dispose(_isDestroy)
+
+    if self.m_timer then
+        Scheduler.unscheduleGlobal(self.m_timer)
+        self.m_timer = nil
+    end
+
     for key, var in pairs(self.m_blocks) do
         if not tolua.isnull(var) then
             var:dispose()
@@ -227,6 +233,7 @@ function MapGroup:dispose(_isDestroy)
             end
         end
     end
+    self.m_obstacle = {}
     
     if self.m_golds then
         for key, var in pairs(self.m_golds) do
@@ -238,6 +245,7 @@ function MapGroup:dispose(_isDestroy)
             end
         end
     end
+    self.m_golds = {}
     
     if self.m_goods then
         for key, var in pairs(self.m_goods) do
@@ -246,11 +254,7 @@ function MapGroup:dispose(_isDestroy)
             end
         end
     end
-    
-    if self.m_timer then
-        Scheduler.unscheduleGlobal(self.m_timer)
-        self.m_timer = nil
-    end
+    self.m_goods ={}
     
     self:removeFromParent(true)
 

@@ -10,7 +10,15 @@
   "designHeight": 540,
   "designWidth": 960,
   "textures": [],
-  "texturesPng": [],
+  "texturesPng": [
+    "ui/Main_bg.jpg",
+    "ui/Logo.png",
+    "ui/Level_button1.png",
+    "ui/Level_button2.png",
+    "ui/Endless_button1.png",
+    "ui/Endless_button2.png",
+    "ui/Set_button1.png"
+  ],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",

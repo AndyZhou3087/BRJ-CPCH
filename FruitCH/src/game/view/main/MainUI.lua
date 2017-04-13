@@ -53,6 +53,10 @@ function MainUI:init(parameters)
     
     self.m_unlockNum = GameDataManager.getUlockLevelsNum()
     
+    --购买礼包后每日领取
+    Tools.delayCallFunc(0.1,function()
+        GameDataManager.updateGift()
+    end)
 end
 
 function MainUI:MusicSoundSet( ... )

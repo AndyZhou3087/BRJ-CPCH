@@ -10,7 +10,15 @@
   "designHeight": 540,
   "designWidth": 960,
   "textures": [],
-  "texturesPng": [],
+  "texturesPng": [
+    "ui/Main_bg.jpg",
+    "ui/Logo.png",
+    "ui/Level_button1.png",
+    "ui/Level_button2.png",
+    "ui/Endless_button1.png",
+    "ui/Endless_button2.png",
+    "ui/Set_button1.png"
+  ],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",
@@ -382,7 +390,7 @@
                   "customProperty": "",
                   "flipX": false,
                   "flipY": false,
-                  "height": 39,
+                  "height": 37,
                   "ignoreSize": true,
                   "layoutParameter": null,
                   "opacity": 255,
@@ -399,7 +407,7 @@
                   "touchAble": false,
                   "useMergedTexture": false,
                   "visible": true,
-                  "width": 43,
+                  "width": 36,
                   "x": -83,
                   "y": -1,
                   "capInsetsHeight": 1,
@@ -413,8 +421,8 @@
                     "resourceType": 0
                   },
                   "scale9Enable": false,
-                  "scale9Height": 39,
-                  "scale9Width": 43
+                  "scale9Height": 37,
+                  "scale9Width": 36
                 }
               },
               {
@@ -620,7 +628,7 @@
                   "layoutParameter": null,
                   "opacity": 255,
                   "positionPercentX": 0.0025,
-                  "positionPercentY": 0.42,
+                  "positionPercentY": 0.4225,
                   "positionType": 0,
                   "rotation": 0,
                   "scaleX": 1,
@@ -634,7 +642,7 @@
                   "visible": true,
                   "width": 405,
                   "x": 1,
-                  "y": 168,
+                  "y": 169,
                   "capInsetsHeight": 1,
                   "capInsetsWidth": 1,
                   "capInsetsX": 19,
@@ -723,8 +731,8 @@
                   "customProperty": "",
                   "flipX": false,
                   "flipY": false,
-                  "height": 40,
-                  "ignoreSize": false,
+                  "height": 36,
+                  "ignoreSize": true,
                   "layoutParameter": null,
                   "opacity": 255,
                   "positionPercentX": 0.0025,
@@ -740,7 +748,7 @@
                   "touchAble": false,
                   "useMergedTexture": false,
                   "visible": true,
-                  "width": 80,
+                  "width": 72,
                   "x": 1,
                   "y": 172,
                   "capInsetsHeight": 1,
@@ -754,8 +762,8 @@
                     "resourceType": 0
                   },
                   "scale9Enable": false,
-                  "scale9Height": 40,
-                  "scale9Width": 80
+                  "scale9Height": 36,
+                  "scale9Width": 72
                 }
               },
               {
@@ -781,8 +789,8 @@
                       "customProperty": "",
                       "flipX": false,
                       "flipY": false,
-                      "height": 28,
-                      "ignoreSize": false,
+                      "height": 25,
+                      "ignoreSize": true,
                       "layoutParameter": null,
                       "opacity": 255,
                       "positionPercentX": -0.006289308,
@@ -798,7 +806,7 @@
                       "touchAble": false,
                       "useMergedTexture": false,
                       "visible": true,
-                      "width": 120,
+                      "width": 102,
                       "x": -1,
                       "y": 4,
                       "capInsetsHeight": 1,
@@ -812,8 +820,8 @@
                         "resourceType": 0
                       },
                       "scale9Enable": false,
-                      "scale9Height": 28,
-                      "scale9Width": 120
+                      "scale9Height": 25,
+                      "scale9Width": 102
                     }
                   }
                 ],
@@ -909,8 +917,8 @@
                       "customProperty": "",
                       "flipX": false,
                       "flipY": false,
-                      "height": 28,
-                      "ignoreSize": false,
+                      "height": 24,
+                      "ignoreSize": true,
                       "layoutParameter": null,
                       "opacity": 255,
                       "positionPercentX": -0.006289308,
@@ -926,7 +934,7 @@
                       "touchAble": false,
                       "useMergedTexture": false,
                       "visible": true,
-                      "width": 120,
+                      "width": 103,
                       "x": -1,
                       "y": 4,
                       "capInsetsHeight": 1,
@@ -940,8 +948,8 @@
                         "resourceType": 0
                       },
                       "scale9Enable": false,
-                      "scale9Height": 28,
-                      "scale9Width": 120
+                      "scale9Height": 24,
+                      "scale9Width": 103
                     }
                   }
                 ],
@@ -1037,8 +1045,8 @@
                       "customProperty": "",
                       "flipX": false,
                       "flipY": false,
-                      "height": 28,
-                      "ignoreSize": false,
+                      "height": 24,
+                      "ignoreSize": true,
                       "layoutParameter": null,
                       "opacity": 255,
                       "positionPercentX": -0.006289308,
@@ -1054,7 +1062,7 @@
                       "touchAble": false,
                       "useMergedTexture": false,
                       "visible": true,
-                      "width": 120,
+                      "width": 101,
                       "x": -1,
                       "y": 4,
                       "capInsetsHeight": 1,
@@ -1068,8 +1076,8 @@
                         "resourceType": 0
                       },
                       "scale9Enable": false,
-                      "scale9Height": 28,
-                      "scale9Width": 120
+                      "scale9Height": 24,
+                      "scale9Width": 101
                     }
                   }
                 ],

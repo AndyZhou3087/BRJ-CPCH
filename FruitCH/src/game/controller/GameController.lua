@@ -199,7 +199,8 @@ function GameController.attract(parameters)
                 local playSize = curPlayer:getAreaSize()
                 local goldPos=gold:getParent():convertToWorldSpace(cc.p(gold:getPosition()))
                 local goldSize = gold:getSize()
-                local playerRect = cc.rect(playP.x,playP.y,playSize.width,playSize.height)
+                local playerOffset = curPlayer:getOffset()
+                local playerRect = cc.rect(playP.x-playSize.width*0.5,playP.y,playSize.width,playSize.height)
                 local goldRect = cc.rect(goldPos.x,goldPos.y,goldSize.width,goldSize.height)
                 if cc.rectIntersectsRect(goldRect,playerRect) then
                     gold:collision()
@@ -324,6 +325,16 @@ function GameController.clearBody(parameters)
         end
     end
     goodBody={}
+    
+    if movingObjs then
+        for var=#movingObjs, 1,-1 do
+            local _node = movingObjs[var]
+            if not tolua.isnull(_node) then
+                _node:dispose()
+            end
+        end
+        movingObjs={}
+    end
 end
 
 

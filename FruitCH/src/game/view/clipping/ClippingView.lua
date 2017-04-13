@@ -12,11 +12,11 @@ function ClippingView:ctor()
     self:setNodeEventEnabled(true)
 
     --阴影层
-    local _mask = display.newColorLayer(cc.c4b(0,0,0,230))
+    local _mask = display.newColorLayer(cc.c4b(0,0,0,255))
 
     --遮罩形状(模板)
     self.sprite = display.newSprite("ui/ClipNode.png")
-    self.sprite:setScale(6)
+    self.sprite:setScale(8)
 
     --裁剪节点
     local _clip = cc.ClippingNode:create():addTo(self)
@@ -24,6 +24,9 @@ function ClippingView:ctor()
     _clip:setAlphaThreshold(0.5)            --设置裁剪像素
     _clip:setStencil(self.sprite)
     _clip:addChild(_mask)
+    
+    self.shade = display.newSprite("ui/Shade.png"):addTo(self)
+    self.shade:setPosition(cc.p(display.cx,display.cy-100))
     
     self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
 
@@ -57,6 +60,7 @@ function ClippingView:onEnterFrame(parameters)
     end
     local posX,posY = GameController.getCurPlayer():getPosition()
     self.sprite:setPosition(cc.p(posX+100,posY))
+    self.shade:setPosition(cc.p(posX+100,posY))
 end
 
 function ClippingView:closeClip(parameters)

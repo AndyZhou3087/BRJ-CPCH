@@ -17,6 +17,7 @@ function Obstacle:ctor(id,py)
     Obstacle.super.ctor(self)
 	
     local obCon = ObstacleConfig[id]
+    self.isDead = false
     if obCon then
         self:makeVo(obCon)
         self.m_id=obCon.id
@@ -201,17 +202,9 @@ function Obstacle:villainMove()
     elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
         _speed = EndlessMode.speed
     end
-    local fadeOut = cc.FadeOut:create(Flash_Skeep_Time/(MoveSpeed/_speed))
-    local fadeIn = cc.FadeIn:create(Flash_Skeep_Time/(MoveSpeed/_speed))
-    local sqes = cc.Sequence:create(fadeOut,fadeIn)
-    local repeated = cc.Repeat:create(sqes,3)
-    local callfunc = cc.CallFunc:create(function()
-        transition.moveBy(self,{time=self.m_vo.m_speed,x=-display.width-200,y=0,onComplete=function()
-            self:dispose()
-        end})
-    end)
-    local seque = cc.Sequence:create(repeated,callfunc)
-    self.obcon:runAction(seque)
+    transition.moveBy(self,{time=self.m_vo.m_speed*DefaultSpeed/_speed,x=-display.width-200,y=0,onComplete=function()
+        self:dispose()
+    end})
 end
 
 --飞行障碍物执行飞行动画
@@ -222,8 +215,8 @@ function Obstacle:executeMove(parameters)
     elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
         _speed = EndlessMode.speed
     end
-    local fadeOut = cc.FadeOut:create(Flash_Skeep_Time/(MoveSpeed/_speed))
-    local fadeIn = cc.FadeIn:create(Flash_Skeep_Time/(MoveSpeed/_speed))
+    local fadeOut = cc.FadeOut:create(Flash_Skeep_Time*DefaultSpeed/_speed)
+    local fadeIn = cc.FadeIn:create(Flash_Skeep_Time*DefaultSpeed/_speed)
     local sqes = cc.Sequence:create(fadeOut,fadeIn)
     local repeated = cc.Repeat:create(sqes,3)
     local callfunc = cc.CallFunc:create(function()
@@ -234,7 +227,7 @@ function Obstacle:executeMove(parameters)
         if not tolua.isnull(self.tip_2) then
             self.tip_2:removeFromParent()
         end
-        transition.moveBy(self,{time=self.m_vo.m_speed,x=-display.width-200,y=0,onComplete=function()
+        transition.moveBy(self,{time=self.m_vo.m_speed*DefaultSpeed/_speed,x=-display.width-200,y=0,onComplete=function()
             self:dispose()
         end})
     end)
@@ -265,17 +258,41 @@ function Obstacle:armatureMoveEvent(armatureBack,movementType,movementID)
 end
 
 function Obstacle:collision(_type)
+    if GameController.isInState(PLAYER_STATE.GrankDrink) then
+        self.isDead = true
+        self.obcon:setVisible(false)
+        self.m_dEffect:setVisible(true)
+        self.m_dEffect:getAnimation():play("xiaoshi",0,0)
+        if self.m_vo.m_type == OBSTACLE_TYPE.fly then
+            self:stopAllActions()
+        end
+        return
+    end
     if self.m_vo.m_type == OBSTACLE_TYPE.special then
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = true,att = self.m_vo.m_att})
     elseif self.m_vo.m_type == OBSTACLE_TYPE.ice then
-        GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{cutSpeed = self.m_vo.m_cutSpeed,length = self.m_vo.m_length})
+        if not GameController.isInState(PLAYER_STATE.Slow) then
+            GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{cutSpeed = self.m_vo.m_cutSpeed,length = self.m_vo.m_length})
+        end
     elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
         if self.isAnimate then
             self.obcon:getAnimation():playWithIndex(0)
         end
         GameDispatcher:dispatch(EventNames.EVENT_OBSCALE_SPRING)
     else
-        if GameController.isInState(PLAYER_STATE.Defence) or GameController.isInState(PLAYER_STATE.StartProtect) then
+        if GameController.getCurPlayer():getJumpState() then
+            self.isDead = true
+            self.obcon:setVisible(false)
+            self.m_dEffect:setVisible(true)
+            self.m_dEffect:getAnimation():play("xiaoshi",0,0)
+            if self.m_vo.m_type == OBSTACLE_TYPE.fly then
+                self:stopAllActions()
+            end
+            return
+        end
+        if GameController.isInState(PLAYER_STATE.Defence) or GameController.isInState(PLAYER_STATE.StartProtect) 
+            or GameController.isInState(PLAYER_STATE.GameDefence)then
+            self.isDead = true
             GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})
             self.obcon:setVisible(false)
             self.m_dEffect:setVisible(true)
@@ -285,22 +302,17 @@ function Obstacle:collision(_type)
             end
             return
         end
-        if GameController.getCurPlayer():getJumpState() then
-                self.obcon:setVisible(false)
-                self.m_dEffect:setVisible(true)
-                self.m_dEffect:getAnimation():play("xiaoshi",0,0)
-                if self.m_vo.m_type == OBSTACLE_TYPE.fly then
-                	self:stopAllActions()
-                end
-        	return
-        end
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})
     end
     
     --        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Obstacle_Sound)
 end
 
-function Obstacle:dispose(parameters)
+function Obstacle:isDisappear()
+    return self.isDead
+end
+
+function Obstacle:dispose()
     if self.m_pause then
         GameDispatcher:removeListenerByHandle(self.m_pause)
         self.m_pause = nil
@@ -309,7 +321,7 @@ function Obstacle:dispose(parameters)
         GameDispatcher:removeListenerByHandle(self.m_resum)
         self.m_resum = nil
     end
-    
+
     if self.m_timer then
         Scheduler.unscheduleGlobal(self.m_timer)
         self.m_timer = nil

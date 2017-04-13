@@ -86,6 +86,9 @@ function FightReadyUI:ctor(parm)
                 GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
                 app:enterGameScene()
                 self:toClose(true)
+            Tools.delayCallFunc(0.01,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+            end)
         elseif parm == GAME_TYPE.EndlessMode and GameDataManager.costPower(EndlessMode.costPower) then      
             GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
             for key, var in ipairs(self.m_goods) do
@@ -103,6 +106,9 @@ function FightReadyUI:ctor(parm)
             startGame:setButtonEnabled(false)
             app:enterGameScene()
             self:toClose(true)
+            Tools.delayCallFunc(0.01,function()
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
+            end)
         else
             Tools.printDebug("体力不足！！",parm == GAME_TYPE.EndlessMode and GameDataManager.costPower(EndlessMode.costPower))
             startGame:setButtonEnabled(true)
@@ -153,8 +159,8 @@ function FightReadyUI:initProp(par)
                 local item = self.listView:newItem()
                 local content = PropItem.new(_goodsCon)
                 content:setTouchEnabled(false)
-                content:setContentSize(self.listPanelSize.width, 105)
-                item:setItemSize(self.listPanelSize.width, 105)
+                content:setContentSize(self.listPanelSize.width, 78)
+                item:setItemSize(self.listPanelSize.width, 78)
                 item:addContent(content)
                 self.listView:addItem(item)
                

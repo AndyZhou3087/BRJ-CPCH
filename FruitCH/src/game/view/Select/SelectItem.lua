@@ -11,10 +11,16 @@ function SelectItem:ctor(parameters)
 
     self.SelectBtn = cc.uiloader:seekNodeByName(self.m_json,"SelectBtn")
     self.SelectBtn:setTouchSwallowEnabled(false)
+    self.SelectBtn:onButtonPressed(function(_event)    --按下
+            _event.target:setScale(1.1)
+        end)
+    self.SelectBtn:onButtonRelease(function(_event)    --触摸离开
+            _event.target:setScale(1)
+        end)
     self.SelectBtn:onButtonClicked(function(event)
-        Tools.printDebug("chjh button click")
-        Tools.printDebug("----------关卡：",parameters._id)
-        self:initLevelVo(parameters._id)
+            Tools.printDebug("chjh button click")
+            Tools.printDebug("----------关卡：",parameters._id)
+            self:initLevelVo(parameters._id)
     end)
     
     local LevelCount = cc.uiloader:seekNodeByName(self.m_json,"LevelCount")
@@ -45,6 +51,7 @@ function SelectItem:initLevelData(level)
             self.SelectBtn:setButtonEnabled(true)
         end
     else
+        Tools.printDebug("------关卡地图：",self.parm._id)
         self.SelectBtn:setButtonEnabled(true)
         local stars = GameDataManager.getLevelStar(self.parm._id)
         for var=1, stars do

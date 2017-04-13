@@ -5,6 +5,7 @@ local BaseUI = require("game.view.BaseUI")
 local SelectUI = class("SelectUI",BaseUI)
 
 local SelectItem = require("game.view.Select.SelectItem")
+local Scheduler = require("framework.scheduler")
 
 function SelectUI:ctor()
     SelectUI.super.ctor(self) 
@@ -66,9 +67,20 @@ function SelectUI:init(parameters)
 
     
     --签到
-    Tools.delayCallFunc(0.1,function()
+    self.signHandler = Tools.delayCallFunc(0.1,function()
         if not GameDataManager.isDateSign() and GameController.getSignPop() then
         	GameDispatcher:dispatch(EventNames.EVENT_OPEN_SIGNUI)
+        end
+    end)
+    
+    --弹角色礼包
+    Tools.delayCallFunc(0.1,function()
+        if not GameDataManager.getRoleModle(GiftConfig[2].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 2})
+        elseif not GameDataManager.getRoleModle(GiftConfig[3].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 3})
+        elseif not GameDataManager.getRoleModle(GiftConfig[4].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4})
         end
     end)
 end
@@ -78,13 +90,21 @@ function SelectUI:scrollListener(event)
 end
 
 --关闭界面调用
-function SelectUI:toClose(_clean)
-
+function SelectUI:dispose(_clean)
+    if self.signHandler then
+        Scheduler.unscheduleGlobal(self.signHandler)
+        self.signHandler = nil
+    end
+    
     SelectUI.super.toClose(self,_clean)
 end
 
 --清理数据
 function SelectUI:onCleanup()
+    if self.signHandler then
+        Scheduler.unscheduleGlobal(self.signHandler)
+        self.signHandler = nil
+    end
     GameDataManager.SaveData()
 end
 return SelectUI

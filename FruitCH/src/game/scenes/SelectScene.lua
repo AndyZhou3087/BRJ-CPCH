@@ -16,7 +16,7 @@ function SelectScene:onEnter()
 end
 
 function SelectScene:onExit()
-    
+
 end
 
 return SelectScene

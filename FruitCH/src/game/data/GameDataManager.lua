@@ -63,6 +63,8 @@ function GameDataManager.init()
     GameDataManager.initAchieveData()
     --初始化每日任务信息
     GameDataManager.initDailyTaskData()
+    --初始化角色礼包信息
+    GameDataManager.initGiftData()
 end
 
 function GameDataManager.isMusicOpen()
@@ -276,6 +278,9 @@ function GameDataManager.useGoodsExp(_goodsId)
         elseif goodsCon.type == GOODS_TYPE.ConverGold then
             Tools.printDebug("金币转换")
             GameDispatcher:dispatch(EventNames.EVENT_TRANSFORM_GOLD,{time = goodsCon.time})
+        elseif goodsCon.type == GOODS_TYPE.GameProtect then
+            Tools.printDebug("护盾")
+            GameDispatcher:dispatch(EventNames.EVENT_GAME_PROTECT,{time = goodsCon.time})
         end
         GameDataManager.saveUseProp(_goodsId,1)
         GameDataManager.saveSingleProp(_goodsId,1)
@@ -388,6 +393,7 @@ function GameDataManager.unLockModle(_roleId)
     _modleVo.roleId = _roleId
     modleDic[_roleId] = _modleVo
     _modleVo.level = GameDataManager.updateUserLv(_roleId,RoleConfig[_roleId].initLv)
+    GameDispatcher:dispatch(EventNames.EVENT_ROLE_CHANGEDATA,_roleId)
 end
 --角色皮肤数
 function GameDataManager.getRoleModelCount()
@@ -1001,74 +1007,51 @@ end
 
 --===================end=========================
 
---=========================礼包相关=========================
-local oem={}
+--=========================角色礼包相关=========================
+local gift={}
 
 --初始礼包信息
-function GameDataManager.initOemData()
-    oem.curTable = DataPersistence.getAttribute("oem")
+function GameDataManager.initGiftData()
+    local giftArr = DataPersistence.getAttribute("gift")
+    for key, var in pairs(giftArr) do
+        gift[var.giftId] = var
+    end
 end
 
 --购买礼包
-function GameDataManager.buyGift()
+function GameDataManager.buyGift(giftId)
+    if not gift[giftId] then
+    	gift[giftId] = {}
+    end
     local _curTime = TimeUtil.getDate()
 	--购买日期记录
-    oem.curTable.year = _curTime.year
-    oem.curTable.month = _curTime.month
-    oem.curTable.day = _curTime.day-1
-    --领取次数记录
-    oem.curTable.numS=30
-    GameDataManager.SaveData()
-    Tools.printDebug("礼包购买日期",oem.curTable.year,oem.curTable.month,oem.curTable.day,"剩余领取次数",oem.curTable.numS)
+    gift[giftId].year = _curTime.year
+    gift[giftId].month = _curTime.month
+    gift[giftId].day = _curTime.day
+    --领取id记录
+    gift[giftId].giftId=giftId
+    gift[giftId].dayDiamond = GiftConfig[giftId].reward.dayDiamond
+    GameDataManager.addDiamond(gift[giftId].dayDiamond)
+    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..gift[giftId].dayDiamond.."钻石"})
 end
 
 --领取礼包
 function GameDataManager.updateGift()
     local _curTime = TimeUtil.getDate()
-    --领取日期记录
-    oem.curTable.year = _curTime.year
-    oem.curTable.month = _curTime.month
-    oem.curTable.day = _curTime.day
-    --领取次数记录
-    oem.curTable.numS=oem.curTable.numS-1
-    GameDataManager.SaveData()
-    Tools.printDebug("领取礼包日期",oem.curTable.year,oem.curTable.month,oem.curTable.day,"剩余领取次数",oem.curTable.numS)
-end
-
---当天是否领取了礼包
-function GameDataManager.isDateGift()
-    if oem.curTable.day==TimeUtil.getDate().day and oem.curTable.month==TimeUtil.getDate().month and oem.curTable.year==TimeUtil.getDate().year then 
-        return true
-    else
-        return false
+    for key, var in pairs(gift) do
+        if var.year==_curTime.year and var.month==_curTime.month and var.day==_curTime.day then
+        	
+        else
+            var.year = _curTime.year
+            var.month = _curTime.month
+            var.day = _curTime.day
+            GameDataManager.addDiamond(var.dayDiamond)
+            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..var.dayDiamond.."钻石"})
+        end
     end
 end
+--================================End==============================
 
---获得礼包的领取次数 
-function GameDataManager.getGiftCount()
-
-    if oem.curTable.numS <=0 then
-        --Tools.printDebug("没有开通时直接返回")
-        return oem.curTable.numS
-    else
-        local old = os.time({year=oem.curTable.year,month=oem.curTable.month,day=oem.curTable.day,hour=0})
-        local cur = os.time({year=TimeUtil.getDate().year,month=TimeUtil.getDate().month,day=TimeUtil.getDate().day,hour=0})  
-        local pass = math.floor((cur-old)/(3600*24))
-        
-        if pass>oem.curTable.numS or pass<0 then
-        	oem.curTable.numS= 0
-        elseif pass==1 or pass==0 then 
-            return oem.curTable.numS 
-        elseif pass>1 then 
-            oem.curTable.numS=oem.curTable.numS-pass+1
-            oem.curTable.year = TimeUtil.getDate().year
-            oem.curTable.month =TimeUtil.getDate().month
-            oem.curTable.day = TimeUtil.getDate().day-1
-            GameDataManager.SaveData()
-        end
-        return oem.curTable.numS         
-    end                 
-end
 
 --游戏数据保存
 function GameDataManager.SaveData(parameters)
@@ -1115,13 +1098,13 @@ function GameDataManager.SaveData(parameters)
         table.insert(fightArr,var)
     end
     DataPersistence.updateAttribute("fight_data",fightArr)
-    
+    --成就
     local achieveArr = {}
     for key, var in pairs(achieve) do
         table.insert(achieveArr,var)
     end
     DataPersistence.updateAttribute("achieve",achieveArr)
-    
+    --每日任务
     local taskArr = {}
     for key, var in pairs(DailyTask) do
         table.insert(taskArr,var)
@@ -1129,6 +1112,13 @@ function GameDataManager.SaveData(parameters)
     DataPersistence.updateAttribute("dailyTasks",taskArr)
     
     DataPersistence.updateAttribute("daily_time",dailyTime)
+    
+    --角色礼包
+    local giftArr = {}
+    for key, var in pairs(gift) do
+        table.insert(giftArr,var)
+    end
+    DataPersistence.updateAttribute("gift",giftArr)
 
     --物品相关
     DataPersistence.updateAttribute("goods_list",goodsList)

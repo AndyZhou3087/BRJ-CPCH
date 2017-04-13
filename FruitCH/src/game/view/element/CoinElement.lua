@@ -15,9 +15,10 @@ function CoinElement:ctor(parm)
     self.m_type = parm.type
     
     self.m_img = PhysicSprite.new("Common/"..parm.res):addTo(self)
+    self:setAnchorPoint(cc.p(0,0))
     self.m_img:setAnchorPoint(cc.p(0,0))
     self.m_size = self.m_img:getCascadeBoundingBox().size
-    self:addBody(cc.p(20,20))
+--    self:addBody(cc.p(20,20))
 
     self.m_isAttract=false   --是否被吸引
     self.m_group = 0
@@ -53,7 +54,9 @@ function CoinElement:onEnterFrame()
     	end
     end
     if self:getPositionX()<=-self:getSize().width then
-    	self:dispose()
+        if not tolua.isnull(self) then
+            self:dispose()
+        end
     end
 end
 
@@ -78,7 +81,7 @@ function CoinElement:collision()
     self:dispose()
 end
 
---设置金币金额
+--设置金币类型
 function CoinElement:setCoinType(_type)
     self.m_type = _type
 end
@@ -124,11 +127,13 @@ function CoinElement:dispose(parameters)
     self.m_isAttract = false
     self.m_target = nil
     self.m_group = 0
-    self.super.dispose(self)
     
     if self.m_chaceType then
+        Tools.printDebug("--------------------金币类型：",self.m_chaceType)
         PoolManager.putCacheObjByType(self.m_chaceType,self)
     end 
+    
+    self.super.dispose(self)
 end
 
 return CoinElement

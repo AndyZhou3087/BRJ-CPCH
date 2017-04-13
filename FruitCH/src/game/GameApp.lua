@@ -25,6 +25,7 @@ require("game.config.SelectOtherConfig")
 require("game.config.SignRewardConfig")
 require("game.config.AchieveConfig")
 require("game.config.TaskConfig")
+require("game.config.GiftConfig")
 
 PoolManager = require("game.tools.PoolManager")
 TimeUtil = require("game.tools.TimeUtil")
@@ -97,6 +98,9 @@ function GameApp:ctor()
     DataPersistence.insertAttribute("day_useGood_total",{})
     --累计获得金币
     DataPersistence.insertAttribute("getGold_total",0)
+    
+    --角色礼包每日领奖
+    DataPersistence.insertAttribute("gift",{})
 end
 
 function GameApp:run()
@@ -107,22 +111,19 @@ function GameApp:run()
 end
 
 function GameApp:enterSelectScene(parameters)
+    cc.Director:getInstance():purgeCachedData()
     cc.FileUtils:getInstance():addSearchPath("res/")--切换场景时可能删除了资源路径
     self:enterScene("SelectScene")
 end
 
 function GameApp:enterMainScene(parameters)
+    cc.Director:getInstance():purgeCachedData()
     cc.FileUtils:getInstance():addSearchPath("res/")--切换场景时可能删除了资源路径
     self:enterScene("MainScene")
 end
 
-function GameApp:enterTransScene(parameters)
-    cc.FileUtils:getInstance():addSearchPath("res/")--切换场景时可能删除了资源路径
-    self:enterScene("TransScene")
-end
-
 function GameApp:enterGameScene(parameters)
-
+    cc.Director:getInstance():purgeCachedData()
     Tools.delayCallFunc(0.01,function()
         self.m_fightScene = GameScene.new(handler(self,self.checkEnterFight))
         --物理场景太二了，不加retain会立马给我清除了

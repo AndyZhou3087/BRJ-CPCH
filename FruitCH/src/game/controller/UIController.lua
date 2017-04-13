@@ -13,6 +13,7 @@ local ClippingView=require("game.view.clipping.ClippingView")
 local SignUI = require("game.view.sign.SignUI")
 local AchieveQuest = require("game.view.AchieveQuest.AchieveQuest")
 local ReviveView = require("game.view.revive.ReviveUI")
+local GiftView = require("game.view.gift.GiftView")
 
 function UIController:ctor()
     --打开战斗准备界面
@@ -50,6 +51,9 @@ function UIController:ctor()
     
     --复活界面
     GameDispatcher:addListener(EventNames.EVENT_REVIVE_VIEW,handler(self,self.openRevive))
+    
+    --角色礼包界面
+    GameDispatcher:addListener(EventNames.EVENT_OPEN_GIFTROLE,handler(self,self.openGiftView))
 end
 
 --打开战斗准备界面
@@ -114,6 +118,11 @@ end
 function UIController:openRevive(parameters)
     local _reviveUI = ReviveView.new(parameters.data)
     _reviveUI:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+function UIController:openGiftView(parameters)
+    local _GiftView = GiftView.new(parameters.data)
+    _GiftView:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

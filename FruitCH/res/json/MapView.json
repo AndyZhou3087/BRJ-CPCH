@@ -145,12 +145,12 @@
               "customProperty": "",
               "flipX": false,
               "flipY": false,
-              "height": 44,
+              "height": 40,
               "ignoreSize": true,
               "layoutParameter": null,
               "opacity": 255,
               "positionPercentX": -0.405,
-              "positionPercentY": -0.0465116277,
+              "positionPercentY": -0.0232558139,
               "positionType": 0,
               "rotation": 0,
               "scaleX": 1,
@@ -162,9 +162,9 @@
               "touchAble": false,
               "useMergedTexture": false,
               "visible": true,
-              "width": 44,
+              "width": 40,
               "x": -81,
-              "y": -2,
+              "y": -1,
               "capInsetsHeight": 1,
               "capInsetsWidth": 1,
               "capInsetsX": 0,
@@ -176,8 +176,8 @@
                 "resourceType": 0
               },
               "scale9Enable": false,
-              "scale9Height": 44,
-              "scale9Width": 44
+              "scale9Height": 40,
+              "scale9Width": 40
             }
           },
           {
@@ -378,7 +378,7 @@
               "customProperty": "",
               "flipX": false,
               "flipY": false,
-              "height": 39,
+              "height": 37,
               "ignoreSize": true,
               "layoutParameter": null,
               "opacity": 255,
@@ -388,14 +388,14 @@
               "rotation": 0,
               "scaleX": 1,
               "scaleY": 1,
-              "sizePercentX": 0.215,
-              "sizePercentY": 0.906976759,
+              "sizePercentX": 0.18,
+              "sizePercentY": 0.8604651,
               "sizeType": 0,
               "tag": 1331179495,
               "touchAble": false,
               "useMergedTexture": false,
               "visible": true,
-              "width": 43,
+              "width": 36,
               "x": -81,
               "y": -2,
               "capInsetsHeight": 1,
@@ -409,8 +409,8 @@
                 "resourceType": 0
               },
               "scale9Enable": false,
-              "scale9Height": 39,
-              "scale9Width": 43
+              "scale9Height": 37,
+              "scale9Width": 36
             }
           },
           {

@@ -15,7 +15,7 @@ function RoleView:ctor(parameters)
     self:addChild(self.m_roleUi)
 
     local commonui = CommonUI.new():addTo(self)
-    commonui:setPosition(cc.p(10,display.top-70))
+    commonui:setPosition(cc.p(0,display.top-60))
     
     self.RoleUnActSkill = {GoodsConfig[7],GoodsConfig[8],GoodsConfig[9],GoodsConfig[10],GoodsConfig[11]}
     
@@ -28,13 +28,19 @@ function RoleView:ctor(parameters)
 
     --启用监听
     self:setNodeEventEnabled(true)
+    
+    GameDispatcher:addListener(EventNames.EVENT_ROLE_CHANGEDATA,handler(self,self.changeData))
 
+end
+
+function RoleView:changeData(parameters)
+    self:LoadRole(parameters.data)
 end
 
 function RoleView:initRole(parameters)
     self.listPandel = cc.uiloader:seekNodeByName(self.m_roleUi,"Panel_5")
     self.Panel_role = cc.uiloader:seekNodeByName(self.m_roleUi,"Panel_role")
-    self.Panel_role:setPositionX(display.right-940)
+    self.Panel_role:setPositionX(display.right-235)
     --图片
     self.RoleImg = cc.uiloader:seekNodeByName(self.m_roleUi,"RoleImg")
     self.RoleImg:setButtonEnabled(false)
@@ -85,17 +91,18 @@ function RoleView:initRole(parameters)
     
     self.RoleBuy = cc.uiloader:seekNodeByName(self.m_roleUi,"RoleBuy")--购买
     self.RoleBuy:onButtonClicked(function(event)
-        local payId = RoleConfig[self.roleCount].payId
-        local oId = SDKUtil.getOrderId(payId)
-        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
-            if SDKUtil.PayResult.Success == _res then
-                GameDataManager.unLockModle(self.roleCount)
-                self:LoadRole(self.roleCount)
-                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
-            else
-                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
-            end
-        end})
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = RoleConfig[self.roleCount].giftId})
+--        local payId = RoleConfig[self.roleCount].payId
+--        local oId = SDKUtil.getOrderId(payId)
+--        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
+--            if SDKUtil.PayResult.Success == _res then
+--                GameDataManager.unLockModle(self.roleCount)
+--                self:LoadRole(self.roleCount)
+--                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+--            else
+--                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+--            end
+--        end})
     end)
     
     for var=1, #RoleConfig do
@@ -120,8 +127,8 @@ function RoleView:initRole(parameters)
             local content = RoleItem.new(self.RoleUnActSkill[var])
             self.m_skill[var] = content
             content:setTouchEnabled(false)
-            content:setContentSize(self.m_listSize.width, 100)
-            item:setItemSize(self.m_listSize.width, 100)
+            content:setContentSize(self.m_listSize.width, 85)
+            item:setItemSize(self.m_listSize.width, 85)
             item:addContent(content)
             self.lv:addItem(item)
         end
@@ -237,6 +244,7 @@ end
 
 --清理数据
 function RoleView:onCleanup()
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGEDATA)
     for key, var in pairs(self.m_skill) do
         if not tolua.isnull(var) then
             var:removeFromParent()

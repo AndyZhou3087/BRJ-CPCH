@@ -35,12 +35,6 @@ end
 function PoolManager.putCacheObjByType(_type,_obj)
     local _arr = datas[_type]
     if _arr then
---        for key, var in pairs(_arr) do
---            if var == _obj then
---        		Tools.printDebug("chjh 插入的有相同的对象")
---        		return
---        	end
---        end
         table.insert(_arr,_obj)
     end
 end
@@ -136,5 +130,5 @@ function PoolManager.clearCache()
     end
 end
 
---PoolManager.initDatas()
+PoolManager.initDatas()
 return PoolManager

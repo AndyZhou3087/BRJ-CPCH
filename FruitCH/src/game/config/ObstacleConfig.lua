@@ -55,7 +55,7 @@ ObstacleConfig[4]=
         armatureName = "nan5",
         res = "ui/obscale_1.png",     --资源路径
         att = 1,
-        dispx = 500,   --与屏幕相距多少像素时出现(单位：像素)
+        dispx = 300,   --与屏幕相距多少像素时出现(单位：像素)
         speed = 3,   --飞行速度，即固定距离飞行的时间(单位：秒)
     }
     
