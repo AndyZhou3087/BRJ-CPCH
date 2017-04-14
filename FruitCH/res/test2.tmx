@@ -27,6 +27,6 @@
   <object name="12" gid="4" x="458" y="233"/>
  </objectgroup>
  <objectgroup name="obstacle">
-  <object name="1" gid="5" x="497" y="508"/>
+  <object name="6" gid="5" x="497" y="68"/>
  </objectgroup>
 </map>

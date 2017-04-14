@@ -54,6 +54,7 @@ function AchieveQuestItem:initCotent(_type)
     self.Finished = cc.uiloader:seekNodeByName(content,"Finished")
     self.Finished:setTouchSwallowEnabled(false)
     self.Finished:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if self.m_con.rewardType == REWARD_TYPE.Gold then
             GameDataManager.addGold(self.m_con.reward)
         elseif self.m_con.rewardType == REWARD_TYPE.Diamond then

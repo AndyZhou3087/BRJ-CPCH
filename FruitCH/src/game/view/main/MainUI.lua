@@ -27,6 +27,7 @@ function MainUI:init(parameters)
 --        _event.target:setScale(1)
     end)
     Endlessbtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE.EndlessMode)
     end)
@@ -37,6 +38,7 @@ function MainUI:init(parameters)
     Levelbtn:onButtonRelease(function(_event)    --触摸离开
     end)
     Levelbtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if self.m_unlockNum <= 0 then
             GameDataManager.setCurLevelId(1,1)
         end
@@ -48,6 +50,7 @@ function MainUI:init(parameters)
     self.Setbtn = cc.uiloader:seekNodeByName(self.m_json,"Setbtn")
     self.Setbtn:setPositionX(display.right-40)
     self.Setbtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         self:MusicSoundSet()
     end)
     
@@ -61,13 +64,13 @@ end
 
 function MainUI:MusicSoundSet( ... )
     if GameDataManager.isMusicOpen() then
-        AudioManager.stop(1)
+        AudioManager.stop()
         Tools.printDebug("音乐关")
         self.Setbtn:setButtonImage("normal","ui/Set_button2.png")
         return
     else
         Tools.printDebug("音乐开")
-        AudioManager.open(1)
+        AudioManager.open()
         self.Setbtn:setButtonImage("normal","ui/Set_button1.png")
         return
     end

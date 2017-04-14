@@ -22,6 +22,10 @@ function GoodsElement:ctor(_id)
 --    self:addChild(effect)
 --    effect:getAnimation():playWithIndex(0)
 --    effect=cc.POSITION_TYPE_GROUPED
+    --背景图标
+    local bg = display.newSprite("ui/Prop_bg.png"):addTo(self)
+    bg:setPosition(cc.p(23,22))
+
     self.m_img = PhysicSprite.new(self.m_goodsCon.res):addTo(self)
     self.m_img:setAnchorPoint(cc.p(0,0))
     self:addBody(cc.p(20,25))
@@ -64,7 +68,7 @@ end
 
 --被碰触
 function GoodsElement:collision(_isAtracted)
---    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Prop_Sound)
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Get_Prop_Sound)
     GameDataManager.useGoodsExp(self.m_goodsId)
 
     self:dispose()

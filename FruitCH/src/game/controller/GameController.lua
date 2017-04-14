@@ -28,6 +28,8 @@ local movingObjs={} --移动中的对象数组
 local goldBody={}
 local goodBody={}
 
+local groups = {}
+
 local signPop = false
 --设置签到弹出
 function GameController.setSignPop(isPop)
@@ -52,6 +54,7 @@ end
 function GameController.pauseGame(isEvent)
     Tools.printDebug("暂停游戏！")
 --    display.pause()
+    AudioManager.pauseMusic()
     _isPause=true
     MoveSpeed = 0  --地图移动速度
     if isEvent then
@@ -64,6 +67,7 @@ end
 function GameController.resumeGame(isEvent)
     Tools.printDebug("恢复游戏！")
 --    display.resume()
+    AudioManager.resumeMusic()
     _isPause=false
     MoveSpeed = _curSpeed
     TimeUtil.init()
@@ -108,6 +112,15 @@ function GameController.setCurMapLayer(_layer)
 end
 function GameController.getCurMap(parameters)
 	return curMapLayer
+end
+
+--赋值房间数组
+function GameController.setRooms(_rooms)
+    groups = _rooms
+end
+--清除房间数组
+function GameController.clearRooms()
+    groups = nil
 end
 
 --已选中开局道具
@@ -308,6 +321,28 @@ function GameController._coinCheckMove(_node,_fromP,_toP,_index,_table)
         table.remove(movingObjs,_index)
     end
 end
+
+--获取当前可视屏幕内障碍物列表
+function GameController.getScreenObstacles()
+    local obstaclesArr = {}
+    for i=#groups,1,-1  do
+        local _groupObj = groups[i]
+        if not tolua.isnull(_groupObj) then
+            if _groupObj:getObstacles() then
+                for key, var in pairs(_groupObj:getObstacles()) do
+                	if not tolua.isnull(var) then
+                        local wordPos = var:getParent():convertToWorldSpace(cc.p(var:getPosition()))
+                        if wordPos.x>=display.left and wordPos.x <= display.right then
+                        	obstaclesArr[#obstaclesArr+1] = var
+                        end
+                	end
+                end
+            end
+        end
+    end
+    return obstaclesArr
+end
+
 
 function GameController.clearBody(parameters)
     for var=#goldBody,1,-1 do

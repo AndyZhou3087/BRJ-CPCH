@@ -9,128 +9,38 @@ AudioManager.Music_Path = "music/"
 --背景音乐类型
 AudioManager.Ground_Music_Type=
     {
-        --logo背景音乐
-        Logo_Bg = "logo.mp3",
-        --片头动画背景音乐
-        PreScene_Bg = "pre_scene.mp3",
-        --主城背景音乐
-        Music_Bg = "login.mp3",
+        --主界面背景音乐
+        Main_Bg = "bgm_menu.ogg",
+        --关卡背景音乐
+        Select_Bg = "bgm_menu.ogg",
         --战斗场景音乐
-        Fight_Bg = "level.mp3",
-        --怪物来袭背景音乐
-        Mon_Raid = "mon_raid.mp3",
-        --游戏胜利背景音乐
-        Game_Win_Bg = "game_win.mp3",
-        --游戏失败背景音乐
-        Game_Lose_Bg = "game_lose.mp3",
-        --关卡结算前功能解锁背景音乐
-        Func_Unlock_Bg = "func_unlock.mp3"
+        Fight_Bg = "bgm_game_02.ogg",
     }
 --音效类型
 AudioManager.Sound_Effect_Type=
     {
         Button_Click_Sound = "button.ogg",--按钮点击
-        UI_Open_Sound = "switch.ogg",   --界面打开时
-        UI_Close_Sound = "back.ogg",    --点击界面关闭
-        Player_Up_Lv = "intensify.ogg",  --角色升级
-        Scene_Bomb = "boom.ogg",   --场景中爆炸
-        Player_Scale = "small.ogg",  --角色缩小
-        Player_Normal_Step = "step.ogg",  --角色正常跑步
-        Bullet_Sound = "biu.ogg",  --子弹发射
---        Monster_Dead_Sound = "die.ogg",  --怪物死亡
-        Missile_Warning_Sound="warning.ogg",   --导弹出现提示音
-        Missile_Sound="missile.ogg",        --导弹飞行
-        Slider_Sound="banana.ogg",  --滑行
-        Portal_Sound="portal.ogg",   --传送
-        Dip_Sound="dip.ogg",    --冲刺
-        Laser_Sound="laser.ogg",   --激光
-        Back_Sound="back.ogg", -- 返回
-        Unlock_Sound="unlock.ogg",   --关卡解锁
-        Boxopen_Sound="boxopen.ogg",  --打开宝箱
-        Score_Sound = "score.ogg",    --分数结算
-        Pause_Sound = "pause.ogg",    --读秒
-        Netime_Sound = "netime.ogg",  --时间关卡（时间不足）
-        Buy_Sound = "buy.ogg",          --购买道具成功的声音
-        Star_Sound = "star.ogg",        --闯关星星的声音
-        Goods_Get_Sound="goods_get.ogg",      --场景获得道具
-        Gold_Get_Sound="gold_get.ogg",  --获得金币
-        Diamond_Get_Sound="diamond_get.ogg", --获得钻石
-        Player_Big_Sound="big_step.ogg",    --重脚步声
-        Floor_Sound1="floor1.ogg",    --地板碎块儿音效,程序随机一种
-        Floor_Sound2="floor2.ogg",
-        Floor_Sound3="floor3.ogg",
-        Drop_Sound="drop.ogg",  --物体落地
-        Role_Sound1="role_01.ogg",  --角色1声音
-        Role_Sound2="role_02.ogg" , --角色2声音
-        Role_Sound3="role_03.ogg" , --角色3声音
-        Role_Sound4="role_04.ogg",  --角色4声音
-        Rocket_Sound = "rocket.ogg",  --火箭声音
-        Rocket_Pre_Sound = "rocket_pre.ogg", --火箭启动声音
-        Shout_Sound1="lvjr1.ogg",     --绿巨人吼叫
-        Shout_Sound2="lvjr2.ogg",       --绿巨人吼叫
-        Die_Sound="death.ogg",   --死亡
-        Task_Over_Sound = "rwwancheng.ogg" , --任务完成
-        --普通楼层提示音效
-        Task_Title_Sound = "tishi.ogg",    --任务提示
-        Pet_PreSkill_Sound = "cw.ogg",   --宠物释放技能前声音
-        Blot_Skill_Sound = "blot.ogg",  --雷电技能声音
-        Star_Sound1="star_1.ogg"     ,      --星星1的声音
-        Star_Sound2="star_2.ogg"      ,      --星星2的声音
-        Star_Sound3="star_3.ogg"      ,      --星星3的声音
-        Star_Fight_Sound="star_fight.ogg",   --战斗中的星星音效 
- 
-        Jump_High_Sound="jump.ogg",     --角色跳到至高点时的音效
-        --以下为怪物受击时几种音效，程序会随机一个播放
-        Mon_Hit_Sound1 = "mon_hit1.ogg",
-        Mon_Hit_Sound2 = "mon_hit2.ogg",
-        Mon_Hit_Sound3 = "mon_hit3.ogg",
-        Mon_Hit_Sound4 = "mon_hit4.ogg",
-        --成功使用主动道具音效
-        Use_Act_Goods = "act_goods.ogg",
-        --宠物进阶音效
-        Pet_Up_Step = "up_step.ogg",
-        --代步机音效
---        Dai_Bu = "baibu.ogg",
-        --代步机起跳音效
- --       Dai_Bu_Up = "daibu_up.ogg",
---        --关卡结算解锁图标动画音效
---        Level_Ulock_Icon = "level_unlock_icon.ogg",
-        --场景获得生命音效
-        Life_Get = "life_get.ogg",
-        --楼板破损音效
-        Floor_Damage = "floor_damage.ogg",
-        --楼层强制提示音效
-        Force_Tips = "force_tip.ogg",
+        Sprint_Sound = "fevertime.ogg",   --冲刺
+        Get_Prop_Sound = "get_item.ogg",    --获得道具
+        Player_Up_Lv = "u_level_up.ogg",  --角色升级
+        Diamond_Cost = "zuanshixiaohao.ogg",   --消耗钻石
+        Jump_Sound = "jump.ogg",  --跳跃
+        GetGold_Sound = "gold.ogg",  --获得金币
+        Magnet_Sound = "magnet.ogg",  --吸铁石
+        RoleMan_Dead = "nanshoushang.ogg",   --男角色死亡
+        RoleWomen_Dead = "nvshoushang.ogg",  --女角色死亡
+        Dart_Sound = "swish.ogg",  --飞镖
+        Win_Sound = "jiesuan.ogg",  --挑战成功
     }
 
 --游戏战斗中的音效，加此项是为了在游戏中弹出界面时要屏蔽战斗音效
 local fightSoundOff = false --战斗音效是否处于关闭中
 local fightSound={}
-fightSound[AudioManager.Sound_Effect_Type.Scene_Bomb] = 1
-fightSound[AudioManager.Sound_Effect_Type.Player_Scale] = 1
-fightSound[AudioManager.Sound_Effect_Type.Player_Normal_Step] = 1
-fightSound[AudioManager.Sound_Effect_Type.Bullet_Sound         ] = 1
---fightSound[AudioManager.Sound_Effect_Type.Monster_Dead_Sound   ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Missile_Warning_Sound] = 1
-fightSound[AudioManager.Sound_Effect_Type.Missile_Sound        ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Slider_Sound         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Portal_Sound         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Dip_Sound            ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Laser_Sound          ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Gold_Get_Sound       ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Player_Big_Sound     ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Floor_Sound1         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Floor_Sound2         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Floor_Sound3         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Drop_Sound           ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Rocket_Sound         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Rocket_Pre_Sound     ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Shout_Sound1         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Shout_Sound2         ] = 1
-fightSound[AudioManager.Sound_Effect_Type.Pet_PreSkill_Sound] = 1
-fightSound[AudioManager.Sound_Effect_Type.Blot_Skill_Sound] = 1
---fightSound[AudioManager.Sound_Effect_Type.Dai_Bu] = 1
---fightSound[AudioManager.Sound_Effect_Type.Dai_Bu_Up] = 1
+fightSound[AudioManager.Sound_Effect_Type.Sprint_Sound] = 1
+fightSound[AudioManager.Sound_Effect_Type.Jump_Sound] = 1
+fightSound[AudioManager.Sound_Effect_Type.Magnet_Sound] = 1
+fightSound[AudioManager.Sound_Effect_Type.Dart_Sound] = 1
+
 
 --循环音效记录表
 AudioManager.Sound_Mark={}

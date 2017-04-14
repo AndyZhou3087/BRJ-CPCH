@@ -17,7 +17,7 @@ function RoleView:ctor(parameters)
     local commonui = CommonUI.new():addTo(self)
     commonui:setPosition(cc.p(0,display.top-60))
     
-    self.RoleUnActSkill = {GoodsConfig[7],GoodsConfig[8],GoodsConfig[9],GoodsConfig[10],GoodsConfig[11]}
+    self.RoleUnActSkill = {GoodsConfig[7],GoodsConfig[8],GoodsConfig[9],GoodsConfig[10]}--,GoodsConfig[11]}
     
     self.m_curRole = GameDataManager.getFightRole() -- 当前出战角色
     
@@ -52,6 +52,7 @@ function RoleView:initRole(parameters)
     
     self.UpgradeBtn = cc.uiloader:seekNodeByName(self.m_roleUi,"UpgradeBtn")--升级按钮
     self.UpgradeBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         self:updateLevelToBuy(self.m_curRole,self.m_roleLv+1)
     end)
     self.UpgradeType = cc.uiloader:seekNodeByName(self.m_roleUi,"UpgradeType")--升级花费的类型
@@ -59,6 +60,7 @@ function RoleView:initRole(parameters)
     self.UpgradeCount = cc.uiloader:seekNodeByName(self.m_roleUi,"UpgradeCount")--升级需要的钱
     self.MaxgradeBtn = cc.uiloader:seekNodeByName(self.m_roleUi,"MaxgradeBtn")--一键满级
     self.MaxgradeBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         local payId = RoleConfig[self.roleCount].payMaxLvId
         local oId = SDKUtil.getOrderId(payId)
         SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
@@ -76,6 +78,7 @@ function RoleView:initRole(parameters)
     
     self.LeftBtn = cc.uiloader:seekNodeByName(self.m_roleUi,"LeftBtn")--左按钮
     self.LeftBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if self.roleCount>1 then
             self.roleCount = self.roleCount - 1
             self:LoadRole(self.roleCount)
@@ -83,6 +86,7 @@ function RoleView:initRole(parameters)
     end)
     self.RightBtn = cc.uiloader:seekNodeByName(self.m_roleUi,"RightBtn")--右按钮
     self.RightBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if self.roleCount<#RoleConfig then
             self.roleCount = self.roleCount + 1
             self:LoadRole(self.roleCount)
@@ -91,6 +95,7 @@ function RoleView:initRole(parameters)
     
     self.RoleBuy = cc.uiloader:seekNodeByName(self.m_roleUi,"RoleBuy")--购买
     self.RoleBuy:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = RoleConfig[self.roleCount].giftId})
 --        local payId = RoleConfig[self.roleCount].payId
 --        local oId = SDKUtil.getOrderId(payId)
@@ -107,7 +112,7 @@ function RoleView:initRole(parameters)
     
     for var=1, #RoleConfig do
         self["roleDot"..var] = display.newDrawNode():addTo(self.Panel_role)
-        self["roleDot"..var]:drawDot(cc.p(648+(var-1)*38,126),
+        self["roleDot"..var]:drawDot(cc.p((var-1)*48,-30),
             6, cc.c4f(64/255, 20/255, 153/255, 1))
     end
     
@@ -164,11 +169,11 @@ function RoleView:LoadRole(id)
     self.m_roleLv = GameDataManager.getRoleLevel(id)
     
     for var=1, #RoleConfig do
-        self["roleDot"..var]:drawDot(cc.p(648+(var-1)*38,126),
+        self["roleDot"..var]:drawDot(cc.p((var-1)*48,-30),
             6, cc.c4f(64/255, 20/255, 153/255, 1))
     end
 
-    self["roleDot"..roleCon.id]:drawDot(cc.p(648+(id-1)*38,126),
+    self["roleDot"..roleCon.id]:drawDot(cc.p((id-1)*48,-30),
         6, cc.c4f(1, 1, 1, 1))
     
     self:updateRoleLv(id,self.m_roleLv)
@@ -182,6 +187,7 @@ function RoleView:updateRoleLv(id,level)
         self.RoleBuy:setVisible(false)
         return
     end
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Player_Up_Lv)
     if level >= #RoleLvs[id] then
         self.UpgradeBtn:setVisible(false)
         self.MaxgradeBtn:setVisible(false)

@@ -25,7 +25,7 @@ function MainScene:onEnter()
     if GameDataManager.isSoundOpen()==false then
         AudioManager.open(2)
     end
-    AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Music_Bg,true)
+    AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Main_Bg,true)
     if not tolua.isnull(self.m_mainUI) then
         self.m_mainUI:addedToScene()
     end

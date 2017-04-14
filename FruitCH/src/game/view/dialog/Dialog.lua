@@ -39,7 +39,7 @@ function Dialog:ctor(_type,_okStr,_cancleStr,_isClose)
         _leftBtn:setPosition(_xySize.width/2,_xySize.height/2-100)
         _rightBtn:setVisible(false)
         _leftBtn:onButtonClicked(function(_event)
---            AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound,false)
+            AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
             if self.m_okFunc then
                 self.m_okFunc()
             elseif self.m_canCleFunc then
@@ -50,7 +50,7 @@ function Dialog:ctor(_type,_okStr,_cancleStr,_isClose)
     elseif self.m_type == Alert_Type.Type_Two then
         _leftBtn:setVisible(true)
        _leftBtn:onButtonClicked(function(_event)
---            AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound,false)
+            AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
             if self.m_okFunc then
                 self.m_okFunc()
             end
@@ -61,7 +61,7 @@ function Dialog:ctor(_type,_okStr,_cancleStr,_isClose)
 
         _rightBtn:setVisible(true)
         _rightBtn:onButtonClicked(function(_event)
-            AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound,false)
+            AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
             if self.m_canCleFunc then
                 self.m_canCleFunc()
             end

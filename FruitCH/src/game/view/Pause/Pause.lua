@@ -14,17 +14,20 @@ function Pause:ctor(parm)
     
     local diaBtn = cc.uiloader:seekNodeByName(_pause,"DiamondBtn")
     diaBtn:onButtonClicked(function(_event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
     end)
 
     local goldBtn = cc.uiloader:seekNodeByName(_pause,"GoldBtn")
     goldBtn:onButtonClicked(function(_event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
     end)
     
     --继续游戏
     local ContinueBtn=cc.uiloader:seekNodeByName(_pause,"ContinueBtn")
     ContinueBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameController.resumeGame(true)
         self:toClose(true)
     end)
@@ -32,6 +35,7 @@ function Pause:ctor(parm)
     --重新开始
     local RestartBtn=cc.uiloader:seekNodeByName(_pause,"RestartBtn")
     RestartBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
             GameController.setSignPop(false)
             GameController.resumeGame()
@@ -58,6 +62,7 @@ function Pause:ctor(parm)
     
     local BackBtn=cc.uiloader:seekNodeByName(_pause,"BackBtn")
     BackBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameController.setSignPop(true)
         GameController.resumeGame()
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then

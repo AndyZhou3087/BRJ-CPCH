@@ -46,10 +46,10 @@ end
 
 function GameScene:onEnter()
 
---    if not GameDataManager.isMusicOpen() then
---        AudioManager.resumeMusic()
---        AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Music_Bg,true)
---    end
+    local _levelCon = SelectLevel[GameDataManager.getCurLevelId()]
+    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode and not _levelCon then
+        return
+    end
 
     self.m_map = MapLayer.new()
     self:addChild(self.m_map)
@@ -57,6 +57,8 @@ function GameScene:onEnter()
 
     self.m_fightView = MapView.new()
     self:addChild(self.m_fightView,UI_ZORDER.VIEW_ZORDER)
+
+    AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Fight_Bg,true)
 
     Tools.delayCallFunc(0.001,function()
         self.m_map:initPhyPos()

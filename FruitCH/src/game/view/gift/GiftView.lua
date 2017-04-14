@@ -75,6 +75,7 @@ function GiftView:ctor(parm)
 
     local GetBtn=cc.uiloader:seekNodeByName(GiftView,"GetBtn")
     GetBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         local payId = config.payId
         local oId = SDKUtil.getOrderId(payId)
         SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
@@ -96,6 +97,7 @@ function GiftView:ctor(parm)
 
     local SureBtn=cc.uiloader:seekNodeByName(GiftView,"SureBtn")
     SureBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         local payId = config.payId
         local oId = SDKUtil.getOrderId(payId)
         SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)

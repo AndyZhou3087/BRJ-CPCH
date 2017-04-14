@@ -10,6 +10,7 @@ function SelectScene:ctor()
 end
 
 function SelectScene:onEnter()
+    AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Main_Bg,true)
     if not tolua.isnull(self.m_SelectUI) then
         self.m_SelectUI:addedToScene()
     end

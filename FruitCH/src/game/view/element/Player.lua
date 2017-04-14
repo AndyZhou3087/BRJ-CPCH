@@ -28,7 +28,7 @@ function Player:ctor()
     self:createModle(modle)
 
     self.p_siz=cc.size(80,110)
-    self.p_offset = cc.p(10,60)
+    self.p_offset = cc.p(10,50)
     self:addBody(self.p_offset,self.p_siz)
     
     self.m_twoJump = false
@@ -153,6 +153,11 @@ end
 
 --角色移动
 function Player:toMove(isSpring)
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Jump_Sound)
+    if self.backHandler then
+        Scheduler.unscheduleGlobal(self.backHandler)
+        self.backHandler=nil
+    end
     
     if self:isInState(PLAYER_STATE.Slow) then
         self:clearBuff(PLAYER_STATE.Slow)
@@ -269,11 +274,34 @@ end
 function Player:update(dt,_x,_y)
     if self.m_propManget then
         GameController.detect(self,cc.p(_x,_y),self.m_propRadius)
+    elseif self.startSprintManget then
+        GameController.detect(self,cc.p(_x,_y),self.startSprintRadius)
+    elseif self.deadSprintManget then
+        GameController.detect(self,cc.p(_x,_y),self.deadSprintRadius)
+    elseif self.limitSprintManget then
+        GameController.detect(self,cc.p(_x,_y),self.limitSprintRadius)
     elseif self.m_isMagnet then
         GameController.detect(self,cc.p(_x,_y),self.m_radius)
     end
+    
+    if self.originPos and self:getPositionX()<self.originPos.x and not self.backHandler then
+        local x,y = self:getPosition()
+        self:setPositionX(x+MoveSpeed*0.1)
+    end
+    
 end
 
+--全屏清除障碍物
+function Player:clearObstales(parameters)
+    local allObstales = GameController.getScreenObstacles()
+    for key, var in pairs(allObstales) do
+        if var:getVo().m_type == OBSTACLE_TYPE.fly or var:getVo().m_type == OBSTACLE_TYPE.hide or var:getVo().m_type == OBSTACLE_TYPE.static then
+            var:removeSelf()
+        end
+	end
+end
+
+--====================角色buff=================
 --角色受伤害
 function Player:playerAttacked(parm)
     if self:isInState(PLAYER_STATE.StartProtect) then
@@ -331,6 +359,12 @@ end
 --角色死亡
 function Player:death()
 
+    if GameDataManager.getFightRole() == 2 then
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.RoleWomen_Dead)
+    else
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.RoleMan_Dead)
+    end
+
     self:stopAllActions()
     self:toPlay(PLAYER_ACTION.Down)
     
@@ -368,6 +402,9 @@ function Player:revive(parameters)
     self.m_hp = self.m_vo.m_hp
     self.m_armature:setVisible(true)
     self:toPlay(PLAYER_ACTION.Run)
+    if self.originPos then
+        self:setPosition(self.originPos)
+    end
 
     self.m_isDead = false
     GameController.isWin = false
@@ -414,9 +451,14 @@ function Player:grantDrink(parameters)
         self.m_armature:getCascadeBoundingBox().size.height*parameters.data.scale*0.7)
 
     if self:isInState(PLAYER_STATE.StartSprint) or self:isInState(PLAYER_STATE.DeadSprint) then
+        self:setPosition(cc.p(display.cx,display.cy-50))
         self:addBody(cc.p(10,80),_size)
     else
-        self:addBody(cc.p(10,-80),_size)
+        if self:getScaleY() == 1 then
+            self:addBody(cc.p(10,80),_size)
+        else
+            self:addBody(cc.p(10,-80),_size)
+        end
     end
 end
 
@@ -430,6 +472,8 @@ function Player:manget(parameters)
         return
     end
 	
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.GetGold_Sound,true)
+    
 	self.m_propManget = true
     self.m_propRadius = parameters.data.radius
     
@@ -489,6 +533,8 @@ function Player:sprinting(parameters)
     	return
     end
     Tools.printDebug("-----------开局冲刺")
+    
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Sprint_Sound)
     --冲刺特效
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_spdeffect = ccs.Armature:create("chongci")
@@ -500,6 +546,9 @@ function Player:sprinting(parameters)
     
     self.oldX,self.oldY = self:getPosition()
     self:setPosition(cc.p(display.cx,display.cy))
+    if self:isInState(PLAYER_STATE.GrankDrink) then
+        self:setPosition(cc.p(display.cx,display.cy-50))
+    end
     
     self:addBuff({type=PLAYER_STATE.StartSprint,time = parameters.data.time})
     self.initSpeed = MoveSpeed
@@ -507,6 +556,8 @@ function Player:sprinting(parameters)
     self.m_handler = Tools.delayCallFunc(parameters.data.time,function()
         self:clearBuff(PLAYER_STATE.StartSprint)
     end)
+    self.startSprintManget = true
+    self.startSprintRadius = parameters.data.radius
     
     GameDataManager.setGamePropTime(PLAYER_STATE.StartSprint,parameters.data.time,parameters.data.speed)
     
@@ -517,6 +568,7 @@ function Player:deadSprint(parameters)
         return
     end
     Tools.printDebug("-----------死亡冲刺")
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Sprint_Sound)
     --冲刺特效
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_deadDffect = ccs.Armature:create("chongci")
@@ -530,6 +582,9 @@ function Player:deadSprint(parameters)
     self.m_scaleY = self:getScaleY()
     self:setScaleY(1)
     self:setPosition(cc.p(display.cx,display.cy))
+    if self:isInState(PLAYER_STATE.GrankDrink) then
+        self:setPosition(cc.p(display.cx,display.cy-50))
+    end
 
     self:addBuff({type=PLAYER_STATE.DeadSprint,time = parameters.data.time})
     self.deadSpeed = MoveSpeed
@@ -537,6 +592,8 @@ function Player:deadSprint(parameters)
     self.m_dHandler = Tools.delayCallFunc(parameters.data.time,function()
         self:clearBuff(PLAYER_STATE.DeadSprint)
     end)
+    self.deadSprintManget = true
+    self.deadSprintRadius = parameters.data.radius
     
     GameDataManager.setGamePropTime(PLAYER_STATE.DeadSprint,parameters.data.time,parameters.data.speed)
 end
@@ -581,6 +638,8 @@ function Player:limitSprint(parameters)
     end
     
     Tools.printDebug("----------极限冲刺")
+    
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Sprint_Sound)
     --冲刺特效
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_limitDffect = ccs.Armature:create("chongci")
@@ -594,15 +653,22 @@ function Player:limitSprint(parameters)
     self.m_scaleY = self:getScaleY()
     self:setScaleY(1)
     self:setPosition(cc.p(display.cx,display.cy))
+    if self:isInState(PLAYER_STATE.GrankDrink) then
+        self:setPosition(cc.p(display.cx,display.cy-50))
+    end
 
     self:addBuff({type=PLAYER_STATE.LimitSprint,time = parameters.data.time})
     self.limitSpeed = MoveSpeed
     MoveSpeed = parameters.data.speed
+    local _lv = GameDataManager.getRoleLevel(self.m_curModle)
+    local _time = parameters.data.time+GameDataManager.getUnActSkillTime(self.m_curModle,_lv,GOODS_TYPE.LimitSprint)
     self.m_limitHandler = Tools.delayCallFunc(parameters.data.time,function()
         self:clearBuff(PLAYER_STATE.LimitSprint)
     end)
+    self.limitSprintManget = true
+    self.limitSprintRadius = parameters.data.radius
 
-    GameDataManager.setGamePropTime(PLAYER_STATE.LimitSprint,parameters.data.time,parameters.data.speed)
+    GameDataManager.setGamePropTime(PLAYER_STATE.LimitSprint,_time,parameters.data.speed)
 end
 --金币转换
 function Player:transformGold(parameters)
@@ -613,11 +679,14 @@ function Player:transformGold(parameters)
     	return
     end
     Tools.printDebug("----------金币转换")
+    
+    local _lv = GameDataManager.getRoleLevel(self.m_curModle)
+    local _time = parameters.data.time+GameDataManager.getUnActSkillTime(self.m_curModle,_lv,GOODS_TYPE.ConverGold)
     self:addBuff({type=PLAYER_STATE.TransformGold,time = parameters.data.time})
     self.m_transHandler = Tools.delayCallFunc(parameters.data.time,function()
         self:clearBuff(PLAYER_STATE.TransformGold)
     end)
-    GameDataManager.setGamePropTime(PLAYER_STATE.TransformGold,parameters.data.time)
+    GameDataManager.setGamePropTime(PLAYER_STATE.TransformGold,_time)
 end
 
 --速度减慢(滑冰)
@@ -658,9 +727,34 @@ function Player:spring(parameters)
     end
     Tools.printDebug("----------弹簧跳跃")
     
-    self:toPlay(PLAYER_ACTION.Jump,0)
-    self:toMove(true)
+    if self:getJumpState() then
+        self:toPlay(PLAYER_ACTION.Jump,0)
+        self:toMove(true)
+    else
+        self.originPos = cc.p(self:getPosition())
+        if self.backHandler then
+            Scheduler.unscheduleGlobal(self.backHandler)
+            self.backHandler=nil
+        end
+        self.backHandler = Scheduler.scheduleGlobal(handler(self,self.backMove),0.01)
+    end
 end
+
+--向后移动
+function Player:backMove(parameters)
+    local x,y = self:getPosition()
+    self:setPosition(x-MoveSpeed*0.1,y)
+    if self:getPositionX()<=-self:getSize().width then
+        if self.backHandler then
+            Scheduler.unscheduleGlobal(self.backHandler)
+            self.backHandler=nil
+        end
+        --弹复活界面
+        GameDispatcher:dispatch(EventNames.EVENT_REVIVE_VIEW)
+    end
+end
+
+--==================End===================
 
 --================角色技能buff=============
 --吸金币
@@ -678,6 +772,7 @@ end
 
 --护盾技能
 function Player:protectSkill(parameters)
+    Tools.printDebug("----------角色的护盾")
     self:addBuff({type=PLAYER_STATE.Defence})
     --护盾特效
 end
@@ -729,6 +824,9 @@ function Player:clearBuff(_type)
             self.oldX,self.oldY = nil,nil
             MoveSpeed = self.initSpeed
             self.initSpeed = nil
+            self.startSprintManget = false
+            self.startSprintRadius = nil
+            self:clearObstales()
         elseif _type == PLAYER_STATE.DeadSprint then
             if self.m_dHandler then
                 Scheduler.unscheduleGlobal(self.m_dHandler)
@@ -748,8 +846,10 @@ function Player:clearBuff(_type)
             MoveSpeed = self.deadSpeed
             self.deadSpeed = nil
             self.m_scaleY = nil
+            self.deadSprintManget = false
+            self.deadSprintRadius = nil
             self:deadContinueFlash()
-            
+            self:clearObstales()
         elseif _type == PLAYER_STATE.StartProtect then
 --            if self.m_proHandler then
 --                Scheduler.unscheduleGlobal(self.m_proHandler)
@@ -775,7 +875,14 @@ function Player:clearBuff(_type)
             end
             self.m_armature:setScale(1)
             self.m_body:removeFromWorld()
-            self:addBody(cc.p(10,50),self.p_siz)
+            local offset
+            if self:getScaleY() == -1 then
+            	offset = cc.p(10,-50)
+            else
+                offset = self.p_offset
+            end
+            self:addBody(offset,self.p_siz)
+            self:clearObstales()
         elseif _type == PLAYER_STATE.LimitSprint then
             if self.m_limitHandler then
                 Scheduler.unscheduleGlobal(self.m_limitHandler)
@@ -795,6 +902,9 @@ function Player:clearBuff(_type)
             MoveSpeed = self.limitSpeed
             self.limitSpeed = nil
             self.m_scaleY = nil
+            self.limitSprintManget = false
+            self.limitSprintRadius = nil
+            self:clearObstales()
         elseif _type == PLAYER_STATE.TransformGold then
             if self.m_transHandler then
                 Scheduler.unscheduleGlobal(self.m_transHandler)
@@ -1053,6 +1163,12 @@ function Player:dispose()
         Scheduler.unscheduleGlobal(self.m_dropLifeHandle)
         self.m_dropLifeHandle=nil
     end
+    
+    if self.backHandler then
+        Scheduler.unscheduleGlobal(self.backHandler)
+        self.backHandler=nil
+    end
+    
 
     --清除所有buff
     for var=#self.m_buffArr,1,-1  do

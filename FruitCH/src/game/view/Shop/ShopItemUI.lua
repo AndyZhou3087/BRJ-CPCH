@@ -101,6 +101,7 @@ function ShopItemUI:initContent(shopConfig,pos)
     local btnBuy = cc.uiloader:seekNodeByName(content,"Button")
     btnBuy:setTouchSwallowEnabled(false)
     btnBuy:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("-----------购买类型:",shopConfig.type)
         app:alert({
             type=Alert_Type.Type_Two,

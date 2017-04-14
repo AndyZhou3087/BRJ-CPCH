@@ -88,7 +88,7 @@ function MapGroup:ctor(_idx,_levelCon)
     self:initElement(_obstacle)
 
     self:initCoins(_coins)
---    self:initGoods(_goods)
+    self:initGoods(_goods)
     
 end
 
@@ -210,6 +210,11 @@ end
 
 function MapGroup:startUpdate(parameters)
     self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
+end
+
+--获取组合中的障碍物
+function MapGroup:getObstacles(parameters)
+    return self.m_obstacle
 end
 
 function MapGroup:dispose(_isDestroy)

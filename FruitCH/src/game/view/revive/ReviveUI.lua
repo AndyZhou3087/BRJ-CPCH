@@ -24,6 +24,7 @@ function ReviveUI:ctor(parm)
 
     local Close=cc.uiloader:seekNodeByName(ReviveUI,"Close")
     Close:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         self:toClose(true)
         --弹结算界面
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type = GAMEOVER_TYPE.Fail})
@@ -31,6 +32,7 @@ function ReviveUI:ctor(parm)
     
     local SureBtn=cc.uiloader:seekNodeByName(ReviveUI,"SureBtn")
     SureBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         self:stopTimer()
         local payId = Payment.Revive
         local oId = SDKUtil.getOrderId(payId)

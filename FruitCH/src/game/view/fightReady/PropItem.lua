@@ -54,17 +54,18 @@ function PropItem:initPropData()
     local useBtn = cc.uiloader:seekNodeByName(self.propUI,"Buybtn")
     useBtn:setTouchSwallowEnabled(false)
     useBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if self.propCon.id~=5 and self.propCon.id~=6 then
             if not self.propCon.isSelect then
                 if GameDataManager.getGoodsNum(self.propCon.id)>0 then
                     self.propCon.isSelect = true
-                    Tools.printDebug("----已使用道具")
+                    Tools.printDebug("----已使用道具",self.propCon.id)
                 else
                     if self.propCon.cost.type == COST_TYPE.Gold then
                         if GameDataManager.getGold()>=self.propCon.cost.price then
                             --                        GameDataManager.costGold(self.propCon.cost.price)
                             self.propCon.isSelect = true
-                            Tools.printDebug("----已使用道具")
+                            Tools.printDebug("----已使用道具",self.propCon.id)
                         else
                             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
                         end
@@ -72,7 +73,7 @@ function PropItem:initPropData()
                         if GameDataManager.getDiamond()>=self.propCon.cost.price then
                             --                        GameDataManager.costDiamond(self.propCon.cost.price)
                             self.propCon.isSelect = true
-                            Tools.printDebug("----已使用道具")
+                            Tools.printDebug("----已使用道具",self.propCon.id)
                         else
                             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
                         end
@@ -80,7 +81,7 @@ function PropItem:initPropData()
                 end
             else
                 self.propCon.isSelect = false
-                Tools.printDebug("----已放弃使用道具")
+                Tools.printDebug("----已放弃使用道具",self.propCon.id)
             end
         else
             if self.propCon.cost.type == COST_TYPE.Gold then

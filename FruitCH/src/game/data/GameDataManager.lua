@@ -104,6 +104,7 @@ function GameDataManager.addGold(_value)
     GameDispatcher:dispatch(EventNames.EVENT_UPDATE_GOLD)
     GameDataManager.saveGetGold(_value)
     GameDataManager.SaveData()
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.GetGold_Sound)
     return true
 end
 
@@ -120,6 +121,7 @@ function GameDataManager.costDiamond(_value)
         GameDispatcher:dispatch(EventNames.EVENT_UPDATE_DIAMOND)
         GameDataManager.saveUseDiamond(_value)
         GameDataManager.SaveData()
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Diamond_Cost)
         return true
     else
         return false
@@ -253,11 +255,11 @@ function GameDataManager.useGoodsExp(_goodsId)
         if goodsCon.type == GOODS_TYPE.StartSprint then
             Tools.printDebug("使用开局冲刺")
             GameController.setStartProp(_goodsId,false)
-            GameDispatcher:dispatch(EventNames.EVENT_START_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
+            GameDispatcher:dispatch(EventNames.EVENT_START_SPRINT,{time = goodsCon.time,speed = goodsCon.speed,radius = goodsCon.radius})
         elseif goodsCon.type == GOODS_TYPE.DeadSprint then
             Tools.printDebug("使用死亡冲刺")
             GameController.setStartProp(_goodsId,false)
-            GameDispatcher:dispatch(EventNames.EVENT_DEAD_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
+            GameDispatcher:dispatch(EventNames.EVENT_DEAD_SPRINT,{time = goodsCon.time,speed = goodsCon.speed,radius = goodsCon.radius})
         elseif goodsCon.type == GOODS_TYPE.StartProtect then
             Tools.printDebug("使用开局护盾")
             GameController.setStartProp(_goodsId,false)
@@ -274,7 +276,7 @@ function GameDataManager.useGoodsExp(_goodsId)
             GameDispatcher:dispatch(EventNames.EVENT_GRANT_DRINK,{time = goodsCon.time,scale = goodsCon.scale})
         elseif goodsCon.type == GOODS_TYPE.LimitSprint then
             Tools.printDebug("极限冲刺")
-            GameDispatcher:dispatch(EventNames.EVENT_LIMIT_SPRINT,{time = goodsCon.time,speed = goodsCon.speed})
+            GameDispatcher:dispatch(EventNames.EVENT_LIMIT_SPRINT,{time = goodsCon.time,speed = goodsCon.speed,radius = goodsCon.radius})
         elseif goodsCon.type == GOODS_TYPE.ConverGold then
             Tools.printDebug("金币转换")
             GameDispatcher:dispatch(EventNames.EVENT_TRANSFORM_GOLD,{time = goodsCon.time})
@@ -330,13 +332,13 @@ function GameDataManager.setGamePropTime(_type,originTime,_speed)
     if _speed then
         gameProp[_type].speed = _speed
     end
-    Tools.printDebug("FruitPaoku..初始时间：",gameProp[_type].m_Time,gameProp[_type].time)
+    Tools.printDebug("FruitPaoku..初始时间：",_type,gameProp[_type].m_Time,gameProp[_type].time)
 end
 
 function GameDataManager.setGamePauseTime(_type)
     local pTime = math.ceil(Tools.getSysTime())
     gameProp[_type].pTime = pTime
-    Tools.printDebug("FruitPaoku..暂停时间：",gameProp[_type].pTime)
+    Tools.printDebug("FruitPaoku..暂停时间：",_type,gameProp[_type].pTime)
 end
 
 function GameDataManager.getLeftTime(_type)
@@ -344,7 +346,7 @@ function GameDataManager.getLeftTime(_type)
 		return 0
 	end
     local leftTime = gameProp[_type].m_Time - (gameProp[_type].pTime - gameProp[_type].time)
-    Tools.printDebug("FruitPaoku..剩余时间：",leftTime)
+    Tools.printDebug("FruitPaoku..剩余时间：",_type,leftTime)
     return leftTime
 end
 

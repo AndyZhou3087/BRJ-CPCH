@@ -32,8 +32,9 @@ GoodsConfig[1]=
         id = 1,
         type = GOODS_TYPE.StartSprint,       --道具类型
         discrebe = "开局冲刺",
-        res = "ui/Prop_2.png",
-        time = 20,   --时间(单位：秒)
+        res = "ui/Prop_magnet.png",
+        time = 3,   --时间(单位：秒)
+        radius = 300,
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25},   --道具价格{type:购买类型1金币，2钻石，price为价格}
         speed = 200,
@@ -44,8 +45,9 @@ GoodsConfig[2]=
         id = 2,
         type = GOODS_TYPE.DeadSprint,       --道具类型
         discrebe = "死亡冲刺",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_7.png",
         time = 2,   --时间(单位：秒)
+        radius = 300,
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25},   --道具价格{type:购买类型1金币，2钻石，price为价格}
         speed = 200,
@@ -56,7 +58,7 @@ GoodsConfig[3]=
         id = 3,
         type = GOODS_TYPE.StartProtect,       --道具类型
         discrebe = "开局护盾",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_1.png",
         time = 13,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25}   --道具价格{type:购买类型1金币，2钻石，price为价格}
@@ -67,7 +69,7 @@ GoodsConfig[4]=
         id = 4,
         type = GOODS_TYPE.DeadComtinue,       --道具类型
         discrebe = "死亡接力",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_8.png",
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25}
@@ -88,7 +90,7 @@ GoodsConfig[6]=
         id = 6,
         type = GOODS_TYPE.MysteryGift,       --道具类型
         discrebe = "神秘礼包",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_6.png",
         reward = {{id=1,count=1},},
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25},
@@ -113,7 +115,7 @@ GoodsConfig[8]=
         id = 8,
         type = GOODS_TYPE.GrantDrink,       --道具类型
         discrebe = "巨人药水",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_3.png",
         time = 2,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25},
@@ -125,7 +127,7 @@ GoodsConfig[9]=
         id = 9,
         type = GOODS_TYPE.ConverGold,       --道具类型
         discrebe = "金币转换",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_5.png",
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         time = 50,
         cost = {type = COST_TYPE.Gold,price = 25}
@@ -136,8 +138,9 @@ GoodsConfig[10]=
         id = 10,
         type = GOODS_TYPE.LimitSprint,       --道具类型
         discrebe = "极限冲刺",
-        res = "ui/Prop_2.png",
-        time = 8,   --时间(单位：秒)
+        res = "ui/Prop_magnet.png",
+        time = 2,   --时间(单位：秒)
+        radius = 300,
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25},
         speed = 300,
@@ -159,7 +162,7 @@ GoodsConfig[12]=
         id = 12,
         type = GOODS_TYPE.GameProtect,       --道具类型
         discrebe = "护盾",
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_1.png",
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 25}

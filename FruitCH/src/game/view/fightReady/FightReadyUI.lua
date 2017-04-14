@@ -56,18 +56,21 @@ function FightReadyUI:ctor(parm)
     
     local rolebtn = cc.uiloader:seekNodeByName(self.FightReady,"Rolebtn")
     rolebtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("-----------角色")
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_ROLEVIEW)
     end)
     
     local achievebtn = cc.uiloader:seekNodeByName(self.FightReady,"AchieveBtn")
     achievebtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("-----------成就任务")
         GameDispatcher:dispatch(EventNames.EVENT_ACHIEVE_QUEST)
     end)
     
     local startGame = cc.uiloader:seekNodeByName(self.FightReady,"StartGame")
     startGame:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("-----------开始游戏")
         GameDataManager.generatePlayerVo()  --产生新的角色数据对象
         if parm == GAME_TYPE.LevelMode and GameDataManager.costPower(_levelCon.costPower) then
@@ -118,17 +121,24 @@ function FightReadyUI:ctor(parm)
     end)
     
     self.roleImg = cc.uiloader:seekNodeByName(self.FightReady,"RoleImg")
-    self.roleImg:setButtonEnabled(false)
-    self.roleImg:setButtonImage("disabled",RoleConfig[GameDataManager.getFightRole()].roleImg)
+    self.roleImg:onButtonClicked(function(event)
+        if not GameDataManager.getRoleModle(GiftConfig[4].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4})
+        end
+    end)
+    self.QuestPrice = cc.uiloader:seekNodeByName(self.FightReady,"QuestPrice")
+    self.QuestPrice:setString(RoleConfig[5].rmb.."元")
+--    self.roleImg:setButtonEnabled(false)
+--    self.roleImg:setButtonImage("disabled",RoleConfig[GameDataManager.getFightRole()].roleImg)
     
     self.GoldLabel = cc.uiloader:seekNodeByName(self.FightReady,"GoldLabel")
-    self.GoldLabel:setString("+ "..GameDataManager.getMoneyRate(GameDataManager.getFightRole(),GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
+    self.GoldLabel:setString("+ "..GameDataManager.getMoneyRate(5,GameDataManager.getRoleLevel(5)).."%")
     self.AbilityLabel = cc.uiloader:seekNodeByName(self.FightReady,"AbilityLabel")
-    self.AbilityLabel:setString("+ "..GameDataManager.getScoreRate(GameDataManager.getFightRole(),GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
+    self.AbilityLabel:setString("+ "..GameDataManager.getScoreRate(5,GameDataManager.getRoleLevel(5)).."%")
     
     GameDispatcher:dispatch(EventNames.EVENT_LOADING_OVER)
     
-    GameDispatcher:addListener(EventNames.EVENT_ROLE_CHANGE,handler(self,self.changeRole))
+--    GameDispatcher:addListener(EventNames.EVENT_ROLE_CHANGE,handler(self,self.changeRole))
 end
 
 function FightReadyUI:touchListener(event)
@@ -136,11 +146,11 @@ function FightReadyUI:touchListener(event)
 end
 
 function FightReadyUI:changeRole(parameters)
-    self.roleImg:setButtonImage("disabled",RoleConfig[GameDataManager.getFightRole()].roleImg)
-    self.GoldLabel:setString("+ "..GameDataManager.getMoneyRate(GameDataManager.getFightRole(),
-        GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
-    self.AbilityLabel:setString("+ "..GameDataManager.getScoreRate(GameDataManager.getFightRole(),
-        GameDataManager.getRoleLevel(GameDataManager.getFightRole())).."%")
+--    self.roleImg:setButtonImage("disabled",RoleConfig[GameDataManager.getFightRole()].roleImg)
+    self.GoldLabel:setString("+ "..GameDataManager.getMoneyRate(5,
+        GameDataManager.getRoleLevel(5)).."%")
+    self.AbilityLabel:setString("+ "..GameDataManager.getScoreRate(5,
+        GameDataManager.getRoleLevel(5)).."%")
 end
 
 function FightReadyUI:initProp(par)
@@ -214,13 +224,13 @@ end
 
 --清理数据
 function FightReadyUI:onCleanup()
-    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
+--    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
 end
 
 --关闭界面调用
 function FightReadyUI:toClose(_clean)
 
-    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
+--    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
 
     FightReadyUI.super.toClose(self,_clean)
 
