@@ -7,6 +7,7 @@ function PropItem:ctor(parameters)
     self.propCon = parameters
 
     self.propUI = cc.uiloader:load("json/PropItem.json")
+    self.propUI:setScale(display.right/GroupSize.width)
     self:addChild(self.propUI)
     self.propUI:setPosition(cc.p(0,0))
     

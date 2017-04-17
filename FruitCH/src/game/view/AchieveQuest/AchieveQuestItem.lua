@@ -21,6 +21,7 @@ end
 function AchieveQuestItem:initCotent(_type)
     local content = cc.uiloader:load("json/QuestAchieveItem.json")
     self:addChild(content)
+    content:setScale(display.right/GroupSize.width)
     content:setPosition(cc.p(0,0))
     --图片
     local img = cc.uiloader:seekNodeByName(content,"img")

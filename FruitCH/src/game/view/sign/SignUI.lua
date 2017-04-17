@@ -15,7 +15,8 @@ function SignUI:ctor(parameters)
     self:addChild(self.content)
     
     local Image_2 = cc.uiloader:seekNodeByName(self.content,"Image_2")
-    Image_2:setPosition(cc.p(display.cx,display.cy+34))
+    Image_2:setScale(display.right/GroupSize.width)
+    Image_2:setPositionX(display.cx)
     
     local getRewardBtn = cc.uiloader:seekNodeByName(self.content,"GetBtn")
     getRewardBtn:setPosition(cc.p(display.cx,display.bottom+50))

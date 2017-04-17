@@ -20,17 +20,20 @@ function ShopView:ctor(isPause)
     commonui:setPosition(cc.p(0,display.top-60))
     
     local Image_2 = cc.uiloader:seekNodeByName(self.m_shopUi,"Image_2")
---    Image_2:setScale(display.right/GroupSize.width)
+    Image_2:setScale(display.right/GroupSize.width)
     Image_2:setPositionX(display.cx)
 
     local listContent = cc.uiloader:seekNodeByName(self.m_shopUi,"Panel_List")
+    listContent:setPositionX(display.cx)
     self.m_listSize = listContent:getCascadeBoundingBox().size
     self.lv = cc.ui.UIListView.new {
         bgScale9 = true,
-        viewRect = cc.rect(0, 0, self.m_listSize.width, self.m_listSize.height),
+        viewRect = cc.rect(0, 0, self.m_listSize.width*display.right/GroupSize.width, self.m_listSize.height*display.right/GroupSize.width),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL}
         :onTouch(handler(self, self.touchListener))
         :addTo(listContent)
+    self.lv:setPosition(cc.p(self.m_listSize.width*(1-display.right/GroupSize.width)*0.5,
+        self.m_listSize.height*(1-display.right/GroupSize.width)*0.5))
 
     
     self:initPublic(ShopConfig)
@@ -55,8 +58,8 @@ function ShopView:initPublic(shopConfig)
             local item = self.lv:newItem()
             local content = ShopItemUI.new(i)
             content:setTouchEnabled(false)
-            content:setContentSize(self.m_listSize.width, 120)
-            item:setItemSize(self.m_listSize.width, 120)
+            content:setContentSize(self.m_listSize.width*display.right/GroupSize.width, 120*display.right/GroupSize.width)
+            item:setItemSize(self.m_listSize.width*display.right/GroupSize.width, 120*display.right/GroupSize.width)
             item:addContent(content)
             self.lv:addItem(item)
         end

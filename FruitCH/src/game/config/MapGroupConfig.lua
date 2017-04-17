@@ -5,11 +5,11 @@
 
 MapGroupConfig = {}
 
-MapGroupConfig[1]="test2.tmx"
-MapGroupConfig[2]="test2.tmx"
-MapGroupConfig[3]="test2.tmx"
-MapGroupConfig[4]="test2.tmx"
-MapGroupConfig[5]="test2.tmx"
+MapGroupConfig[1]="1.tmx"
+MapGroupConfig[2]="2.tmx"
+MapGroupConfig[3]="3.tmx"
+MapGroupConfig[4]="12.tmx"
+MapGroupConfig[5]="13.tmx"
 MapGroupConfig[6]="test2.tmx"
 MapGroupConfig[7]="test2.tmx"
 MapGroupConfig[8]="test2.tmx"

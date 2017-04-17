@@ -32,12 +32,12 @@ SelectLevel[1]=
     coinAward=false, --金币奖励
     powerAward=false, --体力奖励
     startGoods={1,2,3,4,5}, --开局道具
-    map = {1,1,1,1,0},    --地图组，此id对应MapGroupConfig中配置文件，0表示无地图组
+    map = {1,2,3,4,5,0},    --地图组，此id对应MapGroupConfig中配置文件，0表示无地图组
 --    obstacle={13,13,13,0},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
 --    coins = {3,3,3,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
 --    goods={1,1,1,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
     gap = 500,    --每组之间的间隔差距，单位:像素
-    speed = 32,  --每一关卡速度
+    speed = 75,  --每一关卡速度
     getStar = function(score)     --星级分数配置
         if score >= 300 then
         	return 3

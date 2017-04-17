@@ -41,7 +41,7 @@ function RoleView:initRole(parameters)
     self.listPandel = cc.uiloader:seekNodeByName(self.m_roleUi,"Panel_5")
     
     local Image_2 = cc.uiloader:seekNodeByName(self.m_roleUi,"Image_2")
---    Image_2:setScale(display.right/GroupSize.width)
+    Image_2:setScale(display.right/GroupSize.width)
     self.Panel_role = cc.uiloader:seekNodeByName(self.m_roleUi,"Panel_role")
     self.Panel_role:setScale(display.right/GroupSize.width)
     self.Panel_role:setPositionX(display.right-240*display.right/GroupSize.width)
@@ -125,10 +125,12 @@ function RoleView:initRole(parameters)
     self.m_listSize = self.listPandel:getCascadeBoundingBox().size
     self.lv = cc.ui.UIListView.new {
         bgScale9 = true,
-        viewRect = cc.rect(0, 0, self.m_listSize.width, self.m_listSize.height),
+        viewRect = cc.rect(0, 0, self.m_listSize.width*display.right/GroupSize.width, self.m_listSize.height*display.right/GroupSize.width),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL}
         :onTouch(handler(self, self.touchListener))
         :addTo(self.listPandel)
+    self.lv:setPosition(cc.p(self.m_listSize.width*(1-display.right/GroupSize.width)*0.5,
+        self.m_listSize.height*(1-display.right/GroupSize.width)*0.5))
     
     self.m_skill = {}
     Tools.delayCallFunc(0.01,function()
@@ -137,8 +139,8 @@ function RoleView:initRole(parameters)
             local content = RoleItem.new(self.RoleUnActSkill[var])
             self.m_skill[var] = content
             content:setTouchEnabled(false)
-            content:setContentSize(self.m_listSize.width, 85)--*display.right/GroupSize.width
-            item:setItemSize(self.m_listSize.width, 85)
+            content:setContentSize(self.m_listSize.width*display.right/GroupSize.width, 85*display.right/GroupSize.width)--*display.right/GroupSize.width
+            item:setItemSize(self.m_listSize.width*display.right/GroupSize.width, 85*display.right/GroupSize.width)
             item:addContent(content)
             self.lv:addItem(item)
         end

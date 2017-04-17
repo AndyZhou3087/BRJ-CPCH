@@ -16,6 +16,10 @@ function MainUI:init(parameters)
     self.m_json = cc.uiloader:load("json/MainUI.json")
     self:addChild(self.m_json)
 
+    local Panel_8 = cc.uiloader:seekNodeByName(self.m_json,"Panel_8")
+    Panel_8:setScale(display.right/GroupSize.width)
+    Panel_8:setPositionX(display.cx)
+
     local Label_8 = cc.uiloader:seekNodeByName(self.m_json,"Label_8")
     Label_8:setPositionX(display.left+130)
 

@@ -15,12 +15,12 @@ function MapView:ctor(parameters)
     self.m_currentl = GameDataManager.getCurLevelId()
     self.mcurLevelCoin = 0
     
-    local Image_3_0 = cc.uiloader:seekNodeByName(self.m_mapView,"Image_3_0")
---    Image_3_0:setPositionX(display.right-290)
-    local Image_3 = cc.uiloader:seekNodeByName(self.m_mapView,"Image_3")
---    Image_3:setPositionX(display.left+435)
     local Image_1 = cc.uiloader:seekNodeByName(self.m_mapView,"Image_1")
-    Image_1:setPositionX(display.left+125)
+    Image_1:setPositionX(display.left+100)
+    local Image_3 = cc.uiloader:seekNodeByName(self.m_mapView,"Image_3")
+    Image_3:setPositionX(display.cx-80)
+    local Image_3_0 = cc.uiloader:seekNodeByName(self.m_mapView,"Image_3_0")
+    Image_3_0:setPositionX(Image_3:getPositionX()+220)
 
     --分数
     self.m_score = cc.uiloader:seekNodeByName(self.m_mapView,"AtlasLabel_17")
@@ -28,7 +28,7 @@ function MapView:ctor(parameters)
 
     -- 暂停按钮
     local pauseBtn = cc.uiloader:seekNodeByName(self.m_mapView,"PauseBtn")
-    pauseBtn:setPositionX(display.right-100)
+    pauseBtn:setPositionX(display.right-70)
     pauseBtn:onButtonClicked(function(_event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("暂停")

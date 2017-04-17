@@ -163,7 +163,7 @@ RoleConfig[5]=
         id = 5,
         skillAct = {{type=PLAYER_ACT_TYPE.Twojump},{type=PLAYER_ACT_TYPE.Protect},},    --主动技能
         armatureName = "nan6",   --动画工程名
-        roleName = "囧囧",     --角色名称
+        roleName = "忍者教授",     --角色名称
         roleImg = "ui/role_3.png",   --角色图片
         roleDes = "aaaaaaaaaaa",  --角色描述
         roleRevive = "ui/Revive_role3.png",

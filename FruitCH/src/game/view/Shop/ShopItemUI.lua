@@ -12,7 +12,7 @@ function ShopItemUI:ctor(shopId)
 
     for var=1, 4 do
         if ShopConfig[(shopId-1)*4+var] then
-            self:initContent(ShopConfig[(shopId-1)*4+var],cc.p(-8+220*(var-1),0))
+            self:initContent(ShopConfig[(shopId-1)*4+var],cc.p((-8+220*(var-1))*display.right/GroupSize.width,0))
         end
     end
 
@@ -22,6 +22,7 @@ end
 function ShopItemUI:initContent(shopConfig,pos)
     local content = cc.uiloader:load("json/ShopItem.json")
     self:addChild(content)
+    content:setScale(display.right/GroupSize.width)
     content:setPosition(pos)
     --钻石金币
     local panelDG = cc.uiloader:seekNodeByName(content,"Panel_diagold")

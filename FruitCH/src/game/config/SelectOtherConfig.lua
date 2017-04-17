@@ -24,5 +24,5 @@ SelectOtherConfig=
         {res="Select/Select_10.png",x=2165,y=20,},
         {res="Select/Select_6.png",x=2765,y=20,},
 
-        {res="Select/Select_1.png",x=2880,y=440,},--(Y坐标必须有一个为440)
+        {res="Select/Select_1.png",x=2880,y=460,},--(Y坐标必须有一个为440)
 }

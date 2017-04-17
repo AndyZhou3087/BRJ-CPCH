@@ -45,7 +45,7 @@ function SelectUI:init(parameters)
     local emptyNode = cc.Node:create()
     emptyNode:setAnchorPoint(0,0)
 
-    local scrollView = cc.ui.UIScrollView.new({viewRect = cc.rect(0,0,GroupSize.width,GroupSize.height)})
+    local scrollView = cc.ui.UIScrollView.new({viewRect = cc.rect(0,0,display.width,display.height)})
         :addScrollNode(emptyNode)
         :setDirection(cc.ui.UIScrollView.DIRECTION_HORIZONTAL)
         :onScroll(handler(self, self.scrollListener))

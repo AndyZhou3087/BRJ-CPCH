@@ -15,6 +15,7 @@ end
 function RoleItem:initContent(config)
     local content = cc.uiloader:load("json/RoleItem.json")
     self:addChild(content)
+    content:setScale(display.right/GroupSize.width)
     content:setPosition(cc.p(0,0))
 
     local img = cc.uiloader:seekNodeByName(content,"Image_13")
