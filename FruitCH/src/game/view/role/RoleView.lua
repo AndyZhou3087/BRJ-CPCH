@@ -39,8 +39,13 @@ end
 
 function RoleView:initRole(parameters)
     self.listPandel = cc.uiloader:seekNodeByName(self.m_roleUi,"Panel_5")
+    
+    local Image_2 = cc.uiloader:seekNodeByName(self.m_roleUi,"Image_2")
+--    Image_2:setScale(display.right/GroupSize.width)
     self.Panel_role = cc.uiloader:seekNodeByName(self.m_roleUi,"Panel_role")
-    self.Panel_role:setPositionX(display.right-235)
+    self.Panel_role:setScale(display.right/GroupSize.width)
+    self.Panel_role:setPositionX(display.right-240*display.right/GroupSize.width)
+
     --图片
     self.RoleImg = cc.uiloader:seekNodeByName(self.m_roleUi,"RoleImg")
     self.RoleImg:setButtonEnabled(false)
@@ -132,7 +137,7 @@ function RoleView:initRole(parameters)
             local content = RoleItem.new(self.RoleUnActSkill[var])
             self.m_skill[var] = content
             content:setTouchEnabled(false)
-            content:setContentSize(self.m_listSize.width, 85)
+            content:setContentSize(self.m_listSize.width, 85)--*display.right/GroupSize.width
             item:setItemSize(self.m_listSize.width, 85)
             item:addContent(content)
             self.lv:addItem(item)

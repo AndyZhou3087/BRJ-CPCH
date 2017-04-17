@@ -40,7 +40,7 @@ function Obstacle:ctor(id,py)
             _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.9)
             if self.m_vo.m_type == OBSTACLE_TYPE.spring then
                 _size = self.obcon:getCascadeBoundingBox().size
-                offset = cc.p(20,25)
+                offset = cc.p(35,40)
             elseif self.m_vo.m_type == OBSTACLE_TYPE.special then
                 offset = cc.p(-50,50)
             end 

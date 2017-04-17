@@ -20,6 +20,7 @@ function AchieveQuest:ctor()
     
     local Image_2_0 = cc.uiloader:seekNodeByName(self.m_json,"Image_2_0")
     Image_2_0:setPositionX(display.cx)
+--    Image_2_0:setScale(display.right/GroupSize.width)
     
     local listContent = cc.uiloader:seekNodeByName(self.m_json,"list_panel")
     self.m_listSize = listContent:getCascadeBoundingBox().size

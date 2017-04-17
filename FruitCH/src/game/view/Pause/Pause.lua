@@ -12,6 +12,9 @@ function Pause:ctor(parm)
     local _pause = cc.uiloader:load("json/PauseUI.json")
     self:addChild(_pause)
     
+    local Image_16 = cc.uiloader:seekNodeByName(_pause,"Image_16")
+    Image_16:setPositionX(display.cx)
+    
     local diaBtn = cc.uiloader:seekNodeByName(_pause,"DiamondBtn")
     diaBtn:onButtonClicked(function(_event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)

@@ -20,6 +20,7 @@ function ShopView:ctor(isPause)
     commonui:setPosition(cc.p(0,display.top-60))
     
     local Image_2 = cc.uiloader:seekNodeByName(self.m_shopUi,"Image_2")
+--    Image_2:setScale(display.right/GroupSize.width)
     Image_2:setPositionX(display.cx)
 
     local listContent = cc.uiloader:seekNodeByName(self.m_shopUi,"Panel_List")

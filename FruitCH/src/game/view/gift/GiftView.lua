@@ -119,6 +119,7 @@ function GiftView:ctor(parm)
     
     local CloseBtn=cc.uiloader:seekNodeByName(GiftView,"CloseBtn")
     CloseBtn:onButtonClicked(function(event)
+        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         self:toClose(true)
     end)
     

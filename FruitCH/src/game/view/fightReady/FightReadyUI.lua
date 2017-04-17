@@ -41,16 +41,23 @@ function FightReadyUI:ctor(parm)
     else
         Tools.printDebug("readyView no mode!!!")
     end
+    
+    local Image_19 = cc.uiloader:seekNodeByName(self.FightReady,"Image_19")
+--    Image_19:setScale(display.right/GroupSize.width)
+    local Panel_22 = cc.uiloader:seekNodeByName(self.FightReady,"Panel_22")
+    Panel_22:setScale(display.right/GroupSize.width)
+    Panel_22:setPositionX(display.right-240*display.right/GroupSize.width)
 
     local listPanel = cc.uiloader:seekNodeByName(self.FightReady,"Panel_21")
     self.listPanelSize = listPanel:getCascadeBoundingBox().size
-    
+
     self.listView = cc.ui.UIListView.new {
         bgScale9 = true,
         viewRect = cc.rect(0, 0, self.listPanelSize.width, self.listPanelSize.height),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL}
         :onTouch(handler(self, self.touchListener))
         :addTo(listPanel)
+
     self.m_goods = self:makeGoodsData()
     self:initProp(true)
     
@@ -169,7 +176,7 @@ function FightReadyUI:initProp(par)
                 local item = self.listView:newItem()
                 local content = PropItem.new(_goodsCon)
                 content:setTouchEnabled(false)
-                content:setContentSize(self.listPanelSize.width, 78)
+                content:setContentSize(self.listPanelSize.width, 78)--*display.right/GroupSize.width
                 item:setItemSize(self.listPanelSize.width, 78)
                 item:addContent(content)
                 self.listView:addItem(item)

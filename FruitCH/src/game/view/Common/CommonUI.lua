@@ -12,11 +12,13 @@ function CommonUI:ctor(parm)
     --启用onCleanup函数
     self:setNodeEventEnabled(true)
 
+    self:setScale(display.right/GroupSize.width)
+
     self.CommonUI = cc.uiloader:load("json/CommonUI.json")
     self:addChild(self.CommonUI)
     
     local backbtn = cc.uiloader:seekNodeByName(self.CommonUI,"Backbtn")
-    backbtn:setPositionX(display.right-60)
+--    backbtn:setPositionX(display.right-60)
     backbtn:onButtonClicked(function(event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("-----------返回")
@@ -24,11 +26,11 @@ function CommonUI:ctor(parm)
     end)
     
     local Image_3 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_3")
-    Image_3:setPositionX(display.right-60-170)
+--    Image_3:setPositionX(display.right-60-170)
     local Image_2 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_2")
-    Image_2:setPositionX(display.cx+15)
+--    Image_2:setPositionX(display.cx+15)
     local Image_1 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_1")
-    Image_1:setPositionX(display.left+190)
+--    Image_1:setPositionX(display.left+190)
     
     local powerbtn = cc.uiloader:seekNodeByName(self.CommonUI,"Powerbtn")
     powerbtn:onButtonClicked(function(event)

@@ -20,6 +20,8 @@ function FightOver:ctor(parm)
     
     self:initWidget()
 
+    local Image_16 = cc.uiloader:seekNodeByName(self.m_fightover,"Image_16")
+    Image_16:setPositionX(display.cx)
 
     --判断是胜利还是失败
     if parm.type == GAMEOVER_TYPE.Win then
