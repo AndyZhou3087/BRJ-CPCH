@@ -213,7 +213,12 @@ function GameController.attract(parameters)
                 local goldPos=gold:getParent():convertToWorldSpace(cc.p(gold:getPosition()))
                 local goldSize = gold:getSize()
                 local playerOffset = curPlayer:getOffset()
-                local playerRect = cc.rect(playP.x-playSize.width*0.5,playP.y,playSize.width,playSize.height)
+                local playerRect
+                if curPlayer:getScaleY() == 1 then
+                    playerRect = cc.rect(playP.x-playSize.width*0.5,playP.y,playSize.width,playSize.height)
+                else
+                    playerRect = cc.rect(playP.x-playSize.width*0.5,playP.y-playSize.height,playSize.width,playSize.height)
+                end
                 local goldRect = cc.rect(goldPos.x,goldPos.y,goldSize.width,goldSize.height)
                 if cc.rectIntersectsRect(goldRect,playerRect) then
                     gold:collision()

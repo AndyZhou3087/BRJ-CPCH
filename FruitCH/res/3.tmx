@@ -44,7 +44,7 @@
   <object name="Common_sliver.png" type="2" gid="6" x="67" y="415"/>
  </objectgroup>
  <objectgroup name="good">
-  <object type="7" gid="5" x="747" y="241"/>
+  <object name="7" gid="5" x="747" y="241"/>
  </objectgroup>
  <objectgroup name="obstacle">
   <object name="1" gid="2" x="736" y="504"/>

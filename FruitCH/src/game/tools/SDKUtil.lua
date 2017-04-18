@@ -28,14 +28,14 @@ local methodName = "pay"
 function SDKUtil.toPay(_data)
     local params = {_data.goodsId,_data.orderId,_data.callback}
     local sigs = "(ILjava/lang/String;I)V"
-	if luaj then
-        luaj.callStaticMethod(className,methodName,params,sigs)
-		return
-	end
-    if luaoc then
-        luaoc.callStaticMethod(className,methodName,params,sigs)
-        return
-	end
+--	if luaj then
+--        luaj.callStaticMethod(className,methodName,params,sigs)
+--		return
+--	end
+--    if luaoc then
+--        luaoc.callStaticMethod(className,methodName,params,sigs)
+--        return
+--	end
     _data.callback(SDKUtil.PayResult.Success)
 end
 
