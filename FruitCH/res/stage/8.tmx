@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="960" tileheight="540">
+ <tileset firstgid="1" name="GameBg" tilewidth="960" tileheight="540">
+  <image source="Common/GameBg.jpg" width="1060" height="540"/>
+ </tileset>
+ <tileset firstgid="2" name="obscale_1" tilewidth="62" tileheight="80">
+  <image source="ui/obscale_1.png" width="62" height="80"/>
+ </tileset>
+ <tileset firstgid="3" name="obscale_2" tilewidth="60" tileheight="62">
+  <image source="ui/obscale_2.png" width="60" height="62"/>
+ </tileset>
+ <tileset firstgid="4" name="Common_gold" tilewidth="40" tileheight="40">
+  <image source="Common/Common_gold.png" width="40" height="40"/>
+ </tileset>
+ <layer name="stage1" width="1" height="1">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgAAAACAAC
+  </data>
+ </layer>
+ <objectgroup name="gold">
+  <object name="Common_gold.png" type="1" gid="4" x="351" y="111"/>
+  <object name="Common_gold.png" type="1" gid="4" x="322" y="156"/>
+  <object name="Common_gold.png" type="1" gid="4" x="285" y="193"/>
+  <object name="Common_gold.png" type="1" gid="4" x="253" y="235"/>
+  <object name="Common_gold.png" type="1" gid="4" x="221" y="285"/>
+  <object name="Common_gold.png" type="1" gid="4" x="188" y="335"/>
+  <object name="Common_gold.png" type="1" gid="4" x="154" y="383"/>
+  <object name="Common_gold.png" type="1" gid="4" x="542" y="215"/>
+  <object name="Common_gold.png" type="1" gid="4" x="571" y="250"/>
+  <object name="Common_gold.png" type="1" gid="4" x="606" y="289"/>
+  <object name="Common_gold.png" type="1" gid="4" x="638" y="333"/>
+  <object name="Common_gold.png" type="1" gid="4" x="670" y="371"/>
+  <object name="Common_gold.png" type="1" gid="4" x="708" y="405"/>
+  <object name="Common_gold.png" type="1" gid="4" x="741" y="441"/>
+ </objectgroup>
+ <objectgroup name="good"/>
+ <objectgroup name="obstacle">
+  <object name="1" gid="2" x="591" y="133"/>
+  <object name="1" gid="2" x="841" y="503"/>
+ </objectgroup>
+</map>

@@ -32,11 +32,11 @@ SelectLevel[1]=
     coinAward=false, --金币奖励
     powerAward=false, --体力奖励
     startGoods={1,2,3,4,5}, --开局道具
-    map = {1,2,3,4,5,0},    --地图组，此id对应MapGroupConfig中配置文件，0表示无地图组
+    map = {12,13,6,13,6,14,12,0},    --地图组，此id对应MapGroupConfig中配置文件，0表示无地图组
 --    obstacle={13,13,13,0},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
 --    coins = {3,3,3,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
 --    goods={1,1,1,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-    gap = 500,    --每组之间的间隔差距，单位:像素
+    gap = 60,    --每组之间的间隔差距，单位:像素
     speed = 75,  --每一关卡速度
     getStar = function(score)     --星级分数配置
         if score >= 300 then
@@ -60,12 +60,10 @@ SelectLevel[2]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {1,2,3,12,13,10,4,15,15,6,14,2,14,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -88,12 +86,10 @@ SelectLevel[3]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {22,24,23,25,12,13,10,16,19,15,5,4,15,5,2,5,16,15,16,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -116,12 +112,10 @@ SelectLevel[4]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {23,25,24,6,7,9,10,12,20,21,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -131,7 +125,7 @@ SelectLevel[4]=
             return 1
         end
         end,
-	isClip = ture,  --关卡是否遮罩
+	isClip = true,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
     }
     
@@ -144,12 +138,10 @@ SelectLevel[5]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {12,22,20,19,22,4,14,20,20,21,4,12,17,19,2,21,20,21,26,11,11,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -161,7 +153,6 @@ SelectLevel[5]=
         end,
 	isClip = false,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
-
     }
     
 SelectLevel[6]= 
@@ -173,12 +164,10 @@ SelectLevel[6]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {22,14,23,24,23,25,4,15,16,15,14,22,25,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -201,12 +190,10 @@ SelectLevel[7]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {28,27,16,18,16,14,18,27,15,5,28,17,18,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -229,12 +216,10 @@ SelectLevel[8]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},     --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {28,27,16,18,16,14,18,27,15,5,28,17,18,0},
+        gap = 60,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -257,12 +242,10 @@ SelectLevel[9]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {14,18,17,13,6,14,12,29,23,29,23,21,14,14,17,26,16,16,0},
+        gap = 50,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -274,7 +257,6 @@ SelectLevel[9]=
         end,
 	isClip = false,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
-
     }
 
 SelectLevel[10]= 
@@ -286,12 +268,10 @@ SelectLevel[10]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {23,24,3,30,30,27,16,15,3,15,15,27,30,30,28,30,30,30,0},
+        gap = 50,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -303,7 +283,6 @@ SelectLevel[10]=
         end,
 	isClip = false,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
-
     }
 
 SelectLevel[11]= 
@@ -315,12 +294,10 @@ SelectLevel[11]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {22,24,23,25,8,17,1,10,1,17,24,1,17,25,22,0},
+        gap = 50,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -332,7 +309,6 @@ SelectLevel[11]=
         end,
 	isClip = false,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
-
     }
 
 SelectLevel[12]= 
@@ -344,12 +320,10 @@ SelectLevel[12]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {17,28,27,19,17,17,16,10,16,17,10,14,17,24,23,25,26,28,1,2,0},
+        gap = 50,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -361,7 +335,6 @@ SelectLevel[12]=
         end,
 	isClip = false,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
-
     }
 
 SelectLevel[13]= 
@@ -373,12 +346,10 @@ SelectLevel[13]=
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
-        startGoods={0,0,0,0,0,0}, --开局道具
-        obstacle={13,13,13,13,13,13,13,13,13},   --障碍物，此id对应ObsGroupConfig中配置文件，填0表示无障碍
-        coins = {0,0,0,0,0,0,0,0,0},    --金币, 此id对应CoinsConfig配置文件，填0表示无
-        goods={0,0,0,0,0,0,0,0,0},      --道具  此id对应GoodGroupConfig配置文件,填0表示无道具
-        gap = 500,    --每组之间的间隔差距，单位:像素
-        speed = 32,  --每一关卡速度
+        startGoods={1,2,3,4,5}, --开局道具
+        map = {21,27,19,17,24,23,19,17,17,16,10,16,17,21,17,17,16,10,16,17,1,2,3,4,0},
+        gap = 50,    --每组之间的间隔差距，单位:像素
+        speed = 75,  --每一关卡速度
         getStar = function(score)     --星级分数配置
             if score >= 300 then
                 return 3
@@ -388,7 +359,7 @@ SelectLevel[13]=
             return 1
         end
         end,
-	isClip = ture,  --关卡是否遮罩
+	isClip = true,  --关卡是否遮罩
 	giftGap = 3000,   --奔跑多少距离弹角色礼包，单位:像素
     }
 
