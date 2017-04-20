@@ -24,8 +24,13 @@ function GiftView:ctor(parm)
 
     local RoleBg = cc.uiloader:seekNodeByName(GiftView,"RoleBg")
     RoleBg:setPositionX(display.cx)
+    local roleBgX,roleBgY = RoleBg:getPosition()
     RoleBg:setButtonEnabled(false)
     RoleBg:setButtonImage("disabled",config.bg)
+    
+    if parm.animation == true then
+        self:popupLeft(roleBgX,nil,RoleBg)
+    end
 
     local RoleImg=cc.uiloader:seekNodeByName(GiftView,"RoleImg")
     RoleImg:setButtonEnabled(false)

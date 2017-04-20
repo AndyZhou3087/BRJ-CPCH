@@ -6,6 +6,8 @@ local FightOver = class("FightOver",BaseUI)
 
 local Scheduler = require("framework.scheduler")
 
+local starFlashTime = 0.5
+
 function FightOver:ctor(parm)
     FightOver.super.ctor(self)
 
@@ -68,8 +70,20 @@ function FightOver:initWidget()
     self.level:setString(self.m_curLevel)
     self.LevelTips = cc.uiloader:seekNodeByName(self.m_fightover,"LevelTips")
     self.LevelTips:setButtonEnabled(false)
+    
     self.ScroeLabel = cc.uiloader:seekNodeByName(self.m_fightover,"ScroeLabel")
-    self.ScroeLabel:setString(GameDataManager.getAllScore())
+    self.ScroeLabel:setVisible(false)
+--    self.ScroeLabel:setString(GameDataManager.getAllScore())
+    self.ScroeLabel_1 = cc.uiloader:seekNodeByName(self.m_fightover,"ScroeLabel_1")
+    self.ScroeLabel_1:setVisible(false)
+    self.label_1 = cc.uiloader:seekNodeByName(self.m_fightover,"label")
+    self.label_2 = cc.uiloader:seekNodeByName(self.m_fightover,"label_1")
+    self.ScroeLabel_2 = cc.uiloader:seekNodeByName(self.m_fightover,"ScroeLabel_2")
+    self.ScroeLabel_2:setVisible(false)
+    self.label_3 = cc.uiloader:seekNodeByName(self.m_fightover,"label_ScroeLabel_2")
+    self.label_4 = cc.uiloader:seekNodeByName(self.m_fightover,"label_1_ScroeLabel_2")
+    self.label_5 = cc.uiloader:seekNodeByName(self.m_fightover,"label_2_ScroeLabel_2")
+    
     self.RecordScore = cc.uiloader:seekNodeByName(self.m_fightover,"RecordScore")
     self.RecordScore:setString("历史最高分:"..Tools.StringToComma(GameDataManager.getHistoryScore(self.m_curLevel)))
     self.GetGold = cc.uiloader:seekNodeByName(self.m_fightover,"GetGold")
@@ -92,11 +106,25 @@ function FightOver:initWidget()
     self.continueLabel:setButtonEnabled(false)
 end
 
+function FightOver:starAction(obj)
+    obj:setVisible(true)
+    obj:setScale(1.2)
+    local x,y = obj:getPosition()
+    obj:setPosition(cc.p(x+50,y-50))
+    local rotate1 = cc.RotateBy:create(starFlashTime,360)
+    local scale = cc.ScaleTo:create(starFlashTime,1)
+    local move = cc.MoveBy:create(0.5,cc.p(-50,50))
+    local spawn = cc.Spawn:create(rotate1,scale,move)
+    obj:runAction(spawn)
+    
+end
+
 --过关胜利界面
 function FightOver:toWin()
     local _isFirst = GameDataManager.saveLevelData()  --存储关卡数据
     self.initGoldCount = GameDataManager.getGold()
     self.getGoldCount = 0
+    self.getScore = 0
     GameDataManager.addGold(GameDataManager.getAllFightCoins())
 
     local _leveCon = SelectLevel[self.m_curLevel]
@@ -115,6 +143,15 @@ function FightOver:toWin()
         for var=1, 3 do
             if var <= star then
                 self["star_"..var]:setButtonImage("disabled","ui/StarLight.png")
+                self["star_"..var]:setVisible(false)
+                --星星动画
+                if self["handler"..var] then
+                    Scheduler.unscheduleGlobal(self["handler"..var])
+                    self["handler"..var] = nil
+                end
+                self["handler"..var] = Tools.delayCallFunc(starFlashTime*var,function()
+                    self:starAction(self["star_"..var])
+                end)
             else
                 self["star_"..var]:setVisible(false)
             end
@@ -129,6 +166,8 @@ function FightOver:toWin()
     self.GetGold:setString("获得金币："..GameDataManager.getAllFightCoins())
 
     self.Continuebtn:onButtonClicked(function(_event)
+        self.backBtn:setButtonEnabled(false)
+        self.Continuebtn:setButtonEnabled(false)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
             if  self.m_curLevel < #SelectLevel then
                 GameController.setSignPop(false)
@@ -138,7 +177,7 @@ function FightOver:toWin()
                 Tools.delayCallFunc(0.01,function()
                     GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
                 end)
-                Tools.delayCallFunc(0.5,function()
+                Tools.delayCallFunc(0.1,function()
                     GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
                 end)
                 self:toClose(true)
@@ -152,7 +191,7 @@ function FightOver:toWin()
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
             end)
-            Tools.delayCallFunc(0.5,function()
+            Tools.delayCallFunc(0.1,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
             end)
             self:toClose(true)
@@ -161,12 +200,14 @@ function FightOver:toWin()
     
     --金币更新效果
     self.updateGoleHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.05)
+    self.updateScoresHandler = Scheduler.scheduleGlobal(handler(self,self.updateScores),0.01)
 end
 
 function FightOver:toFail()
     for var=1, 3 do
         self["star_"..var]:setButtonImage("disabled","ui/StarDark.png")
     end
+    self:StringToComma(GameDataManager.getAllScore())
     self.LevelTips:setButtonImage("disabled","ui/Over_fail.png")
     self.Continuebtn:setButtonImage("normal","Common/Common_c2_1.png")
     self.Continuebtn:setButtonImage("pressed","Common/Common_c2_2.png")
@@ -174,6 +215,8 @@ function FightOver:toFail()
     self.RecordScore:setString("历史最高分:"..Tools.StringToComma(GameDataManager.getHistoryScore(self.m_curLevel), ","))
 
     self.Continuebtn:onButtonClicked(function(_event)
+        self.backBtn:setButtonEnabled(false)
+        self.Continuebtn:setButtonEnabled(false)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
             GameController.setSignPop(false)
             GameController.resumeGame()
@@ -181,7 +224,7 @@ function FightOver:toFail()
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
             end)
-            Tools.delayCallFunc(0.5,function()
+            Tools.delayCallFunc(0.1,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
             end)
             self:toClose(true)
@@ -192,7 +235,7 @@ function FightOver:toFail()
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
             end)
-            Tools.delayCallFunc(0.5,function()
+            Tools.delayCallFunc(0.1,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE_CONTROL)
             end)
             self:toClose(true)
@@ -217,12 +260,85 @@ function FightOver:onEnterFrame(parameters)
     end
 end
 
+function FightOver:updateScores(parameters)
+    self.getScore = self.getScore + 100
+    self:StringToComma(self.getScore)
+    if self.getScore >= GameDataManager.getAllScore() then
+        self.getScore = GameDataManager.getAllScore()
+        self:StringToComma(self.getScore)
+        if self.updateScoresHandler then
+            Scheduler.unscheduleGlobal(self.updateScoresHandler)
+            self.updateScoresHandler = nil
+        end
+    end
+end
+
+
+--数字转换，三位数逗号转换
+function FightOver:StringToComma(count)
+    local mCount = 0;
+    if count >= 1000000 then
+        local str1 = math.floor(count / 1000000);
+        local str2 = count % 1000000;
+        local str3 = math.floor(str2 / 1000);
+        local str4 = str2 % 1000;
+        if str3 < 10 then
+            str3 = "00"..str3;
+        elseif str3 < 100 then
+            str3 = "0"..str3;
+        end
+        if str4 < 10 then
+            str4 = "00"..str4;
+        elseif str4 < 100 then
+            str4 = "0"..str4;
+        end
+--        mCount = str1..","..str3..","..str4;
+        self.ScroeLabel:setVisible(false)
+        self.ScroeLabel_1:setVisible(false)
+        self.ScroeLabel_2:setVisible(true)
+        self.label_3:setString(str1)
+        self.label_4:setString(str3)
+        self.label_5:setString(str4)
+    elseif count >= 1000 then
+        local str1 = math.floor(count / 1000);
+        local str2 = count % 1000;
+        if str2 < 10 then
+            str2 = "00"..str2;
+        elseif str2 < 100 then
+            str2 = "0"..str2;
+        end
+--        mCount = str1..","..str2;
+        self.ScroeLabel:setVisible(false)
+        self.ScroeLabel_1:setVisible(true)
+        self.ScroeLabel_2:setVisible(false)
+        self.label_1:setString(str1)
+        self.label_2:setString(str2)
+    else
+--        mCount = count;
+        self.ScroeLabel:setVisible(true)
+        self.ScroeLabel_1:setVisible(false)
+        self.ScroeLabel_2:setVisible(false)
+        self.ScroeLabel:setString(count)
+    end
+--    return mCount;
+end
+
 
 function FightOver:onCleanup()
     AudioManager.setFightSoundEnable(true)
     if self.updateGoleHandler then
         Scheduler.unscheduleGlobal(self.updateGoleHandler)
         self.updateGoleHandler = nil
+    end
+    if self.updateScoresHandler then
+        Scheduler.unscheduleGlobal(self.updateScoresHandler)
+        self.updateScoresHandler = nil
+    end
+    for var=1, 3 do
+        if self["handler"..var] then
+            Scheduler.unscheduleGlobal(self["handler"..var])
+            self["handler"..var] = nil
+        end
     end
 end
 
@@ -235,6 +351,16 @@ function FightOver:toClose(_clean)
     if self.updateGoleHandler then
         Scheduler.unscheduleGlobal(self.updateGoleHandler)
         self.updateGoleHandler = nil
+    end
+    if self.updateScoresHandler then
+        Scheduler.unscheduleGlobal(self.updateScoresHandler)
+        self.updateScoresHandler = nil
+    end
+    for var=1, 3 do
+        if self["handler"..var] then
+            Scheduler.unscheduleGlobal(self["handler"..var])
+            self["handler"..var] = nil
+        end
     end
     FightOver.super.toClose(self,_clean)
 end

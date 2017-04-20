@@ -50,6 +50,13 @@ function PropItem:initPropData()
         useLabel:setButtonImage("disabled","ui/buy_label.png")
     end
     
+    local PropCount = cc.uiloader:seekNodeByName(self.propUI,"PropCount")
+    PropCount:setVisible(false)
+    local CountLabel = cc.uiloader:seekNodeByName(self.propUI,"CountLabel")
+    if GameDataManager.getGoodsNum(self.propCon.id)>0 then
+        PropCount:setVisible(true)
+        CountLabel:setString(GameDataManager.getGoodsNum(self.propCon.id))
+    end
     
     --使用按钮
     local useBtn = cc.uiloader:seekNodeByName(self.propUI,"Buybtn")
@@ -60,12 +67,14 @@ function PropItem:initPropData()
             if not self.propCon.isSelect then
                 if GameDataManager.getGoodsNum(self.propCon.id)>0 then
                     self.propCon.isSelect = true
+                    useLabel:setButtonImage("disabled","ui/CancelLabel.png")
                     Tools.printDebug("----已使用道具",self.propCon.id)
                 else
                     if self.propCon.cost.type == COST_TYPE.Gold then
                         if GameDataManager.getGold()>=self.propCon.cost.price then
                             --                        GameDataManager.costGold(self.propCon.cost.price)
                             self.propCon.isSelect = true
+                            useLabel:setButtonImage("disabled","ui/CancelLabel.png")
                             Tools.printDebug("----已使用道具",self.propCon.id)
                         else
                             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
@@ -74,6 +83,7 @@ function PropItem:initPropData()
                         if GameDataManager.getDiamond()>=self.propCon.cost.price then
                             --                        GameDataManager.costDiamond(self.propCon.cost.price)
                             self.propCon.isSelect = true
+                            useLabel:setButtonImage("disabled","ui/CancelLabel.png")
                             Tools.printDebug("----已使用道具",self.propCon.id)
                         else
                             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
@@ -82,6 +92,7 @@ function PropItem:initPropData()
                 end
             else
                 self.propCon.isSelect = false
+                useLabel:setButtonImage("disabled","ui/UseLabel.png")
                 Tools.printDebug("----已放弃使用道具",self.propCon.id)
             end
         else

@@ -491,7 +491,7 @@
                   "__type": "ImageViewSurrogate:#EditorCommon.JsonModel.Component.GUI",
                   "classname": "ImageView",
                   "name": "Lock",
-                  "ZOrder": 0,
+                  "ZOrder": 1,
                   "actiontag": 64458742,
                   "anchorPointX": 0.5,
                   "anchorPointY": 0.5,

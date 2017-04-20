@@ -209,7 +209,7 @@ function MapGroup:stopUpdate(parameters)
 end
 
 function MapGroup:startUpdate(parameters)
-    self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
+    self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 end
 
 --获取组合中的障碍物

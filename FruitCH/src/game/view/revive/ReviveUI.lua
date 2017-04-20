@@ -51,6 +51,9 @@ function ReviveUI:ctor(parm)
     self.BackCount = cc.uiloader:seekNodeByName(ReviveUI,"BackCount")
     self.BackCount:setButtonEnabled(false)
     self.BackCount:setButtonImage("disabled","ui/Revive_3.png")
+    self.BackCount:setScale(1.2)
+    local scaleTo2 = cc.ScaleTo:create(0.5,1)
+    self.BackCount:runAction(scaleTo2)
 
     self.count = 3
     self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),1)
@@ -61,6 +64,10 @@ end
 
 function ReviveUI:onEnterFrame(parameters)
     self.count = self.count - 1
+    self.BackCount:stopAllActions()
+    self.BackCount:setScale(1.2)
+    local scaleTo2 = cc.ScaleTo:create(0.5,1)
+    self.BackCount:runAction(scaleTo2)
     if self.count > 0 then
         self.BackCount:setButtonImage("disabled","ui/Revive_"..self.count..".png")
     end

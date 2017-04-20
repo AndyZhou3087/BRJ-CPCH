@@ -59,8 +59,8 @@ function ClippingView:onEnterFrame(parameters)
         return
     end
     local posX,posY = GameController.getCurPlayer():getPosition()
-    self.sprite:setPosition(cc.p(posX+100,posY))
-    self.shade:setPosition(cc.p(posX+100,posY))
+    self.sprite:setPosition(cc.p(posX,posY))
+    self.shade:setPosition(cc.p(posX,posY))
 end
 
 function ClippingView:closeClip(parameters)

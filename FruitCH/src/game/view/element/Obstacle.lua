@@ -255,6 +255,7 @@ function Obstacle:executeMove(parameters)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Dart_Sound,true)
         transition.moveBy(self,{time=self.m_vo.m_speed*DefaultSpeed/_speed,x=-display.width-200,y=0,onComplete=function()
             self:dispose()
+            AudioManager.stopSoundEffect(AudioManager.Sound_Effect_Type.Dart_Sound)
         end})
     end)
     local seque = cc.Sequence:create(repeated,callfunc)
@@ -277,6 +278,9 @@ end
 
 function Obstacle:collision(_type)
     if self.m_vo.m_type == OBSTACLE_TYPE.special then
+        if self.m_body then
+            self.m_body:removeFromWorld()
+        end
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = true,att = self.m_vo.m_att})
     elseif self.m_vo.m_type == OBSTACLE_TYPE.ice then
         if not GameController.isInState(PLAYER_STATE.Slow) then
@@ -326,10 +330,11 @@ function Obstacle:collision(_type)
             end
             return
         end
+        if self.m_body then
+            self.m_body:removeFromWorld()
+        end
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})
     end
-    
-    --        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Obstacle_Sound)
 end
 
 function Obstacle:isDisappear()

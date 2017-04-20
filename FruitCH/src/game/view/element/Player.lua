@@ -105,6 +105,48 @@ function Player:addBody(_offset,size)
     self:setPhysicsBody(self.m_body)
 end
 
+
+function Player:onActionFrameEvent(_bone,_evt,_begin,_end)
+    if _evt == nil then
+        return
+    end
+
+    -- if _evt == "run_over" then
+    --     if not self:isInState(PLAYER_STATE.WalkMachine) then
+    --         self.m_runNum = self.m_runNum+1
+    --         if self.m_runNum == 6 then
+    --             self.m_runNum=0
+    --             self:toPlay(PLAYER_ACTION.Run_Two)
+    --         end
+    --     else
+    --         self.m_FireNum = self.m_FireNum+1
+    --         if self.m_FireNum == GoodsConfig[2].interval_time then
+    --             self.m_FireNum=0
+    --             if not tolua.isnull(self.m_fireBone) then
+    --                 self.m_fireBone:updateDisplayedOpacity(0)
+    --                 self.m_walkFire:setVisible(true)
+    --                 self:delayShow(self.m_fireBone)
+    --             end
+    --             WalkFire_State = true
+    --         end
+    --     end
+    --     return
+    -- end
+end
+
+--角色动画桢函数回调
+function Player:armatureMoveEvent(armatureBack,movementType,movementID)
+    if movementID==PLAYER_ACTION.Jump and movementType==ccs.MovementEventType.complete then
+        self:toPlay(PLAYER_ACTION.Attack,0)
+    elseif movementID==PLAYER_ACTION.Attack and movementType==ccs.MovementEventType.complete then
+--        self:toPlay(PLAYER_ACTION.Down,0)
+--    elseif movementID==PLAYER_ACTION.Down and movementType==ccs.MovementEventType.complete then
+        self:toPlay(PLAYER_ACTION.Run)
+        self.m_jump = false
+        self.m_run = true
+    end
+end
+
 --获取对象数据
 function Player:getVo()
     return self.m_vo
@@ -167,6 +209,9 @@ function Player:toMove(isSpring)
     if self.touchCount == 1 then
         self.playerY = self:getPositionY()
     end
+    if self.touchCount > 1 then
+        self.roleY = self:getPositionY()
+    end
     if not self.m_jump then
         self.m_jump = true
         self.m_run = false
@@ -200,6 +245,23 @@ function Player:toMove(isSpring)
                 self.touchCount = 0
                 self:setScaleY(direction)
             end})
+        elseif self.touchCount > 2 and isSpring then
+            self:stopAllActions()
+            local direction = 1
+            local m_pY
+            if self.roleY<display.cy then
+                direction = -1
+                m_pY = display.cy+200
+            else
+                direction = 1
+                m_pY = display.cy-240
+            end
+            transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
+                self.m_jump = false
+                self.m_run = true
+                self.touchCount = 0
+                self:setScaleY(direction)
+            end})
         end
     end
     
@@ -208,54 +270,6 @@ end
 --获取状态
 function Player:getJumpState(parameters)
     return self.m_jump
-end
-
-function Player:onActionFrameEvent(_bone,_evt,_begin,_end)
-    if _evt == nil then
-        return
-    end
-
-    -- if _evt == "run_over" then
-    --     if not self:isInState(PLAYER_STATE.WalkMachine) then
-    --         self.m_runNum = self.m_runNum+1
-    --         if self.m_runNum == 6 then
-    --             self.m_runNum=0
-    --             self:toPlay(PLAYER_ACTION.Run_Two)
-    --         end
-    --     else
-    --         self.m_FireNum = self.m_FireNum+1
-    --         if self.m_FireNum == GoodsConfig[2].interval_time then
-    --             self.m_FireNum=0
-    --             if not tolua.isnull(self.m_fireBone) then
-    --                 self.m_fireBone:updateDisplayedOpacity(0)
-    --                 self.m_walkFire:setVisible(true)
-    --                 self:delayShow(self.m_fireBone)
-    --             end
-    --             WalkFire_State = true
-    --         end
-    --     end
-    --     return
-    -- end
-
-    -- if _evt == "run_two_over" then
-    --     self:toPlay(PLAYER_ACTION.Run)
-    --     return
-    -- end
-end
-
---角色动画桢函数回调
-function Player:armatureMoveEvent(armatureBack,movementType,movementID)
-    if movementID==PLAYER_ACTION.Jump and movementType==ccs.MovementEventType.complete then
-        self:toPlay(PLAYER_ACTION.Attack,0)
-    elseif movementID==PLAYER_ACTION.Attack and movementType==ccs.MovementEventType.complete then
-        self:toPlay(PLAYER_ACTION.Down,0)
-    elseif movementID==PLAYER_ACTION.Down and movementType==ccs.MovementEventType.complete then
-        self:toPlay(PLAYER_ACTION.Run)
-        self.m_jump = false
-        self.m_run = true
---    elseif movementID==PLAYER_ACTION.death and movementType==ccs.MovementEventType.complete then
-
-    end
 end
 
 --获取角色刚体大小
@@ -323,9 +337,6 @@ function Player:playerAttacked(parm)
         return
     end
     
-    if self.m_jump and not parm.data.isSpecial then
-        return
-    end
     self.m_hp = self.m_hp - parm.data.att
     if self.m_hp <= 0 then
         Tools.printDebug("------------角色死亡..")
@@ -401,11 +412,23 @@ function Player:revive(parameters)
 
     self.m_hp = self.m_vo.m_hp
     self.m_armature:setVisible(true)
-    self:toPlay(PLAYER_ACTION.Run)
+--    Tools.printDebug("----------------角色scale：",self.m_jump)
+    if self.m_jump and self:getScaleY() == -1 then
+        self:setScaleY(1)
+        self:setPosition(display.cx-100,display.cy-240)
+    elseif self.m_jump and self:getScaleY() == 1 then
+        self:setScaleY(-1)
+        self:setPosition(display.cx-100,display.cy+200)
+    end
+    if self.originScaleY then
+        self:setScaleY(self.originScaleY)
+    end
     if self.originPos then
         self:setPosition(self.originPos)
     end
-
+    
+    self:toPlay(PLAYER_ACTION.Run)
+    
     self.m_isDead = false
     GameController.isWin = false
     GameController.isDead = false
@@ -427,7 +450,7 @@ function Player:revive(parameters)
     end
     
     GameController.resumeGame()
-
+    self:clearObstales()
 end
 
 --巨人药水
@@ -501,6 +524,11 @@ function Player:startProtect(parameters)
     end
 	Tools.printDebug("-----开局护盾")
 	--护盾特效
+    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
+    self.m_huduen = ccs.Armature:create("huduen")
+    self.m_huduen:getAnimation():playWithIndex(0)
+    self.m_huduen:setPosition(20,30)
+    self:addChild(self.m_huduen)
 	
     self:addBuff({type=PLAYER_STATE.StartProtect,time = parameters.data.time})
 --    self.m_proHandler = Tools.delayCallFunc(parameters.data.time,function()
@@ -522,7 +550,12 @@ function Player:gameProtect(parameters)
     
     Tools.printDebug("-----游戏内护盾")
     --护盾特效
-
+    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
+    self.m_protect = ccs.Armature:create("huduen")
+    self.m_protect:getAnimation():playWithIndex(0)
+    self.m_protect:setPosition(20,30)
+    self:addChild(self.m_protect)
+    
     self:addBuff({type=PLAYER_STATE.GameDefence,time = parameters.data.time})
 end
 
@@ -545,9 +578,9 @@ function Player:sprinting(parameters)
     self:addChild(self.m_spdeffect,10)
     
     self.oldX,self.oldY = self:getPosition()
-    self:setPosition(cc.p(display.cx,display.cy))
+    self:setPosition(cc.p(display.cx+100,display.cy))
     if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
+        self:setPosition(cc.p(display.cx+100,display.cy-50))
     end
     
     self:addBuff({type=PLAYER_STATE.StartSprint,time = parameters.data.time})
@@ -581,9 +614,9 @@ function Player:deadSprint(parameters)
 
     self.m_scaleY = self:getScaleY()
     self:setScaleY(1)
-    self:setPosition(cc.p(display.cx,display.cy))
+    self:setPosition(cc.p(display.cx+100,display.cy))
     if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
+        self:setPosition(cc.p(display.cx+100,display.cy-50))
     end
 
     self:addBuff({type=PLAYER_STATE.DeadSprint,time = parameters.data.time})
@@ -619,6 +652,7 @@ function Player:deadRelay(parameters)
     old:removeFromParent()
     self.m_jump = false
     self.m_run = true
+    self:clearObstales()
 end
 --极限冲刺
 function Player:limitSprint(parameters)
@@ -652,9 +686,9 @@ function Player:limitSprint(parameters)
 
     self.m_scaleY = self:getScaleY()
     self:setScaleY(1)
-    self:setPosition(cc.p(display.cx,display.cy))
+    self:setPosition(cc.p(display.cx+100,display.cy))
     if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
+        self:setPosition(cc.p(display.cx+100,display.cy-50))
     end
 
     self:addBuff({type=PLAYER_STATE.LimitSprint,time = parameters.data.time})
@@ -725,18 +759,19 @@ function Player:spring(parameters)
     if self:isInState(PLAYER_STATE.LimitSprint) then
         return
     end
-    Tools.printDebug("----------弹簧跳跃")
+    Tools.printDebug("----------弹簧跳跃",self:getJumpState())
     
     if self:getJumpState() then
         self:toPlay(PLAYER_ACTION.Jump,0)
         self:toMove(true)
     else
         self.originPos = cc.p(self:getPosition())
+        self.originScaleY = self:getScaleY()
         if self.backHandler then
             Scheduler.unscheduleGlobal(self.backHandler)
             self.backHandler=nil
         end
-        self.backHandler = Scheduler.scheduleGlobal(handler(self,self.backMove),0.01)
+        self.backHandler = Scheduler.scheduleGlobal(handler(self,self.backMove),FrameTime)
     end
 end
 
@@ -851,11 +886,10 @@ function Player:clearBuff(_type)
             self:deadContinueFlash()
             self:clearObstales()
         elseif _type == PLAYER_STATE.StartProtect then
---            if self.m_proHandler then
---                Scheduler.unscheduleGlobal(self.m_proHandler)
---                self.m_proHandler = nil
---            end
-            --移除护盾特效
+            if not tolua.isnull(self.m_huduen) then
+                self.m_huduen:removeFromParent()
+                self.m_huduen = nil
+            end
         
         elseif _type == PLAYER_STATE.MagnetProp then
             self.m_propManget = false
@@ -923,7 +957,10 @@ function Player:clearBuff(_type)
                 self.m_mangetSelf = nil
             end
         elseif _type == PLAYER_STATE.Defence then
-              
+            if not tolua.isnull(self.m_protect) then
+                self.m_protect:removeFromParent()
+                self.m_protect = nil
+            end
         end
     end
 

@@ -97,11 +97,11 @@ function AchieveQuestItem:initCotent(_type)
 end
 
 function AchieveQuestItem:changeState(parameters)
-    if self.m_con.id == parameters.id then
-        if parameters.state == ACHIEVE_STATE.Unfinished then
+    if self.m_con.id == parameters.data.id then
+        if parameters.data.state == ACHIEVE_STATE.Unfinished then
             self.Unfinished:setVisible(true)
             self.Finished:setVisible(false)
-        elseif parameters.state == ACHIEVE_STATE.Finished then
+        elseif parameters.data.state == ACHIEVE_STATE.Finished then
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(true)
         else

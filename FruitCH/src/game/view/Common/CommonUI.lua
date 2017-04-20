@@ -62,9 +62,11 @@ function CommonUI:ctor(parm)
     
     self.goldCount = cc.uiloader:seekNodeByName(self.CommonUI,"GoldCount")
     self.goldCount:setString(GameDataManager.getGold())
+    self.goldNum = GameDataManager.getGold()
     
     self.diaCount = cc.uiloader:seekNodeByName(self.CommonUI,"DiaCount")
     self.diaCount:setString(GameDataManager.getDiamond())
+    self.diamondNum = GameDataManager.getDiamond()
     
     self.recoverLab = cc.uiloader:seekNodeByName(self.CommonUI,"recoverLab")
     self.recoverLab:setVisible(false)
@@ -85,12 +87,75 @@ function CommonUI:ctor(parm)
 end
 
 function CommonUI:updateDiamond(parameters)
-    self.diaCount:setString(GameDataManager.getDiamond())
+--    self.diaCount:setString(GameDataManager.getDiamond())
+    if self.diamondNum > GameDataManager.getDiamond() then
+        self.updateDiamondHandler = Scheduler.scheduleGlobal(handler(self,self.updateDiamondSubFrame),0.05)
+    else
+        self.updateDiamondHandler = Scheduler.scheduleGlobal(handler(self,self.updateDiamondAddFrame),0.05)
+    end
+end
+
+function CommonUI:updateDiamondSubFrame(parameters)
+    self.diamondNum = self.diamondNum - 1
+    self.diaCount:setString(self.diamondNum)
+    if self.diamondNum <= GameDataManager.getDiamond() then
+        self.diamondNum = GameDataManager.getDiamond()
+        self.diaCount:setString(GameDataManager.getDiamond())
+        if self.updateDiamondHandler then
+            Scheduler.unscheduleGlobal(self.updateDiamondHandler)
+            self.updateDiamondHandler = nil
+        end
+    end
+end
+
+function CommonUI:updateDiamondAddFrame(parameters)
+    self.diamondNum = self.diamondNum + 1
+    self.diaCount:setString(self.diamondNum)
+    if self.diamondNum >= GameDataManager.getDiamond() then
+        self.diamondNum = GameDataManager.getDiamond()
+        self.diaCount:setString(GameDataManager.getDiamond())
+        if self.updateDiamondHandler then
+            Scheduler.unscheduleGlobal(self.updateDiamondHandler)
+            self.updateDiamondHandler = nil
+        end
+    end
 end
 
 function CommonUI:updateGold(parameters)
-    self.goldCount:setString(GameDataManager.getGold())
+--    self.goldCount:setString(GameDataManager.getGold())
+    if self.goldNum > GameDataManager.getGold() then
+        self.updateGoldHandler = Scheduler.scheduleGlobal(handler(self,self.updateGoldSubFrame),0.05)
+    else
+        self.updateGoldHandler = Scheduler.scheduleGlobal(handler(self,self.updateGoldAddFrame),0.05)
+    end
 end
+
+function CommonUI:updateGoldSubFrame(parameters)
+    self.goldNum = self.goldNum - 1
+    self.goldCount:setString(self.goldNum)
+    if self.goldNum <= GameDataManager.getGold() then
+        self.goldNum = GameDataManager.getGold()
+        self.goldCount:setString(GameDataManager.getGold())
+        if self.updateGoldHandler then
+            Scheduler.unscheduleGlobal(self.updateGoldHandler)
+            self.updateGoldHandler = nil
+        end
+    end
+end
+
+function CommonUI:updateGoldAddFrame(parameters)
+    self.goldNum = self.goldNum + 1
+    self.goldCount:setString(self.goldNum)
+    if self.goldNum >= GameDataManager.getGold() then
+        self.goldNum = GameDataManager.getGold()
+        self.goldCount:setString(GameDataManager.getGold())
+        if self.updateGoldHandler then
+            Scheduler.unscheduleGlobal(self.updateGoldHandler)
+            self.updateGoldHandler = nil
+        end
+    end
+end
+
 
 function CommonUI:showPower(parameters)
     local powerNow=GameDataManager.getPower()
@@ -218,6 +283,14 @@ function CommonUI:onCleanup(parameters)
         Scheduler.unscheduleGlobal(self.m_powerHandle)
         self.m_powerHandle = nil
     end
+    if self.updateDiamondHandler then
+        Scheduler.unscheduleGlobal(self.updateDiamondHandler)
+        self.updateDiamondHandler = nil
+    end
+    if self.updateGoldHandler then
+        Scheduler.unscheduleGlobal(self.updateGoldHandler)
+        self.updateGoldHandler = nil
+    end
 end
 
 --关闭界面调用
@@ -230,6 +303,14 @@ function CommonUI:toClose(_clean)
     if self.m_powerHandle then
         Scheduler.unscheduleGlobal(self.m_powerHandle)
         self.m_powerHandle = nil
+    end
+    if self.updateDiamondHandler then
+        Scheduler.unscheduleGlobal(self.updateDiamondHandler)
+        self.updateDiamondHandler = nil
+    end
+    if self.updateGoldHandler then
+        Scheduler.unscheduleGlobal(self.updateGoldHandler)
+        self.updateGoldHandler = nil
     end
     CommonUI.super.toClose(self,_clean)
 end

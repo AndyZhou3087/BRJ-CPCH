@@ -2,9 +2,12 @@
 
 PrintDebug = true
 
-SelectItemCount = 15
+--SelectItemCount = 15
 
 GroupSize = cc.size(960,540)   --每一组配置的大小
+
+--移动速度帧率
+FrameTime = 0.01
 
 DefaultSpeed = 32
 --移动速度

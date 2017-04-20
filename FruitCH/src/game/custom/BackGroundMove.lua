@@ -31,7 +31,7 @@ function BackGroundMove:ctor(_string,_dis,_speed)
         self.bg_2:setPosition(cc.p(0,self.m_size.height))
     end
     
-    self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
+    self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 
 end
 
@@ -158,7 +158,7 @@ function BackGroundMove:stopUpdate(parameters)
 end
 
 function BackGroundMove:startUpdate(parameters)
-    self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
+    self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 end
 
 function BackGroundMove:dispose()

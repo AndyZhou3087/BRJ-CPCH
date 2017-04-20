@@ -72,17 +72,7 @@ function SelectUI:init(parameters)
         	GameDispatcher:dispatch(EventNames.EVENT_OPEN_SIGNUI)
         end
     end)
-    
-    --弹角色礼包
-    Tools.delayCallFunc(0.1,function()
-        if not GameDataManager.getRoleModle(GiftConfig[2].roleId) then
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 2})
-        elseif not GameDataManager.getRoleModle(GiftConfig[3].roleId) then
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 3})
-        elseif not GameDataManager.getRoleModle(GiftConfig[4].roleId) then
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4})
-        end
-    end)
+
 end
 
 function SelectUI:scrollListener(event)

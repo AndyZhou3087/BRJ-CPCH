@@ -101,7 +101,7 @@ function RoleView:initRole(parameters)
     self.RoleBuy = cc.uiloader:seekNodeByName(self.m_roleUi,"RoleBuy")--购买
     self.RoleBuy:onButtonClicked(function(event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
-        GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = RoleConfig[self.roleCount].giftId})
+        GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = RoleConfig[self.roleCount].giftId,animation = true})
 --        local payId = RoleConfig[self.roleCount].payId
 --        local oId = SDKUtil.getOrderId(payId)
 --        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)

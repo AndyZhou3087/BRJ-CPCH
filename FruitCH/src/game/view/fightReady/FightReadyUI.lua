@@ -85,19 +85,20 @@ function FightReadyUI:ctor(parm)
         if parm == GAME_TYPE.LevelMode and GameDataManager.costPower(_levelCon.costPower) then
                 for key, var in ipairs(self.m_goods) do
                     if var.isSelect then
-                        GameDataManager.useGoods(var.id)
-                        if var.cost.type == COST_TYPE.Gold then
-                            GameDataManager.costGold(var.cost.price)
-                        elseif var.cost.type == COST_TYPE.Diamond then
-                            GameDataManager.costDiamond(var.cost.price)
+                        if GameDataManager.getGoodsNum(var.id)<=0 then
+                            if var.cost.type == COST_TYPE.Gold then
+                                GameDataManager.costGold(var.cost.price)
+                            elseif var.cost.type == COST_TYPE.Diamond then
+                                GameDataManager.costDiamond(var.cost.price)
+                            end
+                            GameDataManager.addGoods(var.id,1)
                         end
-                        GameDataManager.addGoods(var.id,1)
                         GameController.setStartProp(var.id,var.isSelect)
                     end
                 end
                 GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
                 app:enterGameScene()
-                self:toClose(true)
+--                self:toClose(true)
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
             end)
@@ -105,19 +106,20 @@ function FightReadyUI:ctor(parm)
             GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
             for key, var in ipairs(self.m_goods) do
                 if var.isSelect then
-                    GameDataManager.useGoods(var.id)
-                    if var.cost.type == COST_TYPE.Gold then
-                        GameDataManager.costGold(var.cost.price)
-                    elseif var.cost.type == COST_TYPE.Diamond then
-                        GameDataManager.costDiamond(var.cost.price)
+                    if GameDataManager.getGoodsNum(var.id)<=0 then
+                        if var.cost.type == COST_TYPE.Gold then
+                            GameDataManager.costGold(var.cost.price)
+                        elseif var.cost.type == COST_TYPE.Diamond then
+                            GameDataManager.costDiamond(var.cost.price)
+                        end
+                        GameDataManager.addGoods(var.id,1)
                     end
-                    GameDataManager.addGoods(var.id,1)
                     GameController.setStartProp(var.id,var.isSelect)
                 end           
             end
             startGame:setButtonEnabled(false)
             app:enterGameScene()
-            self:toClose(true)
+--            self:toClose(true)
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
             end)
@@ -132,7 +134,7 @@ function FightReadyUI:ctor(parm)
     self.roleImg = cc.uiloader:seekNodeByName(self.FightReady,"RoleImg")
     self.roleImg:onButtonClicked(function(event)
         if not GameDataManager.getRoleModle(GiftConfig[4].roleId) then
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4})
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4,animation = true})
         end
     end)
     self.QuestPrice = cc.uiloader:seekNodeByName(self.FightReady,"QuestPrice")
@@ -148,6 +150,17 @@ function FightReadyUI:ctor(parm)
     GameDispatcher:dispatch(EventNames.EVENT_LOADING_OVER)
     
 --    GameDispatcher:addListener(EventNames.EVENT_ROLE_CHANGE,handler(self,self.changeRole))
+
+    --弹角色礼包
+    Tools.delayCallFunc(0.1,function()
+        if not GameDataManager.getRoleModle(GiftConfig[2].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 2,animation = true})
+        elseif not GameDataManager.getRoleModle(GiftConfig[3].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 3,animation = true})
+        elseif not GameDataManager.getRoleModle(GiftConfig[4].roleId) then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4,animation = true})
+        end
+    end)
 end
 
 function FightReadyUI:touchListener(event)
