@@ -4,8 +4,7 @@
 local BaseElement = require("game.view.element.BaseElement")
 local CoinElement=class("CoinElement",BaseElement)
 
-local PhysicSprite=require("game.custom.PhysicSprite")
-local Special_MATERIAL=cc.PhysicsMaterial(0,0,0)    
+local PhysicSprite=require("game.custom.PhysicSprite")  
 
 local Scheduler = require("framework.scheduler")
 
@@ -18,21 +17,11 @@ function CoinElement:ctor(parm)
     self:setAnchorPoint(cc.p(0,0))
     self.m_img:setAnchorPoint(cc.p(0,0))
     self.m_size = self.m_img:getCascadeBoundingBox().size
---    self:addBody(cc.p(20,20))
 
     self.m_isAttract=false   --是否被吸引
     self.m_group = 0
     
-end
-
-function CoinElement:addBody(_offset)
-    self.m_body=cc.PhysicsBody:createBox(self.m_size,Special_MATERIAL,_offset)
-    self.m_body:setCategoryBitmask(0x1111)
-    self.m_body:setContactTestBitmask(0x1111)
-    self.m_body:setCollisionBitmask(0x0000)
-    self.m_body:setDynamic(false)
-    self.m_body:setTag(ELEMENT_TAG.GOLD_TAG)
-    self:setPhysicsBody(self.m_body)
+    self.moveHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 end
 
 function CoinElement:getSize()
@@ -62,7 +51,7 @@ end
 
 --被碰触
 function CoinElement:collision()
---    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Gold_Sound)
+    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.GetGold_Sound)
     if GameController.isInState(PLAYER_STATE.TransformGold) then
     	GameDataManager.addLevelCoin(3)
         self:dispose()
@@ -128,12 +117,11 @@ function CoinElement:dispose(parameters)
     self.m_target = nil
     self.m_group = 0
     
-    if self.m_chaceType then
-        Tools.printDebug("--------------------金币类型：",self.m_chaceType)
-        PoolManager.putCacheObjByType(self.m_chaceType,self)
-    end 
-    
     self.super.dispose(self)
+    
+    if self.m_chaceType then
+        PoolManager.putCacheObjByType(self.m_chaceType,self)
+    end
 end
 
 return CoinElement

@@ -95,13 +95,13 @@ end
 function MapGroup:onEnterFrame(parameters)
     local x,y = self:getPosition()
     self:setPosition(x-MoveSpeed*0.1,y)
-    if self.m_golds then
-        for key, var in pairs(self.m_golds) do
-            if not tolua.isnull(var) then
-                var:onEnterFrame()
-            end
-        end
-    end
+--    if self.m_golds then
+--        for key, var in pairs(self.m_golds) do
+--            if not tolua.isnull(var) then
+--                var:onEnterFrame()
+--            end
+--        end
+--    end
     if self:getPositionX()<=-self:getSize().width then
         if not tolua.isnull(self) then
             if not tolua.isnull(self:getParent()) then

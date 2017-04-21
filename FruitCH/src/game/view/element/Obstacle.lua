@@ -40,14 +40,22 @@ function Obstacle:ctor(id,py)
             _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.9)
             if self.m_vo.m_type == OBSTACLE_TYPE.spring then
                 _size = self.obcon:getCascadeBoundingBox().size
-                offset = cc.p(35,40)
+                offset = cc.p(30,35)
+                if self.m_posY>display.cy then
+                    self.obcon:setPositionY(-_size.height)
+                    offset = cc.p(30,-35)
+                end
             elseif self.m_vo.m_type == OBSTACLE_TYPE.special then
                 offset = cc.p(-50,50)
             end 
             self:addBody(obCon,_size,offset)
             
         else
-            self.obcon= PhysicSprite.new(obCon.res)
+            if self.m_vo.m_type == OBSTACLE_TYPE.ice and self.m_posY > display.cy then
+                self.obcon= PhysicSprite.new(obCon.upRes)
+            else
+                self.obcon= PhysicSprite.new(obCon.res)
+            end
             self:addChild(self.obcon)
             
             self.obcon:setAnchorPoint(cc.p(0,0))
@@ -55,8 +63,8 @@ function Obstacle:ctor(id,py)
             _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.9)
             offset = cc.p(30,40)
             if self.m_vo.m_type == OBSTACLE_TYPE.ice then
-                _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.9,self.obcon:getCascadeBoundingBox().size.height*0.1)
-                offset = cc.p(30,2)
+                _size = cc.size(self.obcon:getCascadeBoundingBox().size.width,self.obcon:getCascadeBoundingBox().size.height*0.1)
+                offset = cc.p(475,40)
             elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
                 _size = cc.size(self.obcon:getCascadeBoundingBox().size.width*0.2,self.obcon:getCascadeBoundingBox().size.height*0.2)
                 offset = cc.p(30,2)
@@ -64,6 +72,12 @@ function Obstacle:ctor(id,py)
                 self.obcon:setAnchorPoint(cc.p(0.5,0.5))
                 self.obcon:setPosition(cc.p(-self.obcon:getCascadeBoundingBox().size.width*0.5,-self.obcon:getCascadeBoundingBox().size.height*0.5))
                 offset = cc.p(-30,-30)
+            else
+                local allSize = self.obcon:getCascadeBoundingBox().size
+                if self.m_posY>display.cy then
+                    self.obcon:setPositionY(-allSize.height)
+                    offset = cc.p(30,-40)
+                end
             end       
             self:addBody(obCon,_size,offset)
 
@@ -284,7 +298,7 @@ function Obstacle:collision(_type)
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = true,att = self.m_vo.m_att})
     elseif self.m_vo.m_type == OBSTACLE_TYPE.ice then
         if not GameController.isInState(PLAYER_STATE.Slow) then
-            GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{cutSpeed = self.m_vo.m_cutSpeed,length = self.m_vo.m_length})
+            GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{isSlow = true,cutSpeed = self.m_vo.m_cutSpeed})
         end
     elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
         if self.isAnimate and GameController.getCurPlayer():getJumpState() then
@@ -334,6 +348,14 @@ function Obstacle:collision(_type)
             self.m_body:removeFromWorld()
         end
         GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})
+    end
+end
+
+function Obstacle:collisionEnd()
+    if self.m_vo.m_type == OBSTACLE_TYPE.ice then
+        if GameController:isInState(PLAYER_STATE.Slow) then
+            GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{isSlow = false})
+        end
     end
 end
 

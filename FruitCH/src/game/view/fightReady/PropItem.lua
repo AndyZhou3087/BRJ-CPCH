@@ -12,6 +12,11 @@ function PropItem:ctor(parameters)
     self.propUI:setPosition(cc.p(0,0))
     
     self:initPropData()
+    
+    --启用onCleanup函数
+    self:setNodeEventEnabled(true)
+    
+    self.updateHandler = GameDispatcher:addListener(EventNames.EVENT_PROP_UPDATE,handler(self,self.updateProp))
 end
 
 function PropItem:initPropData()
@@ -50,12 +55,12 @@ function PropItem:initPropData()
         useLabel:setButtonImage("disabled","ui/buy_label.png")
     end
     
-    local PropCount = cc.uiloader:seekNodeByName(self.propUI,"PropCount")
-    PropCount:setVisible(false)
-    local CountLabel = cc.uiloader:seekNodeByName(self.propUI,"CountLabel")
+    self.PropCount = cc.uiloader:seekNodeByName(self.propUI,"PropCount")
+    self.PropCount:setVisible(false)
+    self.CountLabel = cc.uiloader:seekNodeByName(self.propUI,"CountLabel")
     if GameDataManager.getGoodsNum(self.propCon.id)>0 then
-        PropCount:setVisible(true)
-        CountLabel:setString(GameDataManager.getGoodsNum(self.propCon.id))
+        self.PropCount:setVisible(true)
+        self.CountLabel:setString(GameDataManager.getGoodsNum(self.propCon.id))
     end
     
     --使用按钮
@@ -137,11 +142,25 @@ function PropItem:initPropData()
     end)
 end
 
-function PropItem:onCleanup(parameters)
+function PropItem:updateProp(parameters)
+	local id = parameters.data.goodsId
+--	Tools.printDebug("-------------道具更新",id)
+    if self.propCon.id == id then
+		if GameDataManager.getGoodsNum(id)<=0 then
+            self.PropCount:setVisible(false)
+	    else
+            self.PropCount:setVisible(true)
+            self.CountLabel:setString(GameDataManager.getGoodsNum(self.propCon.id))
+		end
+	end
+end
 
+function PropItem:onCleanup(parameters)
+    GameDispatcher:removeListenerByHandle(self.updateHandler)
 end
 
 function PropItem:dispose(_clean)
+    GameDispatcher:removeListenerByHandle(self.updateHandler)
     self:removeFromParent(_clean)
 end
 
