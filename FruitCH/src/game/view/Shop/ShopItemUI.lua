@@ -147,11 +147,6 @@ function ShopItemUI:initContent(shopConfig,pos)
                                         GameDataManager.addGoods(arr.id,arr.count)
                                     end
                                 end
-                                --                        if shopConfig.content.role then
-                                --                            GameDataManager.unLockModle(shopConfig.content.role.id)
-                                --                            --可每日领取奖励
-                                --                            
-                                --                        end
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
                             else
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
@@ -170,6 +165,13 @@ function ShopItemUI:initContent(shopConfig,pos)
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
                             end
                         end})
+                    elseif shopConfig.price.type == SHOPITEM_BUY.Diamond then
+                        if GameDataManager.getDiamond() >= shopConfig.price.rate then
+                            GameDataManager.costDiamond(shopConfig.price.rate)
+                            GameDataManager.addPower(shopConfig.content)
+                        else
+                            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text="钻石不足"})
+                        end
                     end
                 end
             end,

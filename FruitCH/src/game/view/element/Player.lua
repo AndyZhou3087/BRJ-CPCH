@@ -511,7 +511,7 @@ function Player:manget(parameters)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xitieshi0.png", "armature/xitieshi0.plist" , "armature/xitieshi.ExportJson")
     self.m_manget = ccs.Armature:create("xitieshi")
     self.m_manget:getAnimation():playWithIndex(0)
-    self.m_manget:setPosition(20,30)
+    self.m_manget:setPosition(20,60)
     self:addChild(self.m_manget)
     
     GameDataManager.setGamePropTime(PLAYER_STATE.MagnetProp,_time)
@@ -527,7 +527,7 @@ function Player:startProtect(parameters)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
     self.m_huduen = ccs.Armature:create("huduen")
     self.m_huduen:getAnimation():playWithIndex(0)
-    self.m_huduen:setPosition(20,30)
+    self.m_huduen:setPosition(20,60)
     self:addChild(self.m_huduen)
 	
     self:addBuff({type=PLAYER_STATE.StartProtect,time = parameters.data.time})
@@ -542,10 +542,14 @@ function Player:gameProtect(parameters)
         return
     end
     if self:isInState(PLAYER_STATE.StartProtect) then
-    	return
+        return
     end
     if self:isInState(PLAYER_STATE.GameDefence) then
         self:clearBuff(PLAYER_STATE.GameDefence)
+    end
+    
+    if self:isInState(PLAYER_STATE.Defence) then
+        return
     end
     
     Tools.printDebug("-----游戏内护盾")
@@ -553,7 +557,7 @@ function Player:gameProtect(parameters)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
     self.m_protect = ccs.Armature:create("huduen")
     self.m_protect:getAnimation():playWithIndex(0)
-    self.m_protect:setPosition(20,30)
+    self.m_protect:setPosition(20,60)
     self:addChild(self.m_protect)
     
     self:addBuff({type=PLAYER_STATE.GameDefence,time = parameters.data.time})
@@ -572,15 +576,15 @@ function Player:sprinting(parameters)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_spdeffect = ccs.Armature:create("chongci")
     self.m_spdeffect:getAnimation():playWithIndex(0)
-    self.m_spdeffect:setPosition(-10,60)
+    self.m_spdeffect:setPosition(-80,60)
     
     self:toPlay(PLAYER_ACTION.Run,0)
     self:addChild(self.m_spdeffect,10)
     
     self.oldX,self.oldY = self:getPosition()
-    self:setPosition(cc.p(display.cx+100,display.cy))
+    self:setPosition(cc.p(display.cx,display.cy))
     if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx+100,display.cy-50))
+        self:setPosition(cc.p(display.cx,display.cy-50))
     end
     
     self:addBuff({type=PLAYER_STATE.StartSprint,time = parameters.data.time})
@@ -606,7 +610,7 @@ function Player:deadSprint(parameters)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_deadDffect = ccs.Armature:create("chongci")
     self.m_deadDffect:getAnimation():playWithIndex(0)
-    self.m_deadDffect:setPosition(-10,60)
+    self.m_deadDffect:setPosition(-80,60)
 
     self:stopAllActions()
     self:toPlay(PLAYER_ACTION.Run,0)
@@ -614,9 +618,9 @@ function Player:deadSprint(parameters)
 
     self.m_scaleY = self:getScaleY()
     self:setScaleY(1)
-    self:setPosition(cc.p(display.cx+100,display.cy))
+    self:setPosition(cc.p(display.cx,display.cy))
     if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx+100,display.cy-50))
+        self:setPosition(cc.p(display.cx,display.cy-50))
     end
 
     self:addBuff({type=PLAYER_STATE.DeadSprint,time = parameters.data.time})
@@ -678,7 +682,7 @@ function Player:limitSprint(parameters)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
     self.m_limitDffect = ccs.Armature:create("chongci")
     self.m_limitDffect:getAnimation():playWithIndex(0)
-    self.m_limitDffect:setPosition(-10,60)
+    self.m_limitDffect:setPosition(-80,60)
 
     self:stopAllActions()
     self:toPlay(PLAYER_ACTION.Run,0)
@@ -686,9 +690,9 @@ function Player:limitSprint(parameters)
 
     self.m_scaleY = self:getScaleY()
     self:setScaleY(1)
-    self:setPosition(cc.p(display.cx+100,display.cy))
+    self:setPosition(cc.p(display.cx,display.cy))
     if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx+100,display.cy-50))
+        self:setPosition(cc.p(display.cx,display.cy-50))
     end
 
     self:addBuff({type=PLAYER_STATE.LimitSprint,time = parameters.data.time})
@@ -728,21 +732,20 @@ function Player:slowSpeed(parameters)
     if self:isDead() then
         return
     end
+    
     if self:isInState(PLAYER_STATE.Slow) then
         return
     end
     Tools.printDebug("----------速度减慢")
-    local length = parameters.data.length
-    self.originSpeed = MoveSpeed
-    local speed = MoveSpeed - parameters.data.cutSpeed
-    local _time = math.ceil(length/(speed*10))
     
-    MoveSpeed = speed
-    self:addBuff({type=PLAYER_STATE.Slow,time = _time})
-    self.m_slowHandler = Tools.delayCallFunc(_time,function()
+    if parameters.data.isSlow then
+        self:addBuff({type=PLAYER_STATE.Slow})
+        self.originSpeed = MoveSpeed
+        local speed = MoveSpeed - parameters.data.cutSpeed
+        MoveSpeed = speed
+    else
         self:clearBuff(PLAYER_STATE.Slow)
-    end)
-    GameDataManager.setGamePropTime(PLAYER_STATE.Slow,_time,speed)
+    end
     
 end
 --弹簧障碍物
@@ -801,7 +804,7 @@ function Player:magnetSkill(radius)
     ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xitieshi0.png", "armature/xitieshi0.plist" , "armature/xitieshi.ExportJson")
     self.m_mangetSelf = ccs.Armature:create("xitieshi")
     self.m_mangetSelf:getAnimation():playWithIndex(0)
-    self.m_mangetSelf:setPosition(20,30)
+    self.m_mangetSelf:setPosition(20,60)
     self:addChild(self.m_mangetSelf)
 end
 
@@ -810,8 +813,13 @@ function Player:protectSkill(parameters)
     Tools.printDebug("----------角色的护盾")
     self:addBuff({type=PLAYER_STATE.Defence})
     --护盾特效
+    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
+    self.m_protectSkill = ccs.Armature:create("huduen")
+    self.m_protectSkill:getAnimation():playWithIndex(0)
+    self.m_protectSkill:setPosition(20,60)
+    self:addChild(self.m_protectSkill)
 end
-
+--================End=======================
 
 --判断玩家是否处于某种状态
 function Player:isInState(_state)
@@ -945,18 +953,21 @@ function Player:clearBuff(_type)
                 self.m_transHandler = nil
             end
         elseif _type == PLAYER_STATE.Slow then
-            if self.m_slowHandler then
-                Scheduler.unscheduleGlobal(self.m_slowHandler)
-                self.m_slowHandler = nil
+            if self.originSpeed then
+                MoveSpeed = self.originSpeed
+                self.originSpeed = nil
             end
-            MoveSpeed = self.originSpeed
-            self.originSpeed = nil
         elseif _type == PLAYER_STATE.Magnet then
             if not tolua.isnull(self.m_mangetSelf) then
                 self.m_mangetSelf:removeFromParent()
                 self.m_mangetSelf = nil
             end
         elseif _type == PLAYER_STATE.Defence then
+            if not tolua.isnull(self.m_protectSkill) then
+                self.m_protectSkill:removeFromParent()
+                self.m_protectSkill = nil
+            end
+        elseif _type == PLAYER_STATE.GameDefence then
             if not tolua.isnull(self.m_protect) then
                 self.m_protect:removeFromParent()
                 self.m_protect = nil

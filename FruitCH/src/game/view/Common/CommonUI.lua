@@ -79,11 +79,11 @@ function CommonUI:ctor(parm)
     self:showPower()
     
     self.m_timeChange = GameDispatcher:addListener(EventNames.EVENT_NET_TIME_CHANGE,handler(self,self.timeChange))
-    GameDispatcher:addListener(EventNames.EVENT_POWER_CHANGE,handler(self,self.powerChanged))
+    self.m_powerChange = GameDispatcher:addListener(EventNames.EVENT_POWER_CHANGE,handler(self,self.powerChanged))
     --金币更新
-    GameDispatcher:addListener(EventNames.EVENT_UPDATE_GOLD,handler(self,self.updateGold))
+    self.m_goldChange = GameDispatcher:addListener(EventNames.EVENT_UPDATE_GOLD,handler(self,self.updateGold))
     --钻石更新
-    GameDispatcher:addListener(EventNames.EVENT_UPDATE_DIAMOND,handler(self,self.updateDiamond))
+    self.m_diamondChange = GameDispatcher:addListener(EventNames.EVENT_UPDATE_DIAMOND,handler(self,self.updateDiamond))
 end
 
 function CommonUI:updateDiamond(parameters)
@@ -96,7 +96,7 @@ function CommonUI:updateDiamond(parameters)
 end
 
 function CommonUI:updateDiamondSubFrame(parameters)
-    self.diamondNum = self.diamondNum - 1
+    self.diamondNum = self.diamondNum - 20
     self.diaCount:setString(self.diamondNum)
     if self.diamondNum <= GameDataManager.getDiamond() then
         self.diamondNum = GameDataManager.getDiamond()
@@ -109,7 +109,7 @@ function CommonUI:updateDiamondSubFrame(parameters)
 end
 
 function CommonUI:updateDiamondAddFrame(parameters)
-    self.diamondNum = self.diamondNum + 1
+    self.diamondNum = self.diamondNum + 20
     self.diaCount:setString(self.diamondNum)
     if self.diamondNum >= GameDataManager.getDiamond() then
         self.diamondNum = GameDataManager.getDiamond()
@@ -131,7 +131,7 @@ function CommonUI:updateGold(parameters)
 end
 
 function CommonUI:updateGoldSubFrame(parameters)
-    self.goldNum = self.goldNum - 1
+    self.goldNum = self.goldNum - 100
     self.goldCount:setString(self.goldNum)
     if self.goldNum <= GameDataManager.getGold() then
         self.goldNum = GameDataManager.getGold()
@@ -144,7 +144,7 @@ function CommonUI:updateGoldSubFrame(parameters)
 end
 
 function CommonUI:updateGoldAddFrame(parameters)
-    self.goldNum = self.goldNum + 1
+    self.goldNum = self.goldNum + 100
     self.goldCount:setString(self.goldNum)
     if self.goldNum >= GameDataManager.getGold() then
         self.goldNum = GameDataManager.getGold()
@@ -275,9 +275,9 @@ end
 
 function CommonUI:onCleanup(parameters)
     GameDispatcher:removeListenerByHandle(self.m_timeChange)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_POWER_CHANGE)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_UPDATE_GOLD)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_UPDATE_DIAMOND)
+    GameDispatcher:removeListenerByHandle(self.m_powerChange)
+    GameDispatcher:removeListenerByHandle(self.m_goldChange)
+    GameDispatcher:removeListenerByHandle(self.m_diamondChange)
 
     if self.m_powerHandle then
         Scheduler.unscheduleGlobal(self.m_powerHandle)
@@ -296,9 +296,9 @@ end
 --关闭界面调用
 function CommonUI:toClose(_clean)
     GameDispatcher:removeListenerByHandle(self.m_timeChange)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_POWER_CHANGE)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_UPDATE_GOLD)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_UPDATE_DIAMOND)
+    GameDispatcher:removeListenerByHandle(self.m_powerChange)
+    GameDispatcher:removeListenerByHandle(self.m_goldChange)
+    GameDispatcher:removeListenerByHandle(self.m_diamondChange)
     
     if self.m_powerHandle then
         Scheduler.unscheduleGlobal(self.m_powerHandle)

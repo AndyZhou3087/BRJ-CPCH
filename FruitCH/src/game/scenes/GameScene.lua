@@ -104,7 +104,7 @@ function GameScene:onCleanup()
     PoolManager.clearCache()
     --移除战斗场景加载的资源
     LoadResManager.toUnloadFightRes()
-
+    GameDataManager.SaveData()
 end
 
 return GameScene

@@ -218,6 +218,7 @@ function GameDataManager.addGoods(_goodsId,_num)
     for key, var in pairs(goodsList) do
         if var.id == _goodsId then
             var.num = var.num + _num
+            GameDispatcher:dispatch(EventNames.EVENT_PROP_UPDATE,{goodsId = _goodsId})
             return
         end
     end
@@ -225,6 +226,7 @@ function GameDataManager.addGoods(_goodsId,_num)
     _goodsVo.id = _goodsId
     _goodsVo.num = _num
     table.insert(goodsList,_goodsVo)
+    GameDispatcher:dispatch(EventNames.EVENT_PROP_UPDATE,{goodsId = _goodsId})
     GameDataManager.SaveData()
 end
 
@@ -238,13 +240,13 @@ function GameDataManager.useGoods(_goodsId)
                 if var.num <= 0 then
                     table.remove(goodsList,key)
                 end
+                GameDataManager.SaveData()
                 return true
             else
                 return false
             end
         end
     end
-    GameDataManager.SaveData()
     return false
 end
 

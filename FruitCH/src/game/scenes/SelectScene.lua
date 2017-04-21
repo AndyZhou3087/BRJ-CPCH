@@ -17,7 +17,12 @@ function SelectScene:onEnter()
 end
 
 function SelectScene:onExit()
+    
+end
 
+--场景销毁
+function SelectScene:onCleanup()
+    GameDataManager.SaveData()
 end
 
 return SelectScene

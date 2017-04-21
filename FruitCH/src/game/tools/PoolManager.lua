@@ -3,6 +3,8 @@
 ]]
 local PoolManager = {}
 
+local Scheduler = require("framework.scheduler")
+
 --缓存对象数组
 local cacheObjs = {}
 
@@ -106,6 +108,10 @@ function PoolManager.clearCache()
             local _body = var2:getPhysicsBody()
             if _body then
                 _body:release()
+            end
+            if var2.moveHandler then
+                Scheduler.unscheduleGlobal(var2.moveHandler)
+                var2.moveHandler = nil
             end
             var2:release()
         end

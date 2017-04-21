@@ -82,6 +82,9 @@ EventNames.EVENT_ROLE_CHANGE = "event_role_change"
 --领取成就
 EventNames.EVENT_GET_ACHIEVE = "event_get_achieve"
 
+--道具刷新
+EventNames.EVENT_PROP_UPDATE = "event_prop_update"
+
 --====================战斗内
 
 --开局冲刺

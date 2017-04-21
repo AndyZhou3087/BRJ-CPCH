@@ -61,7 +61,7 @@ function MapLayer:ctor(parameters)
     self.m_isDelay = false
     
     self.m_player = Player.new()
-    self:addChild(self.m_player,MAP_ZORDER_MAX+1)
+    self:addChild(self.m_player,self.m_curZOrder+1)
     self.m_player:setPosition(display.cx-100,display.cy-240)
     GameController.setCurPlayer(self.m_player)
     
@@ -101,7 +101,7 @@ function MapLayer:initRooms()
         self:addChild(_group,self.m_curZOrder)
         _group:initPosition(_x,_y)
         table.insert(self.group,_group)
-        self.m_curZOrder = self.m_curZOrder + 1
+--        self.m_curZOrder = self.m_curZOrder + 1
     end
 end
 
@@ -126,7 +126,7 @@ function MapLayer:addNewGroup(parameters)
         _group:initPosition(_x,_y)
         table.insert(self.group,_group)
     end
-    self.m_curZOrder = self.m_curZOrder + 1
+--    self.m_curZOrder = self.m_curZOrder + 1
 
     if #self.group >= MAP_GROUP_INIT_NUM then
         local _group = table.remove(self.group,1)
@@ -246,11 +246,79 @@ function MapLayer:collisionBeginCallBack(parameters)
 
     return true
 end
+--碰撞结束
+function MapLayer:collisionEndCallBack(parameters)
+    if GameController.isWin or GameController.isDead then
+        return true
+    end
+
+    Tools.printDebug("----------碰撞检测离开")
+    local conData = parameters:getContactData()
+    local bodyA = parameters:getShapeA():getBody()
+    local bodyB = parameters:getShapeB():getBody()
+    local tagA = bodyA:getTag()
+    local tagB = bodyB:getTag()
+    local player,playerBP,playerTag,_size,playerBody
+    local obstacle,obstacleBP,obstacleTag,obstacleBody
+    local obstacleS,obstacleScale
+    local obstacleOff
+
+    if tagA == ELEMENT_TAG.PLAYER_TAG then
+        player = bodyA:getNode()
+        playerBP = bodyA:getPosition()
+        playerTag = tagA
+        playerBody = bodyA
+
+        obstacle = bodyB:getNode()
+        obstacleBP = bodyB:getPosition()
+        obstacleTag = tagB
+        obstacleBody = bodyB
+
+        obstacleOff=parameters:getShapeB():getOffset()
+
+    end
+    if tagB == ELEMENT_TAG.PLAYER_TAG then
+        player = bodyB:getNode()
+        playerBP = bodyB:getPosition()
+        playerTag = tagB
+        playerBody = bodyB
+
+        obstacle = bodyA:getNode()
+        obstacleBP = bodyA:getPosition()
+        obstacleTag = tagA
+        obstacleBody = bodyA
+
+        obstacleOff=parameters:getShapeA():getOffset()
+    end
+    if tolua.isnull(bodyA) or tolua.isnull(bodyB) then
+        return true
+    end
+
+    if player and player:getVo().m_hp <= 0 then
+        return true
+    end
+    if (not player) or player:isDead() then
+        return true
+    end
+    if tolua.isnull(obstacle) then
+        return false
+    end
+
+    if obstacleTag == ELEMENT_TAG.OBSTACLE then
+        if obstacle:getVo().m_type == OBSTACLE_TYPE.ice then
+            obstacle:collisionEnd()
+        end
+        return true
+    end
+
+    return true
+end
 
 
 function MapLayer:initPhyPos(parameters)
     self.m_event = cc.EventListenerPhysicsContact:create()
     self.m_event:registerScriptHandler(handler(self,self.collisionBeginCallBack), cc.Handler.EVENT_PHYSICS_CONTACT_BEGIN)
+    self.m_event:registerScriptHandler(handler(self,self.collisionEndCallBack), cc.Handler.EVENT_PHYSICS_CONTACT_SEPERATE)
     self:getEventDispatcher():addEventListenerWithFixedPriority(self.m_event,1)
     self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 
