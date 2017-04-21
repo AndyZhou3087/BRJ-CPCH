@@ -36,7 +36,7 @@ GoodsConfig[1]=
         time = 3,   --时间(单位：秒)
         radius = 300,
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25},   --道具价格{type:购买类型1金币，2钻石，price为价格}
+        cost = {type = COST_TYPE.Gold,price = 500},   --道具价格{type:购买类型1金币，2钻石，price为价格}
         speed = 200,
     }
 
@@ -49,7 +49,7 @@ GoodsConfig[2]=
         time = 2,   --时间(单位：秒)
         radius = 300,
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25},   --道具价格{type:购买类型1金币，2钻石，price为价格}
+        cost = {type = COST_TYPE.Gold,price = 200},   --道具价格{type:购买类型1金币，2钻石，price为价格}
         speed = 200,
     }
 
@@ -61,7 +61,7 @@ GoodsConfig[3]=
         res = "ui/Prop_1.png",
         time = 13,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25}   --道具价格{type:购买类型1金币，2钻石，price为价格}
+        cost = {type = COST_TYPE.Gold,price = 400}   --道具价格{type:购买类型1金币，2钻石，price为价格}
     }
 
 GoodsConfig[4]=
@@ -72,7 +72,7 @@ GoodsConfig[4]=
         res = "ui/Prop_8.png",
         time = 8,   --时间(单位：秒)
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25}
+        cost = {type = COST_TYPE.Diamond,price = 180}
     }
 
 GoodsConfig[5]=
@@ -82,7 +82,7 @@ GoodsConfig[5]=
         discrebe = "随机抽奖",
         res = "ui/Prop_4.png",
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25}
+        cost = {type = COST_TYPE.Gold,price = 300}
     }
     
 GoodsConfig[6]=
@@ -93,7 +93,7 @@ GoodsConfig[6]=
         res = "ui/Prop_6.png",
         reward = {{id=1,count=1},},
         msg = "化身重甲疯牛，所向披靡",     --道具信息
-        cost = {type = COST_TYPE.Gold,price = 25},
+        cost = {type = COST_TYPE.Diamond,price = 2000},
         content = {{goodId = 1,count=9},{goodId = 2,count=9},{goodId = 3,count=9},{goodId = 4,count=9},}
     }
     
