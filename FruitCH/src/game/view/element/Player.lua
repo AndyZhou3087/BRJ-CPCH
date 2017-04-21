@@ -221,11 +221,18 @@ function Player:toMove(isSpring)
         else
             direction = -1
         end
-        transition.moveBy(self,{time=0.4,x=0,y=direction*440,onComplete=function()
+        transition.moveBy(self,{time=0.4,x=0,y=direction*(440-self:getAreaSize().height*0.5),onComplete=function()
             self.m_jump = false
             self.m_run = true
             self.touchCount = 0
             self:setScaleY(direction*-1)
+            if self:getScaleY() == -1 then
+                local x,y = self:getPosition()
+                self:setPositionY(y+self:getAreaSize().height*0.5)
+            else
+                local x,y = self:getPosition()
+                self:setPositionY(y-self:getAreaSize().height*0.5)
+            end
         end})
     else
         if self.touchCount == 2 and (self.m_twoJump or isSpring) then
@@ -234,16 +241,23 @@ function Player:toMove(isSpring)
             local m_pY
             if self.playerY<display.cy then
                 direction = 1
-                m_pY = display.cy-240
+                m_pY = display.cy-240+self:getAreaSize().height*0.5
             else
                 direction = -1
-                m_pY = display.cy+200
+                m_pY = display.cy+200-self:getAreaSize().height*0.5
             end
             transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.m_jump = false
                 self.m_run = true
                 self.touchCount = 0
                 self:setScaleY(direction)
+                if direction == -1 then
+                    local x,y = self:getPosition()
+                    self:setPositionY(y+self:getAreaSize().height*0.5)
+                else
+                    local x,y = self:getPosition()
+                    self:setPositionY(y-self:getAreaSize().height*0.5)
+                end
             end})
         elseif self.touchCount > 2 and isSpring then
             self:stopAllActions()
@@ -251,16 +265,23 @@ function Player:toMove(isSpring)
             local m_pY
             if self.roleY<display.cy then
                 direction = -1
-                m_pY = display.cy+200
+                m_pY = display.cy+200-self:getAreaSize().height*0.5
             else
                 direction = 1
-                m_pY = display.cy-240
+                m_pY = display.cy-240+self:getAreaSize().height*0.5
             end
             transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.m_jump = false
                 self.m_run = true
                 self.touchCount = 0
                 self:setScaleY(direction)
+                if direction == -1 then
+                    local x,y = self:getPosition()
+                    self:setPositionY(y+self:getAreaSize().height*0.5)
+                else
+                    local x,y = self:getPosition()
+                    self:setPositionY(y-self:getAreaSize().height*0.5)
+                end
             end})
         end
     end
