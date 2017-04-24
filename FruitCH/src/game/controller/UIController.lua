@@ -15,6 +15,9 @@ local AchieveQuest = require("game.view.AchieveQuest.AchieveQuest")
 local ReviveView = require("game.view.revive.ReviveUI")
 local GiftView = require("game.view.gift.GiftView")
 
+local ClipGuideView = require("game.view.clipping.ClipGuideView")
+local GuideView = require("game.view.guide.GuideView")
+
 function UIController:ctor()
     --打开战斗准备界面
     GameDispatcher:addListener(EventNames.EVENT_OPEN_READY,handler(self,self.openReady))
@@ -54,6 +57,12 @@ function UIController:ctor()
     
     --角色礼包界面
     GameDispatcher:addListener(EventNames.EVENT_OPEN_GIFTROLE,handler(self,self.openGiftView))
+    
+    --新手引导遮罩
+    GameDispatcher:addListener(EventNames.EVENT_GUIDE_CLIP,handler(self,self.openGuideClipView))
+    
+    --新手说明界面
+    GameDispatcher:addListener(EventNames.EVENT_GUIDE_EXPLAIN,handler(self,self.openGuideView))
 end
 
 --打开战斗准备界面
@@ -123,6 +132,16 @@ end
 function UIController:openGiftView(parameters)
     local _GiftView = GiftView.new(parameters.data)
     _GiftView:show(UI_ZORDER.VIEW_ZORDER)
+end
+
+function UIController:openGuideClipView(parameters)
+    local _clippUI = ClipGuideView.new(parameters.data)
+    _clippUI:show(UI_ZORDER.TIPS_ZORDER)
+end
+
+function UIController:openGuideView(parameters)
+    local _guideUI = GuideView.new(parameters.data)
+    _guideUI:show(UI_ZORDER.ALERT_ZORDER)
 end
 
 return UIController

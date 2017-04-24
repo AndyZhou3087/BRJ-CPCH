@@ -27,37 +27,37 @@
   </data>
  </layer>
  <objectgroup name="gold">
-  <object name="Common_copper.png" type="3" gid="5" x="420" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="130" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="300" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="300" y="410"/>
-  <object name="Common_copper.png" type="3" gid="5" x="470" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="130" y="410"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="420" y="410"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="180" y="410"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="250" y="410"/>
-  <object name="Common_gold.png" type="1" gid="7" x="180" y="360"/>
-  <object name="Common_gold.png" type="1" gid="7" x="470" y="410"/>
-  <object name="Common_gold.png" type="1" gid="7" x="250" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="680" y="410"/>
-  <object name="Common_copper.png" type="3" gid="5" x="520" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="520" y="410"/>
-  <object name="Common_copper.png" type="3" gid="5" x="630" y="360"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="630" y="410"/>
-  <object name="Common_gold.png" type="1" gid="7" x="680" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="800" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="750" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="800" y="410"/>
-  <object name="Common_copper.png" type="3" gid="5" x="750" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="410" y="460"/>
+  <object name="Common_copper.png" type="3" gid="5" x="100" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="270" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="270" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="460" y="460"/>
+  <object name="Common_copper.png" type="3" gid="5" x="100" y="410"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="410" y="410"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="150" y="410"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="220" y="410"/>
+  <object name="Common_gold.png" type="1" gid="7" x="150" y="360"/>
+  <object name="Common_gold.png" type="1" gid="7" x="460" y="410"/>
+  <object name="Common_gold.png" type="1" gid="7" x="220" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="700" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="510" y="460"/>
+  <object name="Common_copper.png" type="3" gid="5" x="510" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="650" y="360"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="650" y="410"/>
+  <object name="Common_gold.png" type="1" gid="7" x="700" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="820" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="770" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="820" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="770" y="410"/>
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">
-  <object name="1" gid="2" x="580" y="500"/>
+  <object name="1" gid="2" x="600" y="509"/>
   <object name="3" gid="3" x="880" y="210"/>
-  <object name="1" gid="2" x="330" y="500"/>
+  <object name="1" gid="2" x="300" y="509"/>
   <object name="3" gid="3" x="880" y="310"/>
   <object name="3" gid="3" x="880" y="410"/>
-  <object name="1" gid="1073741826" x="120" y="160"/>
-  <object name="1" gid="1073741826" x="790" y="160"/>
+  <object name="1" gid="1073741826" x="90" y="157"/>
+  <object name="1" gid="1073741826" x="810" y="157"/>
  </objectgroup>
 </map>

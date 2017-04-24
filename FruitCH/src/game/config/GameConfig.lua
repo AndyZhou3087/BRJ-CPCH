@@ -32,7 +32,7 @@ GOLD_SPEED=26
 MAP_ZORDER_MAX=0
 
 --阴影程度
-OPACITY=120
+OPACITY=160
 
 --商城是否打开
 OPEN_SHOP = false

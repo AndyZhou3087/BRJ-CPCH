@@ -35,10 +35,18 @@ function MapGroup:ctor(_idx,_levelCon)
 --        _obstacle = Obstacles[_levelCon.obstacle[_idx]] or {}
 --        _coins = Coins[_levelCon.coins[_idx]] or {}
 --        _goods = GroupGoods[_levelCon.goods[_idx]] or {}
+        if GameController.getGuide() and not MapGroupConfig[_levelCon.guideMap[_idx]] then
+            return
+        end
         if not MapGroupConfig[_levelCon.map[_idx]] then
         	return
         end
-        local map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map[_idx]])
+        local map
+        if GameController.getGuide() then
+        	map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.guideMap[_idx]])
+        else
+            map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map[_idx]])
+        end
         local gold = map:getObjectGroup("gold")
         local good = map:getObjectGroup("good")
         local obscale = map:getObjectGroup("obstacle")
@@ -158,6 +166,7 @@ function MapGroup:initCoins(goldCon)
                 end
                 gold:setPosition(tonumber(_goldObj.x),tonumber(_goldObj.y))
                 gold:setGroup(self.m_index)
+                gold:startScheduler()
                 table.insert(self.m_golds,gold)
                 GameController.addGoldBody(gold)
             end

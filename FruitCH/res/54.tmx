@@ -21,35 +21,28 @@
  <tileset firstgid="7" name="Common_gold" tilewidth="40" tileheight="40">
   <image source="Common/Common_gold.png" width="40" height="40"/>
  </tileset>
+ <tileset firstgid="8" name="Prop_3" tilewidth="53" tileheight="44">
+  <image source="ui/Prop_3.png" width="53" height="44"/>
+ </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
    eJxjZGBgAAAACAAC
   </data>
  </layer>
  <objectgroup name="gold">
-  <object name="Common_copper.png" type="3" gid="5" x="5" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="165" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="475" y="160"/>
-  <object name="Common_copper.png" type="3" gid="5" x="555" y="160"/>
-  <object name="Common_copper.png" type="3" gid="5" x="785" y="460"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="865" y="460"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="665" y="220"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="725" y="340"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="365" y="220"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="695" y="280"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="305" y="340"/>
-  <object name="Common_gold.png" type="1" gid="7" x="395" y="160"/>
-  <object name="Common_gold.png" type="1" gid="7" x="275" y="400"/>
-  <object name="Common_gold.png" type="1" gid="7" x="635" y="160"/>
-  <object name="Common_gold.png" type="1" gid="7" x="245" y="460"/>
-  <object name="Common_gold.png" type="1" gid="7" x="85" y="460"/>
-  <object name="Common_gold.png" type="1" gid="7" x="755" y="400"/>
+  <object name="Common_copper.png" type="3" gid="5" x="266" y="219"/>
+  <object name="Common_copper.png" type="3" gid="5" x="316" y="219"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="396" y="219"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="446" y="219"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="526" y="219"/>
+  <object name="Common_gold.png" type="1" gid="7" x="576" y="219"/>
  </objectgroup>
  <objectgroup name="good">
-  <object name="7" gid="4" x="335" y="280"/>
+  <object name="8" gid="8" x="156" y="160"/>
  </objectgroup>
  <objectgroup name="obstacle">
-  <object name="1" gid="2" x="430" y="509"/>
-  <object name="1" gid="1073741826" x="200" y="157"/>
+  <object name="1" gid="1073741826" x="350" y="157"/>
+  <object name="1" gid="1073741826" x="250" y="157"/>
+  <object name="1" gid="1073741826" x="300" y="157"/>
  </objectgroup>
 </map>

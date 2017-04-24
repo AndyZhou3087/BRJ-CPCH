@@ -16,10 +16,10 @@
   <image source="ui/Prop_2.png" width="48" height="49"/>
  </tileset>
  <tileset firstgid="6" name="Common_copper" tilewidth="40" tileheight="40">
-  <image source="Common/Common_copper.png" width="44" height="44"/>
+  <image source="Common/Common_copper.png" width="40" height="40"/>
  </tileset>
  <tileset firstgid="7" name="Common_sliver" tilewidth="40" tileheight="40">
-  <image source="Common/Common_sliver.png" width="44" height="44"/>
+  <image source="Common/Common_sliver.png" width="40" height="40"/>
  </tileset>
  <tileset firstgid="8" name="Prop_magnet" tilewidth="51" tileheight="46">
   <image source="ui/Prop_magnet.png" width="51" height="46"/>
@@ -53,8 +53,8 @@
   <object name="10" gid="8" x="560" y="238"/>
  </objectgroup>
  <objectgroup name="obstacle">
-  <object name="1" gid="2" x="557" y="91" rotation="-180"/>
-  <object name="1" gid="2" x="586.692" y="503.759" rotation="-359.558"/>
-  <object name="3" gid="4" x="338" y="343"/>
+  <object name="1" gid="1073741826" x="480" y="157"/>
+  <object name="1" gid="2" x="586.692" y="507.759"/>
+  <object name="3" gid="4" x="340" y="400"/>
  </objectgroup>
 </map>

@@ -32,7 +32,9 @@ function MapView:ctor(parameters)
     pauseBtn:onButtonClicked(function(_event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("暂停")
-        GameDispatcher:dispatch(EventNames.EVENT_OPEN_PAUSE)
+        if not GameController.getGuide() then
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_PAUSE)
+        end
     end)
 
     --钻石
@@ -57,13 +59,15 @@ function MapView:ctor(parameters)
 --        GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP)
 --    end)
     
-    local jumpBtn = cc.uiloader:seekNodeByName(self.m_mapView,"JumpBtn")
-    jumpBtn:setPositionX(display.right-110)
-    jumpBtn:onButtonClicked(function(_event)
-        if not GameController.isWin and not GameController.isDead and not GameController.isInState(PLAYER_STATE.StartSprint)
-            or GameController.isInState(PLAYER_STATE.DeadSprint) or GameController.isInState(PLAYER_STATE.LimitSprint)  then
-            GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)
-            GameController.getCurPlayer():toMove()
+    self.jumpBtn = cc.uiloader:seekNodeByName(self.m_mapView,"JumpBtn")
+    self.jumpBtn:setPositionX(display.right-110)
+    self.jumpBtn:onButtonClicked(function(_event)
+        if not GameController.getGuide() then
+            if not GameController.isWin and not GameController.isDead and not GameController.isInState(PLAYER_STATE.StartSprint)
+                or GameController.isInState(PLAYER_STATE.DeadSprint) or GameController.isInState(PLAYER_STATE.LimitSprint) then
+                GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)
+                GameController.getCurPlayer():toMove()
+            end
         end
     end)
 
@@ -72,8 +76,24 @@ function MapView:ctor(parameters)
     GameDispatcher:addListener(EventNames.EVENT_FIGHT_UPDATE_GOLD,handler(self,self.updateGold))
     --监听分数
     GameDispatcher:addListener(EventNames.EVENT_UPDATE_SCORE,handler(self,self.updateScore))
-
+    --新手引导更新
+    GameDispatcher:addListener(EventNames.EVENT_GUIDE_UPDATE,handler(self,self.newGuide))
 end
+
+
+function MapView:newGuide(parameters)
+    local _pos = self.jumpBtn:convertToWorldSpace(cc.p(0,0))
+    local btnSize = self.jumpBtn:getCascadeBoundingBox().size
+    local _backChange = function (parameters)
+        GameController.resumeGame()
+        GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)
+        GameController.getCurPlayer():toMove()
+    end
+    GameDispatcher:dispatch(EventNames.EVENT_GUIDE_CLIP,{mould="ui/Run_icon.png"
+        ,pos=_pos,width=btnSize.width,height=btnSize.height,backFunciton=_backChange,
+        hand=false})
+end
+
 
 --更新金币
 function MapView:updateGold(par)
@@ -99,6 +119,7 @@ end
 function MapView:dispose(parameters)
     GameDispatcher:removeListenerByName(EventNames.EVENT_UPDATE_SCORE)
     GameDispatcher:removeListenerByName(EventNames.EVENT_FIGHT_UPDATE_GOLD)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_GUIDE_UPDATE)
 
     self:removeFromParent(true)
 end

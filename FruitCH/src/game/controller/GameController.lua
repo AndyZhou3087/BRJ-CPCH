@@ -30,6 +30,25 @@ local goodBody={}
 
 local groups = {}
 
+--用于刚进入战斗场景时碰撞拦截
+local _canCollision = true
+--设置当前是否发生碰撞
+function GameController.setCollsionEnable(_enable)
+    _canCollision = _enable
+end
+function GameController.getCollsionEnable()
+    return _canCollision
+end
+
+--设置新手
+local guide = false
+function GameController.setGuide(enble)
+	guide = enble
+end
+function GameController.getGuide(parameters)
+	return guide
+end
+
 local signPop = false
 --设置签到弹出
 function GameController.setSignPop(isPop)

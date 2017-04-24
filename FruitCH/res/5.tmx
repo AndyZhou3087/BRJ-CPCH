@@ -47,10 +47,10 @@
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">
-  <object name="1" gid="2" x="850" y="500"/>
+  <object name="1" gid="2" x="850" y="509"/>
   <object name="3" gid="3" x="850" y="360"/>
-  <object name="1" gid="1073741826" x="250" y="160"/>
-  <object name="1" gid="1073741826" x="650" y="160"/>
-  <object name="1" gid="2" x="50" y="500"/>
+  <object name="1" gid="1073741826" x="250" y="157"/>
+  <object name="1" gid="1073741826" x="650" y="157"/>
+  <object name="1" gid="2" x="50" y="509"/>
  </objectgroup>
 </map>

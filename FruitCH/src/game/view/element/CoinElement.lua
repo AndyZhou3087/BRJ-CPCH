@@ -20,8 +20,6 @@ function CoinElement:ctor(parm)
 
     self.m_isAttract=false   --是否被吸引
     self.m_group = 0
-    
-    self.moveHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 end
 
 function CoinElement:getSize()
@@ -70,6 +68,11 @@ function CoinElement:collision()
     self:dispose()
 end
 
+function CoinElement:startScheduler(parameters)
+    self.moveHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
+end
+
+
 --设置金币类型
 function CoinElement:setCoinType(_type)
     self.m_type = _type
@@ -110,6 +113,11 @@ function CoinElement:dispose(parameters)
         return
     end
     self.m_isDisposed = true
+    
+    if self.moveHandler then
+        Scheduler.unscheduleGlobal(self.moveHandler)
+        self.moveHandler=nil
+    end
     
     self.m_trans = nil
     

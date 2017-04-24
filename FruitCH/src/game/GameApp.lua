@@ -52,6 +52,8 @@ function GameApp:ctor()
 --    GameApp.super.ctor(self)
     GameApp.super.ctor(self,"GameApp","game")    --替换app目录
     
+    DataPersistence.insertAttribute("first_into",true)   --是否是初次玩游戏
+    
     DataPersistence.insertAttribute("user_gold",2500)    --金币
     DataPersistence.insertAttribute("user_diamond",2500)  --钻石
     DataPersistence.insertAttribute("user_power",5)    --体力

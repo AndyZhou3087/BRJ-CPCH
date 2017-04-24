@@ -173,8 +173,14 @@ function Player:LevelWin()
     
     transition.moveTo(self,{time = 1,x=display.right+100,y=self:getPositionY(),onComplete=function()
         self:dispose()
-        --弹结算界面
-        GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type=GAMEOVER_TYPE.Win})
+        if GameController.getGuide() then
+            DataPersistence.updateAttribute("first_into",false)
+        	GameController.setGuide(false)
+        	app:enterMainScene()
+        else
+            --弹结算界面
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type=GAMEOVER_TYPE.Win})
+        end
     end})
 end
 

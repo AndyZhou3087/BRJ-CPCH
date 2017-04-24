@@ -41,8 +41,8 @@
   <object name="7" gid="5" x="765" y="267"/>
  </objectgroup>
  <objectgroup name="obstacle">
-  <object name="1" gid="2" x="765" y="500"/>
-  <object name="1" gid="2" x="20" y="500"/>
+  <object name="1" gid="2" x="765" y="509"/>
+  <object name="1" gid="2" x="20" y="509"/>
   <object name="3" gid="4" x="328" y="350"/>
   <object name="3" gid="4" x="328" y="230"/>
  </objectgroup>

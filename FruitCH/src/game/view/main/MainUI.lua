@@ -4,6 +4,8 @@
 local BaseUI = require("game.view.BaseUI")
 local MainUI = class("MainUI",BaseUI)
 
+local Scheduler = require("framework.scheduler")
+
 function MainUI:ctor()
     MainUI.super.ctor(self) 
     self:init()
@@ -16,9 +18,17 @@ function MainUI:init(parameters)
     self.m_json = cc.uiloader:load("json/MainUI.json")
     self:addChild(self.m_json)
 
-    local Panel_8 = cc.uiloader:seekNodeByName(self.m_json,"Panel_8")
-    Panel_8:setScale(display.right/GroupSize.width)
-    Panel_8:setPositionX(display.cx)
+    self.Panel_8 = cc.uiloader:seekNodeByName(self.m_json,"Panel_8")
+    self.Panel_8:setScale(display.right/GroupSize.width)
+    self.Panel_8:setPositionX(display.cx)
+    
+    self.Image_21 = cc.uiloader:seekNodeByName(self.m_json,"Image_21")
+    self.Image_21:setScale(display.right/GroupSize.width)
+    self.Image_21:setPositionX(display.cx)
+    
+    self.Label_23 = cc.uiloader:seekNodeByName(self.m_json,"Label_23")
+    self.ProgressBar = cc.uiloader:seekNodeByName(self.m_json,"ProgressBar")
+    self.ProgressBar:setPercent(0)
 
     local Label_8 = cc.uiloader:seekNodeByName(self.m_json,"Label_8")
     Label_8:setPositionX(display.left+130)
@@ -64,6 +74,39 @@ function MainUI:init(parameters)
     Tools.delayCallFunc(0.1,function()
         GameDataManager.updateGift()
     end)
+    
+    
+    
+    --首次进入游戏
+    self.Panel_8:setVisible(false)
+    self.Image_21:setVisible(true)
+    self.loadCount = 0
+    self.loadHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.05)
+
+end
+
+function MainUI:onEnterFrame(parameters)
+    self.loadCount = self.loadCount + 1
+    self.Label_23:setString("玩命加载中...("..self.loadCount.."%)")
+    self.ProgressBar:setPercent(self.loadCount)
+    if self.loadCount >= 100 then
+    	self.loadCount = 0
+        if self.loadHandler then
+            Scheduler.unscheduleGlobal(self.loadHandler)
+            self.loadHandler = nil
+        end
+        if DataPersistence.getAttribute("first_into") then
+            Tools.printDebug("---------------第一次进入")
+            --直接进入第一关战斗
+            GameDataManager.setCurLevelId(1,1)
+            GameDataManager.generatePlayerVo()  --产生新的角色数据对象
+            GameController.setGuide(true)
+            app:enterGameScene()
+        else
+            self.Panel_8:setVisible(true)
+            self.Image_21:setVisible(false)
+        end
+    end
 end
 
 function MainUI:MusicSoundSet( ... )
@@ -102,11 +145,19 @@ end
 
 --关闭界面调用
 function MainUI:toClose(_clean)
+    if self.loadHandler then
+        Scheduler.unscheduleGlobal(self.loadHandler)
+        self.loadHandler = nil
+    end
     MainUI.super.toClose(self,_clean)
 end
 
 --清理数据
 function MainUI:onCleanup()
+    if self.loadHandler then
+        Scheduler.unscheduleGlobal(self.loadHandler)
+        self.loadHandler = nil
+    end
     GameDataManager.SaveData()
 end
 return MainUI

@@ -13,10 +13,10 @@
   <image source="ui/Prop_2.png" width="48" height="49"/>
  </tileset>
  <tileset firstgid="5" name="Common_copper" tilewidth="40" tileheight="40">
-  <image source="Common/Common_copper.png" width="44" height="44"/>
+  <image source="Common/Common_copper.png" width="40" height="40"/>
  </tileset>
  <tileset firstgid="6" name="Common_sliver" tilewidth="40" tileheight="40">
-  <image source="Common/Common_sliver.png" width="44" height="44"/>
+  <image source="Common/Common_sliver.png" width="40" height="40"/>
  </tileset>
  <tileset firstgid="7" name="Common_gold" tilewidth="40" tileheight="40">
   <image source="Common/Common_gold.png" width="40" height="40"/>
@@ -46,9 +46,9 @@
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">
-  <object name="1" gid="2" x="843" y="504"/>
-  <object name="1" gid="2" x="449" y="502"/>
-  <object name="1" gid="2" x="113" y="503"/>
-  <object name="1" gid="2147483650" x="910.945" y="79.9571" rotation="-180.079"/>
+  <object name="1" gid="2" x="843" y="509"/>
+  <object name="1" gid="2" x="449" y="509"/>
+  <object name="1" gid="2" x="113" y="509"/>
+  <object name="1" gid="1073741826" x="843" y="157"/>
  </objectgroup>
 </map>

@@ -37,8 +37,8 @@
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">
-  <object name="3" gid="3" x="785" y="250"/>
-  <object name="3" gid="3" x="735" y="350"/>
-  <object name="3" gid="3" x="675" y="450"/>
+  <object name="3" gid="3" x="740" y="250"/>
+  <object name="3" gid="3" x="740" y="350"/>
+  <object name="3" gid="3" x="740" y="450"/>
  </objectgroup>
 </map>
