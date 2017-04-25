@@ -1,9 +1,9 @@
 --[[
-装载界面
+加载界面
 ]]
 local BaseUI = require("game.view.BaseUI")
 local LoadingView = class("LoadingView",BaseUI)
-local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
+local Scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 
 function LoadingView:ctor(parameters)
     LoadingView.super.ctor(self)
@@ -16,6 +16,11 @@ function LoadingView:ctor(parameters)
         self.m_bg2 = display.newColorLayer(cc.c4b(0,0,0,0)):addTo(self)
     end
     GameDispatcher:addListener(EventNames.EVENT_LOADING_OVER,handler(self,self.loadingOver))
+    
+    self.autoHandler = Tools.delayCallFunc(2,function()
+        self:toClose(true)
+    end)
+    
     --启用onCleanup函数
     self:setNodeEventEnabled(true)
 end
@@ -58,7 +63,7 @@ function LoadingView:loadAction(parameters)
         end)
     end
     onInterval()
-    self.m_handle = scheduler.scheduleGlobal(onInterval,1.6)
+    self.m_handle = Scheduler.scheduleGlobal(onInterval,1.6)
 
     local tips=cc.uiloader:seekNodeByName(_loading,"tips")
     tips:setPosition(display.cx,display.cy/2)
@@ -73,20 +78,31 @@ end
 --清理数据
 function LoadingView:onCleanup()
     if self.m_handle then
-        scheduler.unscheduleGlobal(self.m_handle)
+        Scheduler.unscheduleGlobal(self.m_handle)
+        self.m_handle = nil
     end
     if self.m_handler1 then
-        scheduler.unscheduleGlobal(self.m_handler1)
+        Scheduler.unscheduleGlobal(self.m_handler1)
+        self.m_handler1 = nil
     end
     if self.m_handler2 then
-        scheduler.unscheduleGlobal(self.m_handler2)
+        Scheduler.unscheduleGlobal(self.m_handler2)
+        self.m_handler2 = nil
     end
     if self.m_handler3 then
-        scheduler.unscheduleGlobal(self.m_handler3)
+        Scheduler.unscheduleGlobal(self.m_handler3)
+        self.m_handler3 = nil
     end
     if self.m_handler4 then
-        scheduler.unscheduleGlobal(self.m_handler4)
+        Scheduler.unscheduleGlobal(self.m_handler4)
+        self.m_handler4 = nil
     end
+    
+    if self.autoHandler then
+        Scheduler.unscheduleGlobal(self.autoHandler)
+        self.autoHandler = nil
+    end
+    
     GameDispatcher:removeListenerByName(EventNames.EVENT_LOADING_OVER)
 end
 

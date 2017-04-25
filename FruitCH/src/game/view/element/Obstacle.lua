@@ -130,7 +130,9 @@ function Obstacle:ctor(id,py)
         end
         if self.m_vo.m_type == OBSTACLE_TYPE.hide or self.m_vo.m_type == OBSTACLE_TYPE.fly or self.m_vo.m_type == OBSTACLE_TYPE.special then
             self.m_timer = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.01)
-            self:setVisible(false)
+            if self.m_vo.m_type ~= OBSTACLE_TYPE.hide then
+                self:setVisible(false)
+            end
             if not tolua.isnull(self.tip_1) then
             	self.tip_1:setVisible(false)
             end
@@ -193,6 +195,10 @@ end
 
 --清除障碍物
 function Obstacle:removeSelf(parameters)
+    if self.isDispose then
+    	return
+    end
+    self.isDispose = true
     self.obcon:setVisible(false)
     if self.m_body then
         self.m_body:removeFromWorld()
@@ -312,6 +318,12 @@ function Obstacle:collision(_type)
             GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{isSlow = true,cutSpeed = self.m_vo.m_cutSpeed})
         end
     elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
+        if GameController.getCurPlayer():getJumpState() and not GameController.isInState(PLAYER_STATE.Spring) 
+            and (self.m_posY > display.cy and GameController.getCurPlayer():getScaleY()==-1 or 
+            self.m_posY < display.cy and GameController.getCurPlayer():getScaleY()==1) then
+            Tools.printDebug("--------------弹簧过滤过滤过滤过滤过滤过滤过滤过滤过滤过滤")
+        	return
+        end
         if self.isAnimate and GameController.getCurPlayer():getJumpState() then
             self.obcon:getAnimation():playWithIndex(0)
         end

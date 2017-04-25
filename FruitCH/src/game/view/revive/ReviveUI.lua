@@ -10,13 +10,17 @@ function ReviveUI:ctor(parm)
     ReviveUI.super.ctor(self)
     
     local bg = display.newColorLayer(cc.c4b(0,0,0,OPACITY)):addTo(self)
-    GameController.pauseGame() --游戏暂停
+    GameController.pauseGame(true) --游戏暂停
 
     local ReviveUI = cc.uiloader:load("json/ReviveUI.json")
     self:addChild(ReviveUI)
 
     local Image_1 = cc.uiloader:seekNodeByName(ReviveUI,"Image_1")
     Image_1:setPositionX(display.cx)
+    local Image_1X,Image_1Y = Image_1:getPosition()
+    if parm.animation == true then
+        self:popupLeft(Image_1X,nil,Image_1)
+    end
 
     local RoleImg=cc.uiloader:seekNodeByName(ReviveUI,"RoleImg")
     RoleImg:setButtonEnabled(false)

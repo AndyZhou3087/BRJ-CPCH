@@ -40,15 +40,6 @@ function GameController.getCollsionEnable()
     return _canCollision
 end
 
---设置新手
-local guide = false
-function GameController.setGuide(enble)
-	guide = enble
-end
-function GameController.getGuide(parameters)
-	return guide
-end
-
 local signPop = false
 --设置签到弹出
 function GameController.setSignPop(isPop)

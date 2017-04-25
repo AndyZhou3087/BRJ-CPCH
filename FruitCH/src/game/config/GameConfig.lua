@@ -26,7 +26,7 @@ Pixel = 320
 Miles = 10
 
 --金币移动速度
-GOLD_SPEED=26
+GOLD_SPEED=40
 
 --地图当前ZOder
 MAP_ZORDER_MAX=0
@@ -42,19 +42,16 @@ GUIDE_ING = false
 
 MAP_GROUP_INIT_NUM = 2    --初始化组合数
 
---转盘相关
---LOTTERY_SET = {
---    TIME = 1.2,--单位：秒
---    LENG = 1440,--所转圈数 (360为一圈  所配的值应整除360)
---    TIME_TWO = 1.2, --2次圈数和长度
---    LENG_TWO = 720, --
---    TIME_THREE = 1.2,
---    LENG_THREE = 360,
---    OVER = 1.2,--单位：秒 最后一圈所转的秒数  (所配置时间还需加上当前抽到物品的距离/10 eg:当前抽到的物品为8  则为0.8+当前配置时间)
---}
-
 --角色保护时间（单位：秒）
 GuardTime = 3
+
+--分辨率
+RESOLUTION_TYPE = 
+{
+    phone = 1,
+    pad = 2,
+}
+GAME_RESOLUTION_CONTROL = RESOLUTION_TYPE.phone
 
 --游戏类型
 GAME_TYPE = 

@@ -35,14 +35,14 @@ function MapGroup:ctor(_idx,_levelCon)
 --        _obstacle = Obstacles[_levelCon.obstacle[_idx]] or {}
 --        _coins = Coins[_levelCon.coins[_idx]] or {}
 --        _goods = GroupGoods[_levelCon.goods[_idx]] or {}
-        if GameController.getGuide() and not MapGroupConfig[_levelCon.guideMap[_idx]] then
+        if DataPersistence.getAttribute("first_into") and not MapGroupConfig[_levelCon.guideMap[_idx]] then
             return
         end
         if not MapGroupConfig[_levelCon.map[_idx]] then
         	return
         end
         local map
-        if GameController.getGuide() then
+        if DataPersistence.getAttribute("first_into") then
         	map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.guideMap[_idx]])
         else
             map = cc.TMXTiledMap:create(MapGroupConfig[_levelCon.map[_idx]])

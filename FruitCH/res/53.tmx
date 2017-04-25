@@ -44,6 +44,6 @@
   <object name="12" gid="8" x="485" y="460"/>
  </objectgroup>
  <objectgroup name="obstacle">
-  <object name="2" gid="2" x="550" y="509"/>
+  <object name="2" gid="2" x="760" y="509"/>
  </objectgroup>
 </map>

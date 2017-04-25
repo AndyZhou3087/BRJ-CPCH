@@ -70,7 +70,7 @@ end
 local glview = sharedDirector:getOpenGLView()
 if nil == glview then
     glview = cc.GLViewImpl:createWithRect("QuickCocos",
-        cc.rect(0, 0, CONFIG_SCREEN_WIDTH or 900, CONFIG_SCREEN_HEIGHT or 640))
+        cc.rect(0, 0, CONFIG_SCREEN_WIDTH or 960, CONFIG_SCREEN_HEIGHT or 540))
     sharedDirector:setOpenGLView(glview)
 end
 local size = glview:getFrameSize()

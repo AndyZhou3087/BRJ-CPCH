@@ -32,7 +32,7 @@ function MapView:ctor(parameters)
     pauseBtn:onButtonClicked(function(_event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("暂停")
-        if not GameController.getGuide() then
+        if not DataPersistence.getAttribute("first_into") then
             GameDispatcher:dispatch(EventNames.EVENT_OPEN_PAUSE)
         end
     end)
@@ -62,7 +62,10 @@ function MapView:ctor(parameters)
     self.jumpBtn = cc.uiloader:seekNodeByName(self.m_mapView,"JumpBtn")
     self.jumpBtn:setPositionX(display.right-110)
     self.jumpBtn:onButtonClicked(function(_event)
-        if not GameController.getGuide() then
+        if not DataPersistence.getAttribute("first_into") then
+            if GameController.isInState(PLAYER_STATE.Spring) then
+            	return
+            end
             if not GameController.isWin and not GameController.isDead and not GameController.isInState(PLAYER_STATE.StartSprint)
                 or GameController.isInState(PLAYER_STATE.DeadSprint) or GameController.isInState(PLAYER_STATE.LimitSprint) then
                 GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)

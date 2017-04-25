@@ -9,6 +9,11 @@ local Scheduler = require("framework.scheduler")
 function MainUI:ctor()
     MainUI.super.ctor(self) 
     self:init()
+    
+    if (display.widthInPixels == 1024 and display.heightInPixels == 768) or (display.widthInPixels == 2048 and display.heightInPixels == 1536) then
+    	GAME_RESOLUTION_CONTROL = RESOLUTION_TYPE.pad
+    end
+    
     --启用onCleanup函数
     self:setNodeEventEnabled(true)
 end
@@ -23,7 +28,7 @@ function MainUI:init(parameters)
     self.Panel_8:setPositionX(display.cx)
     
     self.Image_21 = cc.uiloader:seekNodeByName(self.m_json,"Image_21")
-    self.Image_21:setScale(display.right/GroupSize.width)
+--    self.Image_21:setScale(display.right/GroupSize.width)
     self.Image_21:setPositionX(display.cx)
     
     self.Label_23 = cc.uiloader:seekNodeByName(self.m_json,"Label_23")
@@ -100,7 +105,6 @@ function MainUI:onEnterFrame(parameters)
             --直接进入第一关战斗
             GameDataManager.setCurLevelId(1,1)
             GameDataManager.generatePlayerVo()  --产生新的角色数据对象
-            GameController.setGuide(true)
             app:enterGameScene()
         else
             self.Panel_8:setVisible(true)

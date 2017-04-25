@@ -71,8 +71,9 @@ function MapLayer:ctor(parameters)
     
     
     --新手引导
-    if GameController.getGuide() then
+    if DataPersistence.getAttribute("first_into") then
         self.guideStep = 1
+        MoveSpeed = levelCon.guideSpeed
     end
 end
 
@@ -80,10 +81,12 @@ end
 function MapLayer:initRooms()
     if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
         self.m_levelCon = SelectLevel[GameDataManager.getCurLevelId()]
-        if GameController.getGuide() then
+        if DataPersistence.getAttribute("first_into") then
             self.curRooms = self.m_levelCon.guideMap
+            self.m_gap = self.m_levelCon.guideGap
         else
             self.curRooms = self.m_levelCon.map
+            self.m_gap = self.m_levelCon.gap
         end
     elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
         --控制随机数种子
@@ -95,7 +98,7 @@ function MapLayer:initRooms()
         self.m_roomsNum = MAP_GROUP_INIT_NUM
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
             self.m_roomAmount=#self.curRooms
-            Tools.printDebug("chjh error 关卡配置",self.m_roomAmount)
+            Tools.printDebug("chjh 关卡配置",self.m_roomAmount)
             if self.m_roomsNum > self.m_roomAmount then
                 self.m_roomsNum = self.m_roomAmount
             end
@@ -109,7 +112,7 @@ function MapLayer:initRooms()
     for var=1, self.m_roomsNum do
         local _group = MapGroup.new(var,self.m_levelCon)
         local _width = (self.group[#self.group] and self.group[#self.group]:getPositionX()) or CacheDis
-        _x = _width + self.m_levelCon.gap + GroupSize.width
+        _x = _width + self.m_gap + GroupSize.width
         self:addChild(_group,self.m_curZOrder)
         _group:initPosition(_x,_y)
         table.insert(self.group,_group)
@@ -133,7 +136,7 @@ function MapLayer:addNewGroup(parameters)
     if self.m_levelCon then
         local _group = MapGroup.new(self.m_roomsNum,self.m_levelCon)
         local _width = (self.group[#self.group] and self.group[#self.group]:getPositionX()) or CacheDis
-        _x = _width + self.m_levelCon.gap + GroupSize.width
+        _x = _width + self.m_gap + GroupSize.width
         self:addChild(_group,self.m_curZOrder)
         _group:initPosition(_x,_y)
         table.insert(self.group,_group)
@@ -166,14 +169,14 @@ end
 
 --触摸
 function MapLayer:touchFunc(event)
-    if GameController.getGuide() then
+    if DataPersistence.getAttribute("first_into") then
     	return
     end
     if GameController.isWin or GameController.isDead then
         return
     end
     if GameController.isInState(PLAYER_STATE.StartSprint) or GameController.isInState(PLAYER_STATE.DeadSprint)
-        or GameController.isInState(PLAYER_STATE.LimitSprint) then
+        or GameController.isInState(PLAYER_STATE.LimitSprint) or GameController.isInState(PLAYER_STATE.Spring) then
     	return
     end
     if event.name == "began" or event.name == "added" then
@@ -365,7 +368,7 @@ function MapLayer:onEnterFrame(dt)
     
     self.miles = self.miles + MoveSpeed*0.1
 --    Tools.printDebug("-----------多少像素：",self.miles)
-    if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode and not self.isGiftPop then
+    if not DataPersistence.getAttribute("first_into") and GAME_TYPE_CONTROL == GAME_TYPE.LevelMode and not self.isGiftPop then
         if self.m_levelCon.giftGap and self.miles >= self.m_levelCon.giftGap then
             self.isGiftPop = true
             if not GameDataManager.getRoleModle(GiftConfig[1].roleId) then
@@ -427,30 +430,40 @@ function MapLayer:onEnterFrame(dt)
     local cur = math.floor(self.pexel)
     GameDataManager.addLevelScore(cur)
     
-    if GameController.getGuide() then
+    if DataPersistence.getAttribute("first_into") then
         self:initGuide()
     end
 end
 
 
 function MapLayer:initGuide(parameters)
-    if self.pexel >= 65 and self.guideStep == 1 then
-        self.guideStep = self.guideStep + 1
-        GameController.pauseGame()
-        GameDispatcher:dispatch(EventNames.EVENT_GUIDE_UPDATE,{step = self.guideStep})
-    elseif self.pexel >= 100 and self.guideStep == 2 then
-        self.guideStep = self.guideStep + 1
-        GameController.pauseGame()
-        GameDispatcher:dispatch(EventNames.EVENT_GUIDE_UPDATE,{step = self.guideStep})
-    elseif self.pexel >= 122 and self.guideStep == 3 then
-        self.guideStep = self.guideStep + 1
-        GameController.pauseGame()
-        GameDispatcher:dispatch(EventNames.EVENT_GUIDE_UPDATE,{step = self.guideStep})
-    elseif self.pexel >= 155 and self.guideStep == 4 then
-        self.guideStep = self.guideStep + 1
-        GameController.pauseGame()
-        GameDispatcher:dispatch(EventNames.EVENT_GUIDE_UPDATE,{step = self.guideStep})
+    if GAME_RESOLUTION_CONTROL == RESOLUTION_TYPE.phone then
+        if self.pexel >= 29 and self.guideStep == 1 then
+            self:stepJump()
+        elseif self.pexel >= 40 and self.guideStep == 2 then
+            self:stepJump()
+        elseif self.pexel >= 85 and self.guideStep == 3 then
+            self:stepJump()
+        elseif self.pexel >= 115 and self.guideStep == 4 then
+            self:stepJump()
+        end
+    elseif GAME_RESOLUTION_CONTROL == RESOLUTION_TYPE.pad then
+        if self.pexel >= 32 and self.guideStep == 1 then
+            self:stepJump()
+        elseif self.pexel >= 44 and self.guideStep == 2 then
+            self:stepJump()
+        elseif self.pexel >= 90 and self.guideStep == 3 then
+            self:stepJump()
+        elseif self.pexel >= 120 and self.guideStep == 4 then
+            self:stepJump()
+        end
     end
+end
+
+function MapLayer:stepJump(parameters)
+    self.guideStep = self.guideStep + 1
+    GameController.pauseGame()
+    GameDispatcher:dispatch(EventNames.EVENT_GUIDE_UPDATE,{step = self.guideStep})
 end
 
 

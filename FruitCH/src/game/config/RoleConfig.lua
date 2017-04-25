@@ -20,7 +20,8 @@ PLAYER_STATE=
         LimitSprint = 8, --极限冲刺
         TransformGold = 9,--金币转换
         Slow = 10,  --滑冰速度减慢
-        GameDefence = 11,
+        GameDefence = 11,  --游戏中护盾
+        Spring = 12,   --弹簧
     }
 --角色动作
 PLAYER_ACTION=

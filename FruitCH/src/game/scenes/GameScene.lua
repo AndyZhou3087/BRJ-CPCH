@@ -60,7 +60,7 @@ function GameScene:onEnter()
 
     AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Fight_Bg,true)
     
-    if GameController.getGuide() then
+    if DataPersistence.getAttribute("first_into") then
         GameDispatcher:dispatch(EventNames.EVENT_GUIDE_EXPLAIN,{animation = true})
     end
 
