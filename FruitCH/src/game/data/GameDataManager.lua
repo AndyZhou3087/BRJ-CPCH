@@ -581,6 +581,13 @@ end
 function GameDataManager.getCurLevelId()
     return curLevelId,levelIdx
 end
+--获取当前未开始关卡数据id
+function GameDataManager.getNextFightDataId()
+    if not fightData[#fightData] then
+    	return 1
+    end
+    return fightData[#fightData].id+1
+end
 --增加当前关卡得分
 local curLevelScore = 0
 --_score:当前获得积分,_noRate:不需要加成,默认为nil即计算加成

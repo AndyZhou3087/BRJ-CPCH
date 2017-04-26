@@ -18,34 +18,13 @@ end
 function SelectUI:init(parameters)
     self.m_json = cc.uiloader:load("json/SelectUI.json")
     self:addChild(self.m_json)
-    
---    local scrollPanel = cc.uiloader:seekNodeByName(self.m_json,"Panel_8")
---    local scrollPanelSize = scrollPanel:getCascadeBoundingBox().size
---    local scrollView = cc.ui.UIListView.new {
---        bgScale9 = true,
---        viewRect = cc.rect(0, 0, scrollPanelSize.width, scrollPanelSize.height),
---        direction = cc.ui.UIScrollView.DIRECTION_HORIZONTAL}
---        :onTouch(handler(self, self.touchListener))
---        :addTo(scrollPanel)
-    
---    scrollView:removeAllItems()
---    Tools.delayCallFunc(0.1,function()
---        for var=1, #SelectLevel do
---            local item = scrollView:newItem()
---            local content = SelectItem.new(SelectLevel[var])
---            content:setTouchEnabled(false)
---            content:setContentSize(math.floor(scrollPanelSize.width / SelectItemCount), scrollPanelSize.height)
---            item:setItemSize(math.floor(scrollPanelSize.width / SelectItemCount), scrollPanelSize.height)
---            item:addContent(content)
---            scrollView:addItem(item)
---        end
---        scrollView:reload()
---    end)
+
+    self.itemArr = {}
 
     local emptyNode = cc.Node:create()
     emptyNode:setAnchorPoint(0,0)
 
-    local scrollView = cc.ui.UIScrollView.new({viewRect = cc.rect(0,0,display.width,display.height)})
+    self.scrollView = cc.ui.UIScrollView.new({viewRect = cc.rect(0,0,display.width,display.height)})
         :addScrollNode(emptyNode)
         :setDirection(cc.ui.UIScrollView.DIRECTION_HORIZONTAL)
         :onScroll(handler(self, self.scrollListener))
@@ -63,6 +42,7 @@ function SelectUI:init(parameters)
         sel:setAnchorPoint(0,0)
         sel:setContentSize(100, 100)
         sel:pos(selConfig.pos.x,selConfig.pos.y)
+        self.itemArr[var] = sel
     end
 
     
@@ -73,6 +53,24 @@ function SelectUI:init(parameters)
         end
     end)
 
+    self:moveScrollView()
+end
+
+function SelectUI:moveScrollView(parameters)
+    local x,y = self.itemArr[GameDataManager.getNextFightDataId()]:getPosition()
+    local wordPos = self.itemArr[GameDataManager.getNextFightDataId()]:getParent():convertToWorldSpace(cc.p(x,y))
+    local dis = wordPos.x-display.cx
+    local nodeX,nodeY = self.scrollView.scrollNode:getPosition()
+    Tools.printDebug("-------------ScrollView坐标：",dis)
+    if dis <= 0 then
+        return
+    end
+    if -dis >= (display.width - GroupSize.width)-2061 then
+        transition.moveBy(self.scrollView.scrollNode,{time = 0.5,x=-dis,y=0})
+    else
+        transition.moveBy(self.scrollView.scrollNode,{time = 0.5,x=(display.width - GroupSize.width)-2061,y=0})
+    end
+    
 end
 
 function SelectUI:scrollListener(event)

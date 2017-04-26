@@ -14,6 +14,7 @@ function FightOver:ctor(parm)
     --阴影层
     self.m_bg = display.newColorLayer(cc.c4b(0,0,0,OPACITY)):addTo(self)
     GameController.pauseGame()
+    AudioManager.stopAllSounds()
     
     self.m_fightover = cc.uiloader:load("json/FightOver.json")
     self:addChild(self.m_fightover)

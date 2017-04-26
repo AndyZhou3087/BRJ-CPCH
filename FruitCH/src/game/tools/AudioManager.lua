@@ -140,6 +140,9 @@ function AudioManager.stopSoundEffect(_soundType)
     end
 end
 
+function AudioManager.stopAllSounds()
+    audio.stopAllSounds()
+end
 
 --[[
 停止声音

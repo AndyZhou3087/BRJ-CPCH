@@ -17,7 +17,7 @@ function LoadingView:ctor(parameters)
     end
     GameDispatcher:addListener(EventNames.EVENT_LOADING_OVER,handler(self,self.loadingOver))
     
-    self.autoHandler = Tools.delayCallFunc(2,function()
+    self.autoHandler = Tools.delayCallFunc(1,function()
         self:toClose(true)
     end)
     
