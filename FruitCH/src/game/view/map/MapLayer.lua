@@ -92,6 +92,7 @@ function MapLayer:initRooms()
         --控制随机数种子
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         self.m_levelCon = ConfigD[GameController.getDataIdByWeight(self.m_weightD,self.m_conD)]
+        self.m_gap = self.m_levelCon.gap
     end
 
     if self.m_levelCon then
