@@ -8,11 +8,11 @@ local Scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 function LoadingView:ctor(parameters)
     LoadingView.super.ctor(self)
     if parameters.method == 1 then
-        print("方案1.带动画黑屏")
+        Tools.printDebug("方案1.带动画黑屏")
         self.m_bg = display.newColorLayer(cc.c4b(0,0,0,255)):addTo(self)
         self:loadAction()
     elseif parameters.method == 2 then
-        print("方案2.透明层屏蔽点击事件")
+        Tools.printDebug("方案2.透明层屏蔽点击事件")
         self.m_bg2 = display.newColorLayer(cc.c4b(0,0,0,0)):addTo(self)
     end
     GameDispatcher:addListener(EventNames.EVENT_LOADING_OVER,handler(self,self.loadingOver))

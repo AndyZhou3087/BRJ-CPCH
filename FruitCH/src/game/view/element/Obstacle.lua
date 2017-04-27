@@ -325,13 +325,15 @@ function Obstacle:collision(_type)
             Tools.printDebug("--------------弹簧过滤过滤过滤过滤过滤过滤过滤过滤过滤过滤")
         	return
         end
+        local x,y = self:getPosition()
+        local wordPos = self:getParent():convertToWorldSpace(cc.p(x,y))
         if self.isAnimate and GameController.getCurPlayer():getJumpState() then
             self.obcon:getAnimation():playWithIndex(0)
         end
         if self.m_body then
             self.m_body:removeFromWorld()
         end
-        GameDispatcher:dispatch(EventNames.EVENT_OBSCALE_SPRING)
+        GameDispatcher:dispatch(EventNames.EVENT_OBSCALE_SPRING,wordPos.x)
     else
         if GameController.isInState(PLAYER_STATE.GrankDrink) then
             Tools.printDebug("------------------巨人药水碰撞消失")

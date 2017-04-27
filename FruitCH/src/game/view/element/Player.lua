@@ -192,7 +192,9 @@ end
 
 --角色动画切换(_place:角色位置,_animation动画名称)
 function Player:toPlay(_actionName,loop)
-    if not self.m_twoJump and self.m_jump and _actionName == PLAYER_ACTION.Jump and not self:isInState(PLAYER_STATE.Spring) then
+    if not self.m_twoJump and self.m_jump and _actionName == PLAYER_ACTION.Jump and not self:isInState(PLAYER_STATE.Spring) 
+        and not self.clickJump then
+        Tools.printDebug("---------动画被挡了")
     	return
     end
     local _loop = loop or 1
@@ -200,6 +202,16 @@ function Player:toPlay(_actionName,loop)
     Tools.printDebug("Fruit PaoKu 角色跳跃:",_actionName)
     if _actionName==PLAYER_ACTION.Run then
         self:reSetUD()
+    end
+end
+
+function Player:clickJumpfunc()
+    if self.playerY and self.m_jump and ((self.playerY<display.cy and self:getPositionY()>= display.cy+170-self:getAreaSize().height*0.5) or 
+        (self.playerY>display.cy and self:getPositionY()<= display.cy-190+self:getAreaSize().height*0.5)) then
+        self.clickJump = true
+        Tools.printDebug("---------缓冲区域二次点击")
+    else
+        self.clickJump = false
     end
 end
 
@@ -245,7 +257,8 @@ function Player:toMove(isSpring)
             end
         end})
     else
-        if self.touchCount == 2 and (self.m_twoJump or isSpring) then
+        if self.touchCount == 2 and (self.m_twoJump or isSpring or self.clickJump) then
+            Tools.printDebug("---------缓冲区域二次点击hhhhhhhhhhhhhhhh")
             self:stopAllActions()
             local direction = 1
             local m_pY
@@ -257,6 +270,7 @@ function Player:toMove(isSpring)
                 m_pY = display.cy+200-self:getAreaSize().height*0.5
             end
             transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
+                self.clickJump = false
                 self.m_jump = false
                 self.m_run = true
                 self.touchCount = 0
@@ -821,6 +835,11 @@ function Player:spring(parameters)
         self:toPlay(PLAYER_ACTION.Jump,0)
         self:toMove(true)
     else
+        local x = parameters.data
+        if x<self:getPositionX() then
+            Tools.printDebug("print error 卡在弹簧--------------")
+        	return
+        end
         self.originPos = cc.p(self:getPosition())
         self.originScaleY = self:getScaleY()
         if self.backHandler then
