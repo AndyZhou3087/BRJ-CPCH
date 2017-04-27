@@ -21,6 +21,9 @@
  <tileset firstgid="7" name="Common_gold" tilewidth="40" tileheight="40">
   <image source="Common/Common_gold.png" width="40" height="40"/>
  </tileset>
+ <tileset firstgid="8" name="Prop_1" tilewidth="42" tileheight="44">
+  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/Prop_1.png" width="42" height="44"/>
+ </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
    eJxjZGBgAAAACAAC
@@ -45,12 +48,12 @@
   <object name="Common_gold.png" type="1" gid="7" x="760" y="340"/>
   <object name="Common_gold.png" type="1" gid="7" x="790" y="280"/>
  </objectgroup>
- <objectgroup name="good"/>
+ <objectgroup name="good">
+  <object name="12" gid="8" x="625" y="460"/>
+ </objectgroup>
  <objectgroup name="obstacle">
   <object name="1" gid="2" x="850" y="509"/>
-  <object name="3" gid="3" x="850" y="360"/>
-  <object name="1" gid="1073741826" x="250" y="157"/>
-  <object name="1" gid="1073741826" x="650" y="157"/>
-  <object name="1" gid="2" x="50" y="509"/>
+  <object name="1" gid="1073741826" x="500" y="157"/>
+  <object name="1" gid="2" x="30" y="509"/>
  </objectgroup>
 </map>

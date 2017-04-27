@@ -44,7 +44,7 @@ ObstacleConfig[3]=
         res = "ui/obscale_2.png",     --资源路径
         att = 1,
         dispx = 400,   --与屏幕相距多少像素时出现(单位：像素)
-        speed = 2,   --飞行速度，即固定距离飞行的时间(单位：秒)
+        speed = 5,   --飞行速度，即固定距离飞行的时间(单位：秒)
     }
     
 ObstacleConfig[4]=

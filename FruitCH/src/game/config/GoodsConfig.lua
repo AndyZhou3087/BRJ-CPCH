@@ -35,7 +35,7 @@ GoodsConfig[1]=
         res = "ui/Prop_magnet.png",
         time = 3,   --时间(单位：秒)
         radius = 300,
-        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        msg = "开局发动冲刺",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 500},   --道具价格{type:购买类型1金币，2钻石，price为价格}
         speed = 200,
     }
@@ -48,7 +48,7 @@ GoodsConfig[2]=
         res = "ui/Prop_7.png",
         time = 2,   --时间(单位：秒)
         radius = 300,
-        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        msg = "角色死亡后发动冲刺",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 200},   --道具价格{type:购买类型1金币，2钻石，price为价格}
         speed = 200,
     }
@@ -60,7 +60,7 @@ GoodsConfig[3]=
         discrebe = "开局护盾",
         res = "ui/Prop_1.png",
         time = 13,   --时间(单位：秒)
-        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        msg = "开局自带一个护盾",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 400}   --道具价格{type:购买类型1金币，2钻石，price为价格}
     }
 
@@ -71,7 +71,7 @@ GoodsConfig[4]=
         discrebe = "死亡接力",
         res = "ui/Prop_8.png",
         time = 8,   --时间(单位：秒)
-        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        msg = "死亡后随机更换角色续关",     --道具信息
         cost = {type = COST_TYPE.Diamond,price = 180}
     }
 
@@ -81,7 +81,7 @@ GoodsConfig[5]=
         type = GOODS_TYPE.RandomReward,       --道具类型
         discrebe = "随机抽奖",
         res = "ui/Prop_4.png",
-        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        msg = "随机抽取一个开局道具",     --道具信息
         cost = {type = COST_TYPE.Gold,price = 300}
     }
     
@@ -92,7 +92,7 @@ GoodsConfig[6]=
         discrebe = "神秘礼包",
         res = "ui/Prop_6.png",
         reward = {{id=1,count=1},},
-        msg = "化身重甲疯牛，所向披靡",     --道具信息
+        msg = "立即获得所有开局道具各九个",     --道具信息
         cost = {type = COST_TYPE.Diamond,price = 2000},
         content = {{goodId = 1,count=9},{goodId = 2,count=9},{goodId = 3,count=9},{goodId = 4,count=9},}
     }

@@ -23,10 +23,14 @@
   <object name="3" gid="3" x="90" y="460"/>
   <object name="3" gid="3" x="140" y="360"/>
   <object name="3" gid="3" x="190" y="260"/>
+  <object name="3" gid="3" x="290" y="260"/>
+  <object name="3" gid="3" x="340" y="360"/>
   <object name="3" gid="3" x="390" y="460"/>
   <object name="3" gid="3" x="440" y="360"/>
   <object name="3" gid="3" x="490" y="260"/>
   <object name="3" gid="3" x="524" y="168"/>
+  <object name="3" gid="3" x="590" y="260"/>
+  <object name="3" gid="3" x="640" y="360"/>
   <object name="3" gid="3" x="690" y="460"/>
   <object name="3" gid="3" x="740" y="360"/>
   <object name="3" gid="3" x="790" y="260"/>

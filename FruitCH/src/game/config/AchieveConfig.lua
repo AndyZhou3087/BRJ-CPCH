@@ -90,3 +90,66 @@ AchieveConfig[5] =
         rewardType = REWARD_TYPE.Prop,
         reward = {goodsId = 1,count = 2},
     }
+	
+AchieveConfig[6] = 
+{
+    id = 6,
+    type = CONDITION_TYPE.SingleProp,
+    res = "ui/Prop_2.png",
+    title = "标题",
+    des = "单局使用XX道具XX个",
+    useGoodsId = 7,
+    useGoodsCount = 2,
+    rewardType = REWARD_TYPE.Gold,
+    reward = 200,
+}
+
+AchieveConfig[7] = 
+{
+    id = 7,
+    type = CONDITION_TYPE.SingleProp,
+    res = "ui/Prop_2.png",
+    title = "标题",
+    des = "单局使用XX道具XX个",
+    useGoodsId = 7,
+    useGoodsCount = 2,
+    rewardType = REWARD_TYPE.Gold,
+    reward = 200,
+}
+
+AchieveConfig[8] = 
+{
+    id = 8,
+    type = CONDITION_TYPE.SingleProp,
+    res = "ui/Prop_2.png",
+    title = "标题",
+    des = "单局使用XX道具XX个",
+    useGoodsId = 7,
+    useGoodsCount = 2,
+    rewardType = REWARD_TYPE.Gold,
+    reward = 200,
+}
+
+AchieveConfig[9] = 
+    {
+        id = 9,
+        type = CONDITION_TYPE.TotalGold,
+        res = "ui/Prop_2.png",
+        title = "标题",
+        des = "累计消耗金币XX个",
+        useGold = 100,
+        rewardType = REWARD_TYPE.Prop,
+        reward = {goodsId = 1,count = 2},
+    }
+	
+AchieveConfig[10] = 
+    {
+        id = 10,
+        type = CONDITION_TYPE.TotalGold,
+        res = "ui/Prop_2.png",
+        title = "标题",
+        des = "累计消耗金币XX个",
+        useGold = 100,
+        rewardType = REWARD_TYPE.Prop,
+        reward = {goodsId = 1,count = 2},
+    }

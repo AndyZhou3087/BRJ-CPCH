@@ -43,11 +43,11 @@
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">
-  <object name="6" gid="5" x="264" y="508"/>
+  <object name="6" gid="5" x="190" y="505"/>
   <object name="6" gid="5" x="700" y="505"/>
-  <object name="6" gid="2147483653" x="328.869" y="74.8846" rotation="-180.214"/>
-  <object name="6" gid="2147483653" x="741.869" y="63.8846" rotation="-180.214"/>
-  <object gid="3" x="263" y="326"/>
+  <object name="6" gid="1073741829" x="190" y="130"/>
+  <object name="6" gid="5" x="741.869" y="63.8846"/>
+  <object gid="3" x="196" y="326"/>
   <object gid="3" x="525" y="169"/>
   <object gid="3" x="694" y="331"/>
   <object gid="3" x="502" y="462"/>
