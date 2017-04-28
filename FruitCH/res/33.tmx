@@ -9,20 +9,11 @@
  <tileset firstgid="3" name="obscale_2" tilewidth="60" tileheight="62">
   <image source="ui/obscale_2.png" width="60" height="62"/>
  </tileset>
- <tileset firstgid="4" name="Common_copper" tilewidth="40" tileheight="40">
-  <image source="Common/Common_copper.png" width="44" height="44"/>
- </tileset>
- <tileset firstgid="5" name="Common_sliver" tilewidth="40" tileheight="40">
-  <image source="Common/Common_sliver.png" width="44" height="44"/>
- </tileset>
- <tileset firstgid="6" name="Common_gold" tilewidth="40" tileheight="40">
+ <tileset firstgid="4" name="Common_gold" tilewidth="40" tileheight="40">
   <image source="Common/Common_gold.png" width="40" height="40"/>
  </tileset>
- <tileset firstgid="7" name="Prop_4" tilewidth="49" tileheight="49">
-  <image source="ui/Prop_4.png" width="49" height="49"/>
- </tileset>
- <tileset firstgid="8" name="obscale_5" tilewidth="960" tileheight="110">
-  <image source="ui/obscale_5.png" width="960" height="110"/>
+ <tileset firstgid="5" name="obscale_5" tilewidth="960" tileheight="110">
+  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_5.png" width="960" height="110"/>
  </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
@@ -30,29 +21,28 @@
   </data>
  </layer>
  <objectgroup name="gold">
-  <object name="Common_sliver.png" type="2" gid="5" x="343" y="390"/>
-  <object name="Common_sliver.png" type="2" gid="5" x="255" y="501"/>
-  <object name="Common_copper.png" type="3" gid="4" x="425" y="279"/>
-  <object name="Common_copper.png" type="3" gid="4" x="193" y="502"/>
-  <object name="Common_copper.png" type="3" gid="4" x="628" y="128"/>
-  <object name="Common_copper.png" type="3" gid="4" x="886" y="124"/>
-  <object name="Common_sliver.png" type="2" gid="5" x="769" y="130"/>
-  <object name="Common_sliver.png" type="2" gid="5" x="701" y="131"/>
-  <object name="Common_copper.png" type="3" gid="4" x="557" y="130"/>
-  <object name="Common_copper.png" type="3" gid="4" x="130" y="501"/>
-  <object name="Common_sliver.png" type="2" gid="5" x="68" y="502"/>
-  <object name="Common_sliver.png" type="2" gid="5" x="832" y="129"/>
-  <object name="Common_copper.png" type="3" gid="4" x="380" y="334"/>
-  <object name="Common_gold.png" type="1" gid="6" x="466" y="226"/>
-  <object name="Common_gold.png" type="1" gid="6" x="516" y="171"/>
-  <object name="Common_gold.png" type="1" gid="6" x="-2" y="500"/>
-  <object name="Common_gold.png" type="1" gid="6" x="305" y="445"/>
+  <object name="Common_gold.png" type="1" gid="4" x="15" y="460"/>
+  <object name="Common_gold.png" type="1" gid="4" x="95" y="460"/>
+  <object name="Common_gold.png" type="1" gid="4" x="175" y="460"/>
+  <object name="Common_gold.png" type="1" gid="4" x="255" y="460"/>
+  <object name="Common_gold.png" type="1" gid="4" x="335" y="460"/>
+  <object name="Common_gold.png" type="1" gid="4" x="365" y="410"/>
+  <object name="Common_gold.png" type="1" gid="4" x="395" y="360"/>
+  <object name="Common_gold.png" type="1" gid="4" x="425" y="310"/>
+  <object name="Common_gold.png" type="1" gid="4" x="515" y="160"/>
+  <object name="Common_gold.png" type="1" gid="4" x="595" y="160"/>
+  <object name="Common_gold.png" type="1" gid="4" x="675" y="160"/>
+  <object name="Common_gold.png" type="1" gid="4" x="755" y="160"/>
+  <object name="Common_gold.png" type="1" gid="4" x="485" y="210"/>
+  <object name="Common_gold.png" type="1" gid="4" x="455" y="260"/>
+  <object name="Common_gold.png" type="1" gid="4" x="835" y="160"/>
+  <object name="Common_gold.png" type="1" gid="4" x="915" y="160"/>
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">
-  <object name="3" gid="3" x="805" y="226"/>
-  <object name="3" gid="3" x="735" y="348"/>
-  <object name="3" gid="3" x="659" y="485"/>
-  <object name="5" gid="8" x="0" y="105"/>
+  <object name="3" gid="3" x="880" y="250"/>
+  <object name="3" gid="3" x="880" y="350"/>
+  <object name="3" gid="3" x="880" y="450"/>
+  <object gid="5" x="0" y="110"/>
  </objectgroup>
 </map>

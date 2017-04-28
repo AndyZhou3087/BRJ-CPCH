@@ -12,6 +12,9 @@
  <tileset firstgid="4" name="Common_gold" tilewidth="40" tileheight="40">
   <image source="Common/Common_gold.png" width="40" height="40"/>
  </tileset>
+ <tileset firstgid="5" name="obscale_5" tilewidth="960" tileheight="110">
+  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_5.png" width="960" height="110"/>
+ </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
    eJxjZGBgAAAACAAC
@@ -48,8 +51,5 @@
   <object name="Common_gold.png" type="1" gid="4" x="790" y="260"/>
  </objectgroup>
  <objectgroup name="good"/>
- <objectgroup name="obstacle">
-  <object name="1" gid="2" x="235" y="509"/>
-  <object name="1" gid="2" x="695" y="509"/>
- </objectgroup>
+ <objectgroup name="obstacle"/>
 </map>

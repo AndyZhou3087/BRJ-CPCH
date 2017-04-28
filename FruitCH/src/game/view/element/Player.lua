@@ -7,6 +7,8 @@ local Scheduler = require("framework.scheduler")
 
 local Flash_Skeep_Time = 0.1 --闪动间隔
 
+local FrameCount = 25
+
 ---人物类
 function Player:ctor()
     Player.super.ctor(self)
@@ -90,6 +92,7 @@ function Player:createModle(_actionName)
     self:addChild(self.m_armature)
     self:setAnchorPoint(cc.p(0,0))
     self.m_animation = self.m_armature:getAnimation()
+    self.m_animation:setSpeedScale(MoveSpeed*0.01)
     self:toPlay(PLAYER_ACTION.Run)
     self.m_animation:setMovementEventCallFunc(handler(self,self.armatureMoveEvent))
     self.m_animation:setFrameEventCallFunc(handler(self,self.onActionFrameEvent))
@@ -234,6 +237,10 @@ function Player:toMove(isSpring)
     if self.touchCount > 1 then
         self.roleY = self:getPositionY()
     end
+    local frameSpeed = MoveSpeed
+    if MoveSpeed >= 100 then
+        frameSpeed = 100
+    end
     if not self.m_jump then
         self.m_jump = true
         self.m_run = false
@@ -243,7 +250,7 @@ function Player:toMove(isSpring)
         else
             direction = -1
         end
-        transition.moveBy(self,{time=0.4,x=0,y=direction*(440-self:getAreaSize().height*0.5),onComplete=function()
+        transition.moveBy(self,{time=FrameCount/frameSpeed,x=0,y=direction*(440-self:getAreaSize().height*0.5),onComplete=function()
             self.m_jump = false
             self.m_run = true
             self.touchCount = 0
@@ -269,7 +276,7 @@ function Player:toMove(isSpring)
                 direction = -1
                 m_pY = display.cy+200-self:getAreaSize().height*0.5
             end
-            transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
+            transition.moveTo(self,{time=FrameCount/frameSpeed,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.clickJump = false
                 self.m_jump = false
                 self.m_run = true
@@ -297,7 +304,7 @@ function Player:toMove(isSpring)
                 direction = 1
                 m_pY = display.cy-240+self:getAreaSize().height*0.5
             end
-            transition.moveTo(self,{time=0.4,x=self:getPositionX(),y=m_pY,onComplete = function()
+            transition.moveTo(self,{time=FrameCount/frameSpeed,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.m_jump = false
                 self.m_run = true
                 self.touchCount = 0

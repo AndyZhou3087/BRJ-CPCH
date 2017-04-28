@@ -170,6 +170,9 @@ end
 
 --触摸
 function MapLayer:touchFunc(event)
+    if MoveSpeed<=0 then
+    	return
+    end
     if DataPersistence.getAttribute("first_into") then
     	return
     end
@@ -181,7 +184,7 @@ function MapLayer:touchFunc(event)
     	return
     end
     if event.name == "began" or event.name == "added" then
-        self.m_player:clickJumpfunc()
+--        self.m_player:clickJumpfunc()
         self.m_player:toPlay(PLAYER_ACTION.Jump,0)
         self.m_player:toMove()
         return true

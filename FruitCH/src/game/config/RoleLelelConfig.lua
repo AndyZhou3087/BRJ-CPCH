@@ -37,7 +37,7 @@ RoleLvs[1][1]=
 RoleLvs[1][2]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -52,7 +52,7 @@ RoleLvs[1][2]=
 RoleLvs[1][3]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -67,7 +67,7 @@ RoleLvs[1][3]=
 RoleLvs[1][4]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -82,7 +82,7 @@ RoleLvs[1][4]=
 RoleLvs[1][5]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -97,7 +97,7 @@ RoleLvs[1][5]=
 RoleLvs[1][6]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -112,7 +112,7 @@ RoleLvs[1][6]=
 RoleLvs[1][7]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -127,7 +127,7 @@ RoleLvs[1][7]=
 RoleLvs[1][8]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -142,7 +142,7 @@ RoleLvs[1][8]=
 RoleLvs[1][9]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -157,7 +157,7 @@ RoleLvs[1][9]=
 RoleLvs[1][10]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -172,7 +172,7 @@ RoleLvs[1][10]=
 RoleLvs[1][11]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -187,7 +187,7 @@ RoleLvs[1][11]=
 RoleLvs[1][12]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -202,7 +202,7 @@ RoleLvs[1][12]=
 RoleLvs[1][13]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -217,7 +217,7 @@ RoleLvs[1][13]=
 RoleLvs[1][14]=
   {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -232,7 +232,7 @@ RoleLvs[1][14]=
 RoleLvs[1][15]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -247,7 +247,7 @@ RoleLvs[1][15]=
 RoleLvs[1][16]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -262,7 +262,7 @@ RoleLvs[1][16]=
 RoleLvs[1][17]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -277,7 +277,7 @@ RoleLvs[1][17]=
 RoleLvs[1][18]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -292,7 +292,7 @@ RoleLvs[1][18]=
 RoleLvs[1][19]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -307,7 +307,7 @@ RoleLvs[1][19]=
 RoleLvs[1][20]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -322,7 +322,7 @@ RoleLvs[1][20]=
 RoleLvs[1][21]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -337,7 +337,7 @@ RoleLvs[1][21]=
 RoleLvs[1][22]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -352,7 +352,7 @@ RoleLvs[1][22]=
 RoleLvs[1][23]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -367,7 +367,7 @@ RoleLvs[1][23]=
 RoleLvs[1][24]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -382,7 +382,7 @@ RoleLvs[1][24]=
 RoleLvs[1][25]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -397,7 +397,7 @@ RoleLvs[1][25]=
 RoleLvs[1][26]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -412,7 +412,7 @@ RoleLvs[1][26]=
 RoleLvs[1][27]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -427,7 +427,7 @@ RoleLvs[1][27]=
 RoleLvs[1][28]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -442,7 +442,7 @@ RoleLvs[1][28]=
 RoleLvs[1][29]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -457,7 +457,7 @@ RoleLvs[1][29]=
 RoleLvs[1][30]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -492,7 +492,7 @@ RoleLvs[2][1]=
 RoleLvs[2][2]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -507,7 +507,7 @@ RoleLvs[2][2]=
 RoleLvs[2][3]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -522,7 +522,7 @@ RoleLvs[2][3]=
 RoleLvs[2][4]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -537,7 +537,7 @@ RoleLvs[2][4]=
 RoleLvs[2][5]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -552,7 +552,7 @@ RoleLvs[2][5]=
 RoleLvs[2][6]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -567,7 +567,7 @@ RoleLvs[2][6]=
 RoleLvs[2][7]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -582,7 +582,7 @@ RoleLvs[2][7]=
 RoleLvs[2][8]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -597,7 +597,7 @@ RoleLvs[2][8]=
 RoleLvs[2][9]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -612,7 +612,7 @@ RoleLvs[2][9]=
 RoleLvs[2][10]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -627,7 +627,7 @@ RoleLvs[2][10]=
 RoleLvs[2][11]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -642,7 +642,7 @@ RoleLvs[2][11]=
 RoleLvs[2][12]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -657,7 +657,7 @@ RoleLvs[2][12]=
 RoleLvs[2][13]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -672,7 +672,7 @@ RoleLvs[2][13]=
 RoleLvs[2][14]=
   {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -687,7 +687,7 @@ RoleLvs[2][14]=
 RoleLvs[2][15]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -702,7 +702,7 @@ RoleLvs[2][15]=
 RoleLvs[2][16]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -717,7 +717,7 @@ RoleLvs[2][16]=
 RoleLvs[2][17]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -732,7 +732,7 @@ RoleLvs[2][17]=
 RoleLvs[2][18]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -747,7 +747,7 @@ RoleLvs[2][18]=
 RoleLvs[2][19]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -762,7 +762,7 @@ RoleLvs[2][19]=
 RoleLvs[2][20]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -777,7 +777,7 @@ RoleLvs[2][20]=
 RoleLvs[2][21]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -792,7 +792,7 @@ RoleLvs[2][21]=
 RoleLvs[2][22]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -807,7 +807,7 @@ RoleLvs[2][22]=
 RoleLvs[2][23]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -822,7 +822,7 @@ RoleLvs[2][23]=
 RoleLvs[2][24]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -837,7 +837,7 @@ RoleLvs[2][24]=
 RoleLvs[2][25]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -852,7 +852,7 @@ RoleLvs[2][25]=
 RoleLvs[2][26]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -867,7 +867,7 @@ RoleLvs[2][26]=
 RoleLvs[2][27]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -882,7 +882,7 @@ RoleLvs[2][27]=
 RoleLvs[2][28]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -897,7 +897,7 @@ RoleLvs[2][28]=
 RoleLvs[2][29]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -912,7 +912,7 @@ RoleLvs[2][29]=
 RoleLvs[2][30]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -927,7 +927,7 @@ RoleLvs[2][30]=
 RoleLvs[2][31]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -942,7 +942,7 @@ RoleLvs[2][31]=
 RoleLvs[2][32]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -957,7 +957,7 @@ RoleLvs[2][32]=
 RoleLvs[2][33]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -972,7 +972,7 @@ RoleLvs[2][33]=
 RoleLvs[2][34]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -987,7 +987,7 @@ RoleLvs[2][34]=
 RoleLvs[2][35]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1002,7 +1002,7 @@ RoleLvs[2][35]=
 RoleLvs[2][36]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1017,7 +1017,7 @@ RoleLvs[2][36]=
 RoleLvs[2][37]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1032,7 +1032,7 @@ RoleLvs[2][37]=
 RoleLvs[2][38]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1047,7 +1047,7 @@ RoleLvs[2][38]=
 RoleLvs[2][39]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1062,7 +1062,7 @@ RoleLvs[2][39]=
 RoleLvs[2][40]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1097,7 +1097,7 @@ RoleLvs[3][1]=
 RoleLvs[3][2]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1112,7 +1112,7 @@ RoleLvs[3][2]=
 RoleLvs[3][3]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1127,7 +1127,7 @@ RoleLvs[3][3]=
 RoleLvs[3][4]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1142,7 +1142,7 @@ RoleLvs[3][4]=
 RoleLvs[3][5]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1157,7 +1157,7 @@ RoleLvs[3][5]=
 RoleLvs[3][6]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1172,7 +1172,7 @@ RoleLvs[3][6]=
 RoleLvs[3][7]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1187,7 +1187,7 @@ RoleLvs[3][7]=
 RoleLvs[3][8]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1202,7 +1202,7 @@ RoleLvs[3][8]=
 RoleLvs[3][9]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1217,7 +1217,7 @@ RoleLvs[3][9]=
 RoleLvs[3][10]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1232,7 +1232,7 @@ RoleLvs[3][10]=
 RoleLvs[3][11]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1247,7 +1247,7 @@ RoleLvs[3][11]=
 RoleLvs[3][12]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1262,7 +1262,7 @@ RoleLvs[3][12]=
 RoleLvs[3][13]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1277,7 +1277,7 @@ RoleLvs[3][13]=
 RoleLvs[3][14]=
   {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1292,7 +1292,7 @@ RoleLvs[3][14]=
 RoleLvs[3][15]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1307,7 +1307,7 @@ RoleLvs[3][15]=
 RoleLvs[3][16]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1322,7 +1322,7 @@ RoleLvs[3][16]=
 RoleLvs[3][17]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1337,7 +1337,7 @@ RoleLvs[3][17]=
 RoleLvs[3][18]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1352,7 +1352,7 @@ RoleLvs[3][18]=
 RoleLvs[3][19]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1367,7 +1367,7 @@ RoleLvs[3][19]=
 RoleLvs[3][20]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1382,7 +1382,7 @@ RoleLvs[3][20]=
 RoleLvs[3][21]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1397,7 +1397,7 @@ RoleLvs[3][21]=
 RoleLvs[3][22]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1412,7 +1412,7 @@ RoleLvs[3][22]=
 RoleLvs[3][23]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1427,7 +1427,7 @@ RoleLvs[3][23]=
 RoleLvs[3][24]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1442,7 +1442,7 @@ RoleLvs[3][24]=
 RoleLvs[3][25]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1457,7 +1457,7 @@ RoleLvs[3][25]=
 RoleLvs[3][26]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1472,7 +1472,7 @@ RoleLvs[3][26]=
 RoleLvs[3][27]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1487,7 +1487,7 @@ RoleLvs[3][27]=
 RoleLvs[3][28]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1502,7 +1502,7 @@ RoleLvs[3][28]=
 RoleLvs[3][29]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1517,7 +1517,7 @@ RoleLvs[3][29]=
 RoleLvs[3][30]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1532,7 +1532,7 @@ RoleLvs[3][30]=
 RoleLvs[3][31]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1547,7 +1547,7 @@ RoleLvs[3][31]=
 RoleLvs[3][32]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1562,7 +1562,7 @@ RoleLvs[3][32]=
 RoleLvs[3][33]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1577,7 +1577,7 @@ RoleLvs[3][33]=
 RoleLvs[3][34]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1592,7 +1592,7 @@ RoleLvs[3][34]=
 RoleLvs[3][35]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1607,7 +1607,7 @@ RoleLvs[3][35]=
 RoleLvs[3][36]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1622,7 +1622,7 @@ RoleLvs[3][36]=
 RoleLvs[3][37]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1637,7 +1637,7 @@ RoleLvs[3][37]=
 RoleLvs[3][38]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1652,7 +1652,7 @@ RoleLvs[3][38]=
 RoleLvs[3][39]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1667,7 +1667,7 @@ RoleLvs[3][39]=
 RoleLvs[3][40]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1683,7 +1683,7 @@ RoleLvs[3][40]=
 RoleLvs[3][41]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1698,7 +1698,7 @@ RoleLvs[3][41]=
 RoleLvs[3][42]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1713,7 +1713,7 @@ RoleLvs[3][42]=
 RoleLvs[3][43]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1728,7 +1728,7 @@ RoleLvs[3][43]=
 RoleLvs[3][44]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1743,7 +1743,7 @@ RoleLvs[3][44]=
 RoleLvs[3][45]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1778,7 +1778,7 @@ RoleLvs[4][1]=
 RoleLvs[4][2]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1793,7 +1793,7 @@ RoleLvs[4][2]=
 RoleLvs[4][3]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1808,7 +1808,7 @@ RoleLvs[4][3]=
 RoleLvs[4][4]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1823,7 +1823,7 @@ RoleLvs[4][4]=
 RoleLvs[4][5]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1838,7 +1838,7 @@ RoleLvs[4][5]=
 RoleLvs[4][6]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1853,7 +1853,7 @@ RoleLvs[4][6]=
 RoleLvs[4][7]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1868,7 +1868,7 @@ RoleLvs[4][7]=
 RoleLvs[4][8]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1883,7 +1883,7 @@ RoleLvs[4][8]=
 RoleLvs[4][9]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1898,7 +1898,7 @@ RoleLvs[4][9]=
 RoleLvs[4][10]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1913,7 +1913,7 @@ RoleLvs[4][10]=
 RoleLvs[4][11]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1928,7 +1928,7 @@ RoleLvs[4][11]=
 RoleLvs[4][12]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1943,7 +1943,7 @@ RoleLvs[4][12]=
 RoleLvs[4][13]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1958,7 +1958,7 @@ RoleLvs[4][13]=
 RoleLvs[4][14]=
   {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1973,7 +1973,7 @@ RoleLvs[4][14]=
 RoleLvs[4][15]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -1988,7 +1988,7 @@ RoleLvs[4][15]=
 RoleLvs[4][16]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2003,7 +2003,7 @@ RoleLvs[4][16]=
 RoleLvs[4][17]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2018,7 +2018,7 @@ RoleLvs[4][17]=
 RoleLvs[4][18]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2033,7 +2033,7 @@ RoleLvs[4][18]=
 RoleLvs[4][19]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2048,7 +2048,7 @@ RoleLvs[4][19]=
 RoleLvs[4][20]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2063,7 +2063,7 @@ RoleLvs[4][20]=
 RoleLvs[4][21]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2078,7 +2078,7 @@ RoleLvs[4][21]=
 RoleLvs[4][22]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2093,7 +2093,7 @@ RoleLvs[4][22]=
 RoleLvs[4][23]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2108,7 +2108,7 @@ RoleLvs[4][23]=
 RoleLvs[4][24]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2123,7 +2123,7 @@ RoleLvs[4][24]=
 RoleLvs[4][25]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2138,7 +2138,7 @@ RoleLvs[4][25]=
 RoleLvs[4][26]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2153,7 +2153,7 @@ RoleLvs[4][26]=
 RoleLvs[4][27]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2168,7 +2168,7 @@ RoleLvs[4][27]=
 RoleLvs[4][28]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2183,7 +2183,7 @@ RoleLvs[4][28]=
 RoleLvs[4][29]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2198,7 +2198,7 @@ RoleLvs[4][29]=
 RoleLvs[4][30]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2213,7 +2213,7 @@ RoleLvs[4][30]=
 RoleLvs[4][31]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2228,7 +2228,7 @@ RoleLvs[4][31]=
 RoleLvs[4][32]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2243,7 +2243,7 @@ RoleLvs[4][32]=
 RoleLvs[4][33]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2258,7 +2258,7 @@ RoleLvs[4][33]=
 RoleLvs[4][34]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2273,7 +2273,7 @@ RoleLvs[4][34]=
 RoleLvs[4][35]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2288,7 +2288,7 @@ RoleLvs[4][35]=
 RoleLvs[4][36]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2303,7 +2303,7 @@ RoleLvs[4][36]=
 RoleLvs[4][37]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2318,7 +2318,7 @@ RoleLvs[4][37]=
 RoleLvs[4][38]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2333,7 +2333,7 @@ RoleLvs[4][38]=
 RoleLvs[4][39]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2348,7 +2348,7 @@ RoleLvs[4][39]=
 RoleLvs[4][40]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2364,7 +2364,7 @@ RoleLvs[4][40]=
 RoleLvs[4][41]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2379,7 +2379,7 @@ RoleLvs[4][41]=
 RoleLvs[4][42]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2394,7 +2394,7 @@ RoleLvs[4][42]=
 RoleLvs[4][43]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2409,7 +2409,7 @@ RoleLvs[4][43]=
 RoleLvs[4][44]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2424,7 +2424,7 @@ RoleLvs[4][44]=
 RoleLvs[4][45]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2439,7 +2439,7 @@ RoleLvs[4][45]=
 RoleLvs[4][46]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2454,7 +2454,7 @@ RoleLvs[4][46]=
 RoleLvs[4][47]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2469,7 +2469,7 @@ RoleLvs[4][47]=
 RoleLvs[4][48]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2484,7 +2484,7 @@ RoleLvs[4][48]=
 RoleLvs[4][49]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2499,7 +2499,7 @@ RoleLvs[4][49]=
 RoleLvs[4][50]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2533,7 +2533,7 @@ RoleLvs[5][1]=
 RoleLvs[5][2]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2548,7 +2548,7 @@ RoleLvs[5][2]=
 RoleLvs[5][3]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2563,7 +2563,7 @@ RoleLvs[5][3]=
 RoleLvs[5][4]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2578,7 +2578,7 @@ RoleLvs[5][4]=
 RoleLvs[5][5]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2593,7 +2593,7 @@ RoleLvs[5][5]=
 RoleLvs[5][6]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2608,7 +2608,7 @@ RoleLvs[5][6]=
 RoleLvs[5][7]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2623,7 +2623,7 @@ RoleLvs[5][7]=
 RoleLvs[5][8]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2638,7 +2638,7 @@ RoleLvs[5][8]=
 RoleLvs[5][9]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2653,7 +2653,7 @@ RoleLvs[5][9]=
 RoleLvs[5][10]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2668,7 +2668,7 @@ RoleLvs[5][10]=
 RoleLvs[5][11]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2683,7 +2683,7 @@ RoleLvs[5][11]=
 RoleLvs[5][12]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2698,7 +2698,7 @@ RoleLvs[5][12]=
 RoleLvs[5][13]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2713,7 +2713,7 @@ RoleLvs[5][13]=
 RoleLvs[5][14]=
   {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2728,7 +2728,7 @@ RoleLvs[5][14]=
 RoleLvs[5][15]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 1900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2743,7 +2743,7 @@ RoleLvs[5][15]=
 RoleLvs[5][16]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2758,7 +2758,7 @@ RoleLvs[5][16]=
 RoleLvs[5][17]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2773,7 +2773,7 @@ RoleLvs[5][17]=
 RoleLvs[5][18]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2788,7 +2788,7 @@ RoleLvs[5][18]=
 RoleLvs[5][19]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2803,7 +2803,7 @@ RoleLvs[5][19]=
 RoleLvs[5][20]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2818,7 +2818,7 @@ RoleLvs[5][20]=
 RoleLvs[5][21]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2833,7 +2833,7 @@ RoleLvs[5][21]=
 RoleLvs[5][22]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2848,7 +2848,7 @@ RoleLvs[5][22]=
 RoleLvs[5][23]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2863,7 +2863,7 @@ RoleLvs[5][23]=
 RoleLvs[5][24]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2878,7 +2878,7 @@ RoleLvs[5][24]=
 RoleLvs[5][25]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 2900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2893,7 +2893,7 @@ RoleLvs[5][25]=
 RoleLvs[5][26]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2908,7 +2908,7 @@ RoleLvs[5][26]=
 RoleLvs[5][27]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2923,7 +2923,7 @@ RoleLvs[5][27]=
 RoleLvs[5][28]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2938,7 +2938,7 @@ RoleLvs[5][28]=
 RoleLvs[5][29]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2953,7 +2953,7 @@ RoleLvs[5][29]=
 RoleLvs[5][30]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2968,7 +2968,7 @@ RoleLvs[5][30]=
 RoleLvs[5][31]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2983,7 +2983,7 @@ RoleLvs[5][31]=
 RoleLvs[5][32]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -2998,7 +2998,7 @@ RoleLvs[5][32]=
 RoleLvs[5][33]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3013,7 +3013,7 @@ RoleLvs[5][33]=
 RoleLvs[5][34]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3028,7 +3028,7 @@ RoleLvs[5][34]=
 RoleLvs[5][35]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 3900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3043,7 +3043,7 @@ RoleLvs[5][35]=
 RoleLvs[5][36]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3058,7 +3058,7 @@ RoleLvs[5][36]=
 RoleLvs[5][37]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3073,7 +3073,7 @@ RoleLvs[5][37]=
 RoleLvs[5][38]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3088,7 +3088,7 @@ RoleLvs[5][38]=
 RoleLvs[5][39]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3103,7 +3103,7 @@ RoleLvs[5][39]=
 RoleLvs[5][40]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3119,7 +3119,7 @@ RoleLvs[5][40]=
 RoleLvs[5][41]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3134,7 +3134,7 @@ RoleLvs[5][41]=
 RoleLvs[5][42]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3149,7 +3149,7 @@ RoleLvs[5][42]=
 RoleLvs[5][43]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3164,7 +3164,7 @@ RoleLvs[5][43]=
 RoleLvs[5][44]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3179,7 +3179,7 @@ RoleLvs[5][44]=
 RoleLvs[5][45]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 4900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3194,7 +3194,7 @@ RoleLvs[5][45]=
 RoleLvs[5][46]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3209,7 +3209,7 @@ RoleLvs[5][46]=
 RoleLvs[5][47]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3224,7 +3224,7 @@ RoleLvs[5][47]=
 RoleLvs[5][48]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3239,7 +3239,7 @@ RoleLvs[5][48]=
 RoleLvs[5][49]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3254,7 +3254,7 @@ RoleLvs[5][49]=
 RoleLvs[5][50]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3269,7 +3269,7 @@ RoleLvs[5][50]=
 RoleLvs[5][51]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5500},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3284,7 +3284,7 @@ RoleLvs[5][51]=
 RoleLvs[5][52]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5600},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3299,7 +3299,7 @@ RoleLvs[5][52]=
 RoleLvs[5][53]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5700},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3314,7 +3314,7 @@ RoleLvs[5][53]=
 RoleLvs[5][54]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5800},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3329,7 +3329,7 @@ RoleLvs[5][54]=
 RoleLvs[5][55]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 5900},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3344,7 +3344,7 @@ RoleLvs[5][55]=
 RoleLvs[5][56]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 6000},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3359,7 +3359,7 @@ RoleLvs[5][56]=
 RoleLvs[5][57]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 6100},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3374,7 +3374,7 @@ RoleLvs[5][57]=
 RoleLvs[5][58]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 6200},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3389,7 +3389,7 @@ RoleLvs[5][58]=
 RoleLvs[5][59]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 6300},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
@@ -3404,7 +3404,7 @@ RoleLvs[5][59]=
 RoleLvs[5][60]=
     {
         --升级需求(type为升级花费的类型，金币或钻石，num为数值)
-        upgrade = {type = UPGRADE_TYPE.Gold,Num = 500},
+        upgrade = {type = UPGRADE_TYPE.Gold,Num = 6400},
         --分数加成百分比
         scoreRate = 1,
         --金币分数加成百分比
