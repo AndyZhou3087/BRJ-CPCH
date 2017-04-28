@@ -88,6 +88,10 @@ end
 
 function CommonUI:updateDiamond(parameters)
 --    self.diaCount:setString(GameDataManager.getDiamond())
+    if self.updateDiamondHandler then
+        Scheduler.unscheduleGlobal(self.updateDiamondHandler)
+        self.updateDiamondHandler = nil
+    end
     if self.diamondNum > GameDataManager.getDiamond() then
         self.updateDiamondHandler = Scheduler.scheduleGlobal(handler(self,self.updateDiamondSubFrame),0.05)
     else
@@ -96,7 +100,7 @@ function CommonUI:updateDiamond(parameters)
 end
 
 function CommonUI:updateDiamondSubFrame(parameters)
-    self.diamondNum = self.diamondNum - 20
+    self.diamondNum = self.diamondNum - 100
     self.diaCount:setString(self.diamondNum)
     if self.diamondNum <= GameDataManager.getDiamond() then
         self.diamondNum = GameDataManager.getDiamond()
@@ -109,7 +113,7 @@ function CommonUI:updateDiamondSubFrame(parameters)
 end
 
 function CommonUI:updateDiamondAddFrame(parameters)
-    self.diamondNum = self.diamondNum + 20
+    self.diamondNum = self.diamondNum + 100
     self.diaCount:setString(self.diamondNum)
     if self.diamondNum >= GameDataManager.getDiamond() then
         self.diamondNum = GameDataManager.getDiamond()
@@ -123,6 +127,10 @@ end
 
 function CommonUI:updateGold(parameters)
 --    self.goldCount:setString(GameDataManager.getGold())
+    if self.updateGoldHandler then
+        Scheduler.unscheduleGlobal(self.updateGoldHandler)
+        self.updateGoldHandler = nil
+    end
     if self.goldNum > GameDataManager.getGold() then
         self.updateGoldHandler = Scheduler.scheduleGlobal(handler(self,self.updateGoldSubFrame),0.05)
     else
@@ -131,7 +139,7 @@ function CommonUI:updateGold(parameters)
 end
 
 function CommonUI:updateGoldSubFrame(parameters)
-    self.goldNum = self.goldNum - 100
+    self.goldNum = self.goldNum - 1000
     self.goldCount:setString(self.goldNum)
     if self.goldNum <= GameDataManager.getGold() then
         self.goldNum = GameDataManager.getGold()
@@ -144,7 +152,7 @@ function CommonUI:updateGoldSubFrame(parameters)
 end
 
 function CommonUI:updateGoldAddFrame(parameters)
-    self.goldNum = self.goldNum + 100
+    self.goldNum = self.goldNum + 1000
     self.goldCount:setString(self.goldNum)
     if self.goldNum >= GameDataManager.getGold() then
         self.goldNum = GameDataManager.getGold()

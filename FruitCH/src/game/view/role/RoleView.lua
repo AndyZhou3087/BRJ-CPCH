@@ -206,8 +206,12 @@ function RoleView:updateRoleLv(id,level)
 	elseif roleLvCon.upgrade.type == UPGRADE_TYPE.Dimond then
         self.UpgradeType:setButtonImage("disabled","Common/Common_diamond_small.png")
 	end
-    self.UpgradeCount:setString(roleLvCon.upgrade.Num)
     self.m_roleLv = GameDataManager.getRoleLevel(id)
+    local upgradeGoldNum = roleLvCon.upgrade.Num
+    if RoleLvs[id][level+1] then
+        upgradeGoldNum = RoleLvs[id][level+1].upgrade.Num
+    end
+    self.UpgradeCount:setString(upgradeGoldNum)
     self.RoleLV:setString("LV."..self.m_roleLv)
     
     Tools.delayCallFunc(0.2,function()

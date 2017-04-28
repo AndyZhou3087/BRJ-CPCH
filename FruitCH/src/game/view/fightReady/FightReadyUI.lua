@@ -69,6 +69,8 @@ function FightReadyUI:ctor(parm)
         Tools.printDebug("-----------角色")
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_ROLEVIEW)
     end)
+    self.roleTips = cc.uiloader:seekNodeByName(self.FightReady,"tip1")
+    self:checkRoleTip()
     
     local achievebtn = cc.uiloader:seekNodeByName(self.FightReady,"AchieveBtn")
     achievebtn:onButtonClicked(function(event)
@@ -76,6 +78,8 @@ function FightReadyUI:ctor(parm)
         Tools.printDebug("-----------成就任务")
         GameDispatcher:dispatch(EventNames.EVENT_ACHIEVE_QUEST)
     end)
+    self.achTips = cc.uiloader:seekNodeByName(self.FightReady,"tip2")
+    self:checkAchieveTip()
     
     local startGame = cc.uiloader:seekNodeByName(self.FightReady,"StartGame")
     startGame:onButtonClicked(function(event)
@@ -149,7 +153,8 @@ function FightReadyUI:ctor(parm)
     
     GameDispatcher:dispatch(EventNames.EVENT_LOADING_OVER)
     
---    GameDispatcher:addListener(EventNames.EVENT_ROLE_CHANGE,handler(self,self.changeRole))
+    GameDispatcher:addListener(EventNames.EVENT_ACHIEVE_UPDATE,handler(self,self.checkAchieveTip))
+    GameDispatcher:addListener(EventNames.EVENT_ROLEUPGRADE_UPDATE,handler(self,self.checkRoleTip))
 
     --弹角色礼包
     Tools.delayCallFunc(0.1,function()
@@ -161,6 +166,32 @@ function FightReadyUI:ctor(parm)
             GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4,animation = true})
         end
     end)
+end
+
+function FightReadyUI:checkRoleTip()
+    self.roleTips:setVisible(false)
+	local roleLv = GameDataManager.getRoleLevel(GameDataManager.getFightRole())
+    if roleLv < #RoleLvs[GameDataManager.getFightRole()] then
+        local Num = RoleLvs[GameDataManager.getFightRole()][roleLv+1].upgrade.Num
+        local typ = RoleLvs[GameDataManager.getFightRole()][roleLv+1].upgrade.type
+        if typ == UPGRADE_TYPE.Gold then
+            if GameDataManager.getGold()>=Num then
+                self.roleTips:setVisible(true)
+            end
+        elseif typ == UPGRADE_TYPE.Dimond then
+            if GameDataManager.getDiamond()>=Num then
+                self.roleTips:setVisible(true)
+            end
+        end
+    end
+end
+
+function FightReadyUI:checkAchieveTip()
+	if GameDataManager.isHaveReciveState() then
+        self.achTips:setVisible(true)
+    else
+        self.achTips:setVisible(false)
+    end
 end
 
 function FightReadyUI:touchListener(event)
@@ -246,13 +277,15 @@ end
 
 --清理数据
 function FightReadyUI:onCleanup()
---    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ACHIEVE_UPDATE)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLEUPGRADE_UPDATE)
 end
 
 --关闭界面调用
 function FightReadyUI:toClose(_clean)
 
---    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_CHANGE)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ACHIEVE_UPDATE)
+    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLEUPGRADE_UPDATE)
 
     FightReadyUI.super.toClose(self,_clean)
 

@@ -78,7 +78,7 @@ function UIController:flyText(parameters)
 end
 
 function UIController:openPause(parameters)
-    local _pauseUI = Pause.new()
+    local _pauseUI = Pause.new(parameters.data)
     _pauseUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 

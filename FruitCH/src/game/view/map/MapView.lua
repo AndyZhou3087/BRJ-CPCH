@@ -33,7 +33,7 @@ function MapView:ctor(parameters)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("暂停")
         if not DataPersistence.getAttribute("first_into") then
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_PAUSE)
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_PAUSE,{animation = true})
         end
     end)
 
@@ -85,6 +85,8 @@ function MapView:ctor(parameters)
     GameDispatcher:addListener(EventNames.EVENT_UPDATE_SCORE,handler(self,self.updateScore))
     --新手引导更新
     GameDispatcher:addListener(EventNames.EVENT_GUIDE_UPDATE,handler(self,self.newGuide))
+    --监听钻石
+    self.diamondHandler = GameDispatcher:addListener(EventNames.EVENT_UPDATE_DIAMOND,handler(self,self.updateDiamond))
 end
 
 
@@ -101,6 +103,9 @@ function MapView:newGuide(parameters)
         hand=false})
 end
 
+function MapView:updateDiamond()
+    self.m_Diamond:setString(GameDataManager.getDiamond())
+end
 
 --更新金币
 function MapView:updateGold(par)
@@ -127,6 +132,7 @@ function MapView:dispose(parameters)
     GameDispatcher:removeListenerByName(EventNames.EVENT_UPDATE_SCORE)
     GameDispatcher:removeListenerByName(EventNames.EVENT_FIGHT_UPDATE_GOLD)
     GameDispatcher:removeListenerByName(EventNames.EVENT_GUIDE_UPDATE)
+    GameDispatcher:removeListenerByHandle(self.diamondHandler)
 
     self:removeFromParent(true)
 end

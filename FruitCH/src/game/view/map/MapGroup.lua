@@ -38,7 +38,7 @@ function MapGroup:ctor(_idx,_levelCon)
         if DataPersistence.getAttribute("first_into") and not MapGroupConfig[_levelCon.guideMap[_idx]] then
             return
         end
-        if not MapGroupConfig[_levelCon.map[_idx]] then
+        if not DataPersistence.getAttribute("first_into") and not MapGroupConfig[_levelCon.map[_idx]] then
         	return
         end
         local map

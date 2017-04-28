@@ -15,8 +15,8 @@ function ClippingView:ctor()
     local _mask = display.newColorLayer(cc.c4b(0,0,0,255))
 
     --遮罩形状(模板)
-    self.sprite = display.newSprite("ui/ClipNode.png")
-    self.sprite:setScale(8)
+    self.sprite = display.newSprite("ui/Revive_frame.png")
+    self.sprite:setScale(7.5)
 
     --裁剪节点
     local _clip = cc.ClippingNode:create():addTo(self)

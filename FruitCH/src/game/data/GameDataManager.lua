@@ -519,7 +519,7 @@ function GameDataManager.updateUserLv(_roleId,_lv)
     else
         printf("chjh error id=%d的角色你暂未拥有，不能升级",_roleId)
     end
-
+    GameDispatcher:dispatch(EventNames.EVENT_ROLEUPGRADE_UPDATE)
 end
 
 function GameDataManager.getRoleLevel(_roleId)
@@ -794,6 +794,7 @@ function GameDataManager.setFinishAchieveData(id,_state)
 	achieve[id].id = id
     achieve[id].state = _state
     GameDispatcher:dispatch(EventNames.EVENT_GET_ACHIEVE,{id = id,state = _state})
+    GameDispatcher:dispatch(EventNames.EVENT_ACHIEVE_UPDATE)
 end
 
 function GameDataManager.getAchieveState(id)
@@ -801,6 +802,16 @@ function GameDataManager.getAchieveState(id)
 		return ACHIEVE_STATE.Unfinished
 	end
     return achieve[id].state
+end
+
+--是否有领取状态
+function GameDataManager.isHaveReciveState(parameters)
+    for key, var in pairs(achieve) do
+        if var.state == ACHIEVE_STATE.Finished then
+			return true
+		end
+	end
+	return false
 end
 
 --保存累计使用金币

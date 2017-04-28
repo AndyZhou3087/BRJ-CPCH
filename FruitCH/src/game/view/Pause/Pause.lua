@@ -14,21 +14,29 @@ function Pause:ctor(parm)
     
     local Image_16 = cc.uiloader:seekNodeByName(_pause,"Image_16")
     Image_16:setPositionX(display.cx)
+    local ImageX,ImageY = Image_16:getPosition()
+    if parm.animation then
+        self:popupLeft(ImageX,ImageY,Image_16)
+    end
     
-    local Panel_9 = cc.uiloader:seekNodeByName(_pause,"Panel_9")
-    Panel_9:setPositionX(display.cx)
+--    local Panel_9 = cc.uiloader:seekNodeByName(_pause,"Panel_9")
+--    Panel_9:setPositionX(display.cx)
     
     local diaBtn = cc.uiloader:seekNodeByName(_pause,"DiamondBtn")
     diaBtn:onButtonClicked(function(_event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
     end)
+    self.DiamondCount = cc.uiloader:seekNodeByName(_pause,"DiamondCount")
+    self.DiamondCount:setString(GameDataManager.getDiamond())
 
     local goldBtn = cc.uiloader:seekNodeByName(_pause,"GoldBtn")
     goldBtn:onButtonClicked(function(_event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_SHOP,true)
     end)
+    self.GoldCount = cc.uiloader:seekNodeByName(_pause,"GoldCount")
+    self.GoldCount:setString(GameDataManager.getGold())
     
     --继续游戏
     local ContinueBtn=cc.uiloader:seekNodeByName(_pause,"ContinueBtn")
@@ -86,16 +94,32 @@ function Pause:ctor(parm)
     
     --启用onCleanup函数
     self:setNodeEventEnabled(true)
+    
+    --监听钻石
+    self.diamondHandler = GameDispatcher:addListener(EventNames.EVENT_UPDATE_DIAMOND,handler(self,self.updateDiamond))
+    --监听金币
+    self.goldHandler = GameDispatcher:addListener(EventNames.EVENT_UPDATE_GOLD,handler(self,self.updateGold))
+end
+
+function Pause:updateDiamond()
+    self.DiamondCount:setString(GameDataManager.getDiamond())
+end
+
+function Pause:updateGold()
+    self.GoldCount:setString(GameDataManager.getGold())
 end
 
 --关闭界面调用
 function Pause:toClose(_clean)
+    GameDispatcher:removeListenerByHandle(self.diamondHandler)
+    GameDispatcher:removeListenerByHandle(self.goldHandler)
     Pause.super.toClose(self,true)
 end
 
 --清理数据
 function Pause:onCleanup()
-
+    GameDispatcher:removeListenerByHandle(self.diamondHandler)
+    GameDispatcher:removeListenerByHandle(self.goldHandler)
 end
 
 return Pause

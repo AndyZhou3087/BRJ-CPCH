@@ -69,7 +69,7 @@ function GiftView:ctor(parm)
         RewardLabel_2:setString("钻石x"..config.reward.diamond)
     end
     if config.reward.dayDiamond then
-        RewardLabel_2:setString("每日领取钻石x"..config.reward.dayDiamond)
+        RewardLabel_2:setString("每日领取x"..config.reward.dayDiamond)
     end
     
     local PriceLabel=cc.uiloader:seekNodeByName(GiftView,"PriceLabel")

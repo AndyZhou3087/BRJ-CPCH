@@ -91,6 +91,12 @@ EventNames.EVENT_GET_ACHIEVE = "event_get_achieve"
 --道具刷新
 EventNames.EVENT_PROP_UPDATE = "event_prop_update"
 
+--成就提示刷新
+EventNames.EVENT_ACHIEVE_UPDATE = "event_achieve_update"
+
+--角色升级提示刷新
+EventNames.EVENT_ROLEUPGRADE_UPDATE = "event_roleupgrade_update"
+
 --====================战斗内
 
 --开局冲刺
