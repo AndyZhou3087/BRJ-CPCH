@@ -15,7 +15,7 @@ TaskConfig[1] =
     {
         id = 1,
         type = TASKCONDITION_TYPE.RunDistance,
-        res = "ui/Prop_2.png",
+        res = "ui/ShopGold_1.png",
         title = "奔跑吧忍者",
         des = "奔跑10000米",
         distance = 10000,    --奔跑距离(单位米换算)
@@ -27,7 +27,7 @@ TaskConfig[2] =
     {
         id = 2,
         type = TASKCONDITION_TYPE.TotalProp,
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_magnet.png",
         title = "磁力忍者",
         des = "累计使用吸铁石3次",
         useGoodsId = 7,
@@ -40,7 +40,7 @@ TaskConfig[3] =
     {
         id = 3,
         type = TASKCONDITION_TYPE.TotalGold,
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_4.png",
         title = "贮金忍者",
         des = "累计获得金币1000个",
         getGold = 1000,
@@ -52,7 +52,7 @@ TaskConfig[4] =
     {
         id = 4,
         type = TASKCONDITION_TYPE.TotalProp,
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_7.png",
         title = "冲刺忍者",
         des = "累计使用极限冲刺3次",
         useGoodsId = 10,
@@ -65,7 +65,7 @@ TaskConfig[5] =
     {
         id = 5,
         type = TASKCONDITION_TYPE.TotalProp,
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_7.png",
         title = "巨大忍者",
         des = "累计使用巨人药水3次",
         useGoodsId = 8,
@@ -78,7 +78,7 @@ TaskConfig[6] =
     {
         id = 6,
         type = TASKCONDITION_TYPE.TotalProp,
-        res = "ui/Prop_2.png",
+        res = "ui/Prop_magnet.png",
         title = "炼金忍者",
         des = "累计使用金币转换3次",
         useGoodsId = 10,

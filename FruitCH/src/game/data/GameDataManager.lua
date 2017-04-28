@@ -89,6 +89,7 @@ function GameDataManager.costGold(_value)
         userData.gold = userData.gold - _value
         Tools.printDebug("当前金币",GameDataManager.getGold())
         GameDispatcher:dispatch(EventNames.EVENT_UPDATE_GOLD)
+        GameDispatcher:dispatch(EventNames.EVENT_ROLEUPGRADE_UPDATE)
         GameDataManager.saveUseGold(_value)
         GameDataManager.SaveData()
         return true
@@ -102,6 +103,7 @@ function GameDataManager.addGold(_value)
     userData.gold = userData.gold + _value
     Tools.printDebug("当前金币",GameDataManager.getGold())
     GameDispatcher:dispatch(EventNames.EVENT_UPDATE_GOLD)
+    GameDispatcher:dispatch(EventNames.EVENT_ROLEUPGRADE_UPDATE)
     GameDataManager.saveGetGold(_value)
     GameDataManager.SaveData()
     AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.GetGold_Sound)

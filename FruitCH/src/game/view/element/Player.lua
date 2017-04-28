@@ -209,8 +209,8 @@ function Player:toPlay(_actionName,loop)
 end
 
 function Player:clickJumpfunc()
-    if self.playerY and self.m_jump and ((self.playerY<display.cy and self:getPositionY()>= display.cy+170-self:getAreaSize().height*0.5) or 
-        (self.playerY>display.cy and self:getPositionY()<= display.cy-190+self:getAreaSize().height*0.5)) then
+    if self.playerY and self.m_jump and ((self.playerY<display.cy and self:getPositionY()>= display.cy+170-self:getAreaSize().height*0.4) or 
+        (self.playerY>display.cy and self:getPositionY()<= display.cy-210+self:getAreaSize().height*0.4)) then
         self.clickJump = true
         Tools.printDebug("---------缓冲区域二次点击")
     else
@@ -250,17 +250,17 @@ function Player:toMove(isSpring)
         else
             direction = -1
         end
-        transition.moveBy(self,{time=FrameCount/frameSpeed,x=0,y=direction*(440-self:getAreaSize().height*0.5),onComplete=function()
+        transition.moveBy(self,{time=FrameCount/frameSpeed,x=0,y=direction*(440-self:getAreaSize().height*0.4),onComplete=function()
             self.m_jump = false
             self.m_run = true
             self.touchCount = 0
             self:setScaleY(direction*-1)
             if self:getScaleY() == -1 then
                 local x,y = self:getPosition()
-                self:setPositionY(y+self:getAreaSize().height*0.5)
+                self:setPositionY(y+self:getAreaSize().height*0.4)
             else
                 local x,y = self:getPosition()
-                self:setPositionY(y-self:getAreaSize().height*0.5)
+                self:setPositionY(y-self:getAreaSize().height*0.4)
             end
         end})
     else
@@ -271,10 +271,10 @@ function Player:toMove(isSpring)
             local m_pY
             if self.playerY<display.cy then
                 direction = 1
-                m_pY = display.cy-240+self:getAreaSize().height*0.5
+                m_pY = display.cy-240+self:getAreaSize().height*0.4
             else
                 direction = -1
-                m_pY = display.cy+200-self:getAreaSize().height*0.5
+                m_pY = display.cy+200-self:getAreaSize().height*0.4
             end
             transition.moveTo(self,{time=FrameCount/frameSpeed,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.clickJump = false
@@ -284,10 +284,10 @@ function Player:toMove(isSpring)
                 self:setScaleY(direction)
                 if direction == -1 then
                     local x,y = self:getPosition()
-                    self:setPositionY(y+self:getAreaSize().height*0.5)
+                    self:setPositionY(y+self:getAreaSize().height*0.4)
                 else
                     local x,y = self:getPosition()
-                    self:setPositionY(y-self:getAreaSize().height*0.5)
+                    self:setPositionY(y-self:getAreaSize().height*0.4)
                 end
                 if self:isInState(PLAYER_STATE.Spring) then
                     self:clearBuff(PLAYER_STATE.Spring)
@@ -299,10 +299,10 @@ function Player:toMove(isSpring)
             local m_pY
             if self.roleY<display.cy then
                 direction = -1
-                m_pY = display.cy+200-self:getAreaSize().height*0.5
+                m_pY = display.cy+200-self:getAreaSize().height*0.4
             else
                 direction = 1
-                m_pY = display.cy-240+self:getAreaSize().height*0.5
+                m_pY = display.cy-240+self:getAreaSize().height*0.4
             end
             transition.moveTo(self,{time=FrameCount/frameSpeed,x=self:getPositionX(),y=m_pY,onComplete = function()
                 self.m_jump = false
@@ -311,10 +311,10 @@ function Player:toMove(isSpring)
                 self:setScaleY(direction)
                 if direction == -1 then
                     local x,y = self:getPosition()
-                    self:setPositionY(y+self:getAreaSize().height*0.5)
+                    self:setPositionY(y+self:getAreaSize().height*0.4)
                 else
                     local x,y = self:getPosition()
-                    self:setPositionY(y-self:getAreaSize().height*0.5)
+                    self:setPositionY(y-self:getAreaSize().height*0.4)
                 end
                 if self:isInState(PLAYER_STATE.Spring) then
                     self:clearBuff(PLAYER_STATE.Spring)

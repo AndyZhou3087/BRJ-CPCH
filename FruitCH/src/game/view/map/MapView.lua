@@ -61,20 +61,40 @@ function MapView:ctor(parameters)
     
     self.jumpBtn = cc.uiloader:seekNodeByName(self.m_mapView,"JumpBtn")
     self.jumpBtn:setPositionX(display.right-110)
-    self.jumpBtn:onButtonClicked(function(_event)
-        if MoveSpeed<=0 then
-            return
-        end
-        if not DataPersistence.getAttribute("first_into") then
-            if GameController.isInState(PLAYER_STATE.Spring) then
-            	return
+--    self.jumpBtn:onButtonClicked(function(_event)
+--        if MoveSpeed<=0 then
+--            return
+--        end
+--        if not DataPersistence.getAttribute("first_into") then
+--            if GameController.isInState(PLAYER_STATE.Spring) then
+--            	return
+--            end
+--            if not GameController.isWin and not GameController.isDead and not GameController.isInState(PLAYER_STATE.StartSprint)
+--                or not GameController.isInState(PLAYER_STATE.DeadSprint) or not GameController.isInState(PLAYER_STATE.LimitSprint) then
+----                GameController.getCurPlayer():clickJumpfunc()
+--                GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)
+--                GameController.getCurPlayer():toMove()
+--            end
+--        end
+--    end)
+    self.jumpBtn:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+        if event.name == "began" then
+            if MoveSpeed<=0 then
+                return true
             end
-            if not GameController.isWin and not GameController.isDead and not GameController.isInState(PLAYER_STATE.StartSprint)
-                or GameController.isInState(PLAYER_STATE.DeadSprint) or GameController.isInState(PLAYER_STATE.LimitSprint) then
---                GameController.getCurPlayer():clickJumpfunc()
-                GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)
-                GameController.getCurPlayer():toMove()
+            if not DataPersistence.getAttribute("first_into") then
+                if GameController.isInState(PLAYER_STATE.Spring) then
+                    return true
+                end
+                if not GameController.isWin and not GameController.isDead and not GameController.isInState(PLAYER_STATE.StartSprint)
+                    or not GameController.isInState(PLAYER_STATE.DeadSprint) or not GameController.isInState(PLAYER_STATE.LimitSprint) then
+                    GameController.getCurPlayer():clickJumpfunc()
+                    GameController.getCurPlayer():toPlay(PLAYER_ACTION.Jump,0)
+                    GameController.getCurPlayer():toMove()
+                end
             end
+            return true
+        elseif event.name == "ended" then
         end
     end)
 
