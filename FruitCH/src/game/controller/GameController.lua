@@ -67,6 +67,7 @@ function GameController.pauseGame(isEvent)
     AudioManager.pauseMusic()
     if not tolua.isnull(GameController.getCurPlayer()) then
         GameController.getCurPlayer().m_animation:pause()
+        transition.pauseTarget(GameController.getCurPlayer())
     end
     _isPause=true
     MoveSpeed = 0  --地图移动速度
@@ -83,6 +84,7 @@ function GameController.resumeGame(isEvent)
     AudioManager.resumeMusic()
     if not tolua.isnull(GameController.getCurPlayer()) then
         GameController.getCurPlayer().m_animation:resume()
+        transition.resumeTarget(GameController.getCurPlayer())
     end
     _isPause=false
     MoveSpeed = _curSpeed
