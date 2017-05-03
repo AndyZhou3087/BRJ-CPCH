@@ -48,12 +48,12 @@ MAP_GROUP_INIT_NUM = 2    --初始化组合数
 GuardTime = 3
 
 --分辨率
-RESOLUTION_TYPE = 
-{
-    phone = 1,
-    pad = 2,
-}
-GAME_RESOLUTION_CONTROL = RESOLUTION_TYPE.phone
+--RESOLUTION_TYPE = 
+--{
+--    phone = 1,
+--    pad = 2,
+--}
+--GAME_RESOLUTION_CONTROL = RESOLUTION_TYPE.phone
 
 --游戏类型
 GAME_TYPE = 

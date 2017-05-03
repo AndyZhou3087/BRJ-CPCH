@@ -96,7 +96,6 @@ RoleConfig[2]=
         lvMax = #RoleLvs[2],      --角色满级等级
         quickMaxPrice = 50 , -- 一键满级价格
         payMaxLvId = Payment.RoleLevel_2,
-        payId = Payment.Role_2,
     }
     
 RoleConfig[3]=
@@ -126,7 +125,6 @@ RoleConfig[3]=
         lvMax = #RoleLvs[3],      --角色满级等级
         quickMaxPrice = 50 , -- 一键满级价格
         payMaxLvId = Payment.RoleLevel_3,
-        payId = Payment.Role_3,
     }
     
 RoleConfig[4]=
@@ -156,7 +154,6 @@ RoleConfig[4]=
         lvMax = #RoleLvs[4],      --角色满级等级
         quickMaxPrice = 50 , -- 一键满级价格
         payMaxLvId = Payment.RoleLevel_4,
-        payId = Payment.Role_4,
     }
     
 RoleConfig[5]=
@@ -186,5 +183,4 @@ RoleConfig[5]=
         lvMax = #RoleLvs[5],      --角色满级等级
         quickMaxPrice = 50 , -- 一键满级价格
         payMaxLvId = Payment.RoleLevel_5,
-        payId = Payment.Role_5,
     }

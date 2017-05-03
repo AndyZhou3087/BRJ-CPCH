@@ -10,21 +10,21 @@ Payment=
         Gift_1 = 5, --2元金币礼包
         Gift_2 = 6, --30元钻石礼包
         Power_1 = 7, --无限体力
-        Power_2 = 8, --5点体力
-        Role_2 = 9,
-        Role_3 = 10,
-        Role_4 = 11,
-        Role_5 = 12,
-        RoleLevel_1 = 13,  --6元
-        RoleLevel_2 = 14,
-        RoleLevel_3 = 15,
-        RoleLevel_4 = 16,
-        RoleLevel_5 = 17,
-        Revive = 18,  --复活6元
-        RoleGift_1 = 19,  --6元
-        RoleGift_2 = 20,  --10元
-        RoleGift_3 = 21,  --15元
-        RoleGift_4 = 22,  --20元
+        Power_2 = 8, --1点体力
+        Revive = 9,  --复活6元
+        
+        --角色满级支付id
+        RoleLevel_1 = 10,  --6元
+        RoleLevel_2 = 11,
+        RoleLevel_3 = 12,
+        RoleLevel_4 = 13,
+        RoleLevel_5 = 14,       
+        
+        --购买角色礼包支付id
+        RoleGift_1 = 15,  --6元
+        RoleGift_2 = 16,  --10元
+        RoleGift_3 = 17,  --15元
+        RoleGift_4 = 18,  --20元
         
 --        --获取对应物品价格,单位:分，如果是钻石商品则额外会返回钻石数量
 --        getPrice = function(_itemId)

@@ -442,26 +442,15 @@ end
 
 
 function MapLayer:initGuide(parameters)
-    if GAME_RESOLUTION_CONTROL == RESOLUTION_TYPE.phone then
-        if self.pexel >= 29 and self.guideStep == 1 then
-            self:stepJump()
-        elseif self.pexel >= 40 and self.guideStep == 2 then
-            self:stepJump()
-        elseif self.pexel >= 85 and self.guideStep == 3 then
-            self:stepJump()
-        elseif self.pexel >= 115 and self.guideStep == 4 then
-            self:stepJump()
-        end
-    elseif GAME_RESOLUTION_CONTROL == RESOLUTION_TYPE.pad then
-        if self.pexel >= 32 and self.guideStep == 1 then
-            self:stepJump()
-        elseif self.pexel >= 44 and self.guideStep == 2 then
-            self:stepJump()
-        elseif self.pexel >= 90 and self.guideStep == 3 then
-            self:stepJump()
-        elseif self.pexel >= 120 and self.guideStep == 4 then
-            self:stepJump()
-        end
+    local per = (GroupSize.width*0.5-100-(display.cx-100))/(Pixel/Miles)
+    if self.pexel >= 29+per and self.guideStep == 1 then
+        self:stepJump()
+    elseif self.pexel >= 40+per and self.guideStep == 2 then
+        self:stepJump()
+    elseif self.pexel >= 85+per and self.guideStep == 3 then
+        self:stepJump()
+    elseif self.pexel >= 115+per and self.guideStep == 4 then
+        self:stepJump()
     end
 end
 

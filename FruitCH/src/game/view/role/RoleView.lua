@@ -103,17 +103,6 @@ function RoleView:initRole(parameters)
     self.RoleBuy:onButtonClicked(function(event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = RoleConfig[self.roleCount].giftId,animation = true})
---        local payId = RoleConfig[self.roleCount].payId
---        local oId = SDKUtil.getOrderId(payId)
---        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
---            if SDKUtil.PayResult.Success == _res then
---                GameDataManager.unLockModle(self.roleCount)
---                self:LoadRole(self.roleCount)
---                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
---            else
---                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
---            end
---        end})
     end)
     
     for var=1, #RoleConfig do

@@ -10,9 +10,9 @@ function MainUI:ctor()
     MainUI.super.ctor(self) 
     self:init()
     
-    if (display.widthInPixels == 1024 and display.heightInPixels == 768) or (display.widthInPixels == 2048 and display.heightInPixels == 1536) then
-    	GAME_RESOLUTION_CONTROL = RESOLUTION_TYPE.pad
-    end
+--    if (display.widthInPixels == 1024 and display.heightInPixels == 768) or (display.widthInPixels == 2048 and display.heightInPixels == 1536) then
+--    	GAME_RESOLUTION_CONTROL = RESOLUTION_TYPE.pad
+--    end
     
     --启用onCleanup函数
     self:setNodeEventEnabled(true)
