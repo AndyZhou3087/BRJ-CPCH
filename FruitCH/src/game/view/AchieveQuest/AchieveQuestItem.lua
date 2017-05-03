@@ -40,10 +40,10 @@ function AchieveQuestItem:initCotent(_type)
     RewardImg:setButtonEnabled(false)
     local Count = cc.uiloader:seekNodeByName(content,"Count")
     if self.m_con.rewardType == REWARD_TYPE.Gold then
-        RewardImg:setButtonImage("disabled","Common/Common_gold_small.png")
+        RewardImg:setButtonImage("disabled","Common/Common_gold.png")
         Count:setString(self.m_con.reward)
     elseif self.m_con.rewardType == REWARD_TYPE.Diamond then
-        RewardImg:setButtonImage("disabled","Common/Common_diamond_small.png")
+        RewardImg:setButtonImage("disabled","Common/Common_diamond.png")
         Count:setString(self.m_con.reward)
     else
         local id = self.m_con.reward.goodsId
@@ -70,14 +70,18 @@ function AchieveQuestItem:initCotent(_type)
         end
     end)
     self.Unfinished = cc.uiloader:seekNodeByName(content,"Unfinished")
+    self.Recieve = cc.uiloader:seekNodeByName(content,"Recieve")
     if _type == 2 then
         if GameDataManager.getAchieveState(self.m_con.id) == ACHIEVE_STATE.Unfinished then
             self.Unfinished:setVisible(true)
             self.Finished:setVisible(false)
+            self.Recieve:setVisible(false)
         elseif GameDataManager.getAchieveState(self.m_con.id) == ACHIEVE_STATE.Finished then
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(true)
+            self.Recieve:setVisible(false)
         else
+            self.Recieve:setVisible(true)
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(false)
         end
@@ -85,10 +89,13 @@ function AchieveQuestItem:initCotent(_type)
         if GameDataManager.getTaskState(self.m_con.id) == ACHIEVE_STATE.Unfinished then
             self.Unfinished:setVisible(true)
             self.Finished:setVisible(false)
+            self.Recieve:setVisible(false)
         elseif GameDataManager.getTaskState(self.m_con.id) == ACHIEVE_STATE.Finished then
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(true)
+            self.Recieve:setVisible(false)
         else
+            self.Recieve:setVisible(true)
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(false)
         end
@@ -101,10 +108,13 @@ function AchieveQuestItem:changeState(parameters)
         if parameters.data.state == ACHIEVE_STATE.Unfinished then
             self.Unfinished:setVisible(true)
             self.Finished:setVisible(false)
+            self.Recieve:setVisible(false)
         elseif parameters.data.state == ACHIEVE_STATE.Finished then
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(true)
+            self.Recieve:setVisible(false)
         else
+            self.Recieve:setVisible(true)
             self.Unfinished:setVisible(false)
             self.Finished:setVisible(false)
         end

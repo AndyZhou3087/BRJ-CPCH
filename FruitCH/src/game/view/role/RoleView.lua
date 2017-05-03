@@ -58,7 +58,7 @@ function RoleView:initRole(parameters)
     self.UpgradeBtn = cc.uiloader:seekNodeByName(self.m_roleUi,"UpgradeBtn")--升级按钮
     self.UpgradeBtn:onButtonClicked(function(event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
-        self:updateLevelToBuy(self.m_curRole,self.m_roleLv+1)
+        self:updateLevelToBuy(self.m_curRole,self.m_roleLv+1,true)
     end)
     self.UpgradeType = cc.uiloader:seekNodeByName(self.m_roleUi,"UpgradeType")--升级花费的类型
     self.UpgradeType:setButtonEnabled(false)
@@ -72,6 +72,7 @@ function RoleView:initRole(parameters)
             if SDKUtil.PayResult.Success == _res then
                 self:updateRoleLv(self.roleCount,RoleConfig[self.roleCount].lvMax)
                 self:LoadRole(self.roleCount)
+                self:upgradeEffect()
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
             else
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
@@ -146,6 +147,12 @@ function RoleView:initRole(parameters)
         end
         self.lv:reload()
     end)
+    
+    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/lvup0.png", "armature/lvup0.plist" , "armature/lvup.ExportJson" )
+    self.levelEffect = ccs.Armature:create("lvup")
+    self.levelEffect:setVisible(false)
+    self.Panel_role:addChild(self.levelEffect)
+    self.levelEffect:setPosition(cc.p(100,140))
 end
 
 function RoleView:LoadRole(id)
@@ -186,13 +193,16 @@ function RoleView:LoadRole(id)
     self:updateRoleLv(id,self.m_roleLv)
 end
 
-function RoleView:updateRoleLv(id,level)
+function RoleView:updateRoleLv(id,level,isUpgrade)
     local roleLvCon = RoleLvs[id][level]
     if not roleLvCon then
         self.UpgradeBtn:setVisible(false)
         self.MaxgradeBtn:setVisible(false)
         self.RoleBuy:setVisible(false)
         return
+    end
+    if isUpgrade then
+        self:upgradeEffect()
     end
     AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Player_Up_Lv)
     if level >= #RoleLvs[id] then
@@ -224,7 +234,7 @@ function RoleView:updateRoleLv(id,level)
     end)
 end
 
-function RoleView:updateLevelToBuy(id,level)
+function RoleView:updateLevelToBuy(id,level,isUpgrade)
     Tools.printDebug("-----当前角色和等级：",id,level)
     local roleLvCon = RoleLvs[id][level]
     if not roleLvCon then
@@ -236,7 +246,7 @@ function RoleView:updateLevelToBuy(id,level)
     if roleLvCon.upgrade.type == UPGRADE_TYPE.Gold then
         if GameDataManager.getGold()>=roleLvCon.upgrade.Num then
             GameDataManager.costGold(roleLvCon.upgrade.Num)
-            self:updateRoleLv(id,level)
+            self:updateRoleLv(id,level,isUpgrade)
         else
             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
         end
@@ -248,6 +258,13 @@ function RoleView:updateLevelToBuy(id,level)
             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
         end
     end
+end
+
+function RoleView:upgradeEffect(parameters)
+    if not tolua.isnull(self.levelEffect) then
+        self.levelEffect:setVisible(true)
+        self.levelEffect:getAnimation():playWithIndex(0)
+	end
 end
 
 function RoleView:touchListener(event)

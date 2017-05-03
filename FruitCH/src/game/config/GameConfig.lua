@@ -4,6 +4,9 @@
 PrintDebug = true
 
 GroupSize = cc.size(960,540)   --每一组配置的大小
+--初始金币和钻石
+InitGold = 2000
+InitDiamond = 20
 
 --移动速度帧率
 FrameTime = 0.01

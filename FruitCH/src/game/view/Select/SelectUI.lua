@@ -6,6 +6,7 @@ local SelectUI = class("SelectUI",BaseUI)
 
 local SelectItem = require("game.view.Select.SelectItem")
 local Scheduler = require("framework.scheduler")
+local CommonUI = require("game.view.Common.CommonUI")
 
 function SelectUI:ctor()
     SelectUI.super.ctor(self) 
@@ -45,6 +46,8 @@ function SelectUI:init(parameters)
         self.itemArr[var] = sel
     end
 
+    local commonui = CommonUI.new({isSelect = true}):addTo(self)
+    commonui:setPosition(cc.p(0,display.top-60))
     
     --签到
     self.signHandler = Tools.delayCallFunc(0.1,function()

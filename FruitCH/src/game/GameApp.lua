@@ -54,8 +54,8 @@ function GameApp:ctor()
     
     DataPersistence.insertAttribute("first_into",true)   --是否是初次玩游戏
     
-    DataPersistence.insertAttribute("user_gold",2500)    --金币
-    DataPersistence.insertAttribute("user_diamond",2500)  --钻石
+    DataPersistence.insertAttribute("user_gold",InitGold)    --金币
+    DataPersistence.insertAttribute("user_diamond",InitDiamond)  --钻石
     DataPersistence.insertAttribute("user_power",5)    --体力
     DataPersistence.insertAttribute("user_score",10)    --玩家积分
     DataPersistence.insertAttribute("record",0)       --存储记录 

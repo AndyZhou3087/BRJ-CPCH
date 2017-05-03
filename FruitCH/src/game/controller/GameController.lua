@@ -30,6 +30,8 @@ local goodBody={}
 
 local groups = {}
 
+local mainSign = false
+
 --用于刚进入战斗场景时碰撞拦截
 local _canCollision = true
 --设置当前是否发生碰撞
@@ -57,6 +59,15 @@ end
 --得到游戏速度
 function GameController.getSpeed()
     return _curSpeed
+end
+
+
+--从选择界面返回到主界面不进行加载
+function GameController.setMainSign(enable)
+	mainSign = enable
+end
+function GameController.getMainSign()
+	return mainSign
 end
 
 

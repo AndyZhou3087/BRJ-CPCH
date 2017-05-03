@@ -22,11 +22,17 @@ function FightReadyUI:ctor(parm)
     self.FightReady = cc.uiloader:load("json/FightReady.json")
     self:addChild(self.FightReady)
     
+    local EndlessImg = cc.uiloader:seekNodeByName(self.FightReady,"EndlessImg")
+    local LevelImg = cc.uiloader:seekNodeByName(self.FightReady,"LevelImg")
+    local LevelCount = cc.uiloader:seekNodeByName(self.FightReady,"AtlasLabel")
+    
     local commonui = CommonUI.new():addTo(self)
     commonui:setPosition(cc.p(0,display.top-60))
     
     local _levelCon = 1  --关卡默认值
     if parm == GAME_TYPE.LevelMode then
+        EndlessImg:setVisible(false)
+        LevelImg:setVisible(true)
         Tools.printDebug("关卡模式")
         --得到当前关卡id与关卡索引
         local _levelId,_levelIdx = GameDataManager.getCurLevelId()
@@ -35,7 +41,10 @@ function FightReadyUI:ctor(parm)
             printf("chjh erro 找不到id=%d的关卡配置数据",_levelId)
             return
         end
+        LevelCount:setString(_levelCon._id)
     elseif parm == GAME_TYPE.EndlessMode then
+        EndlessImg:setVisible(true)
+        LevelImg:setVisible(false)
         Tools.printDebug("无尽模式")
         GameDataManager.resetLevelData()  --重置关卡数据
     else

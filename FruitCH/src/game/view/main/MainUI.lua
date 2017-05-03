@@ -81,13 +81,16 @@ function MainUI:init(parameters)
     end)
     
     
-    
-    --首次进入游戏
-    self.Panel_8:setVisible(false)
-    self.Image_21:setVisible(true)
-    self.loadCount = 0
-    self.loadHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.05)
-
+    if GameController.getMainSign() then
+        self.Panel_8:setVisible(true)
+        self.Image_21:setVisible(false)
+    else
+        --首次进入游戏
+        self.Panel_8:setVisible(false)
+        self.Image_21:setVisible(true)
+        self.loadCount = 0
+        self.loadHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),0.05)
+    end
 end
 
 function MainUI:onEnterFrame(parameters)
@@ -158,6 +161,7 @@ end
 
 --清理数据
 function MainUI:onCleanup()
+    GameController.setMainSign(false)
     if self.loadHandler then
         Scheduler.unscheduleGlobal(self.loadHandler)
         self.loadHandler = nil

@@ -126,7 +126,11 @@ function MapGroup:initElement(_obstacle)
         local _type = ObstacleConfig[tonumber(_element.name)].type
         local obstacle = ObstacleElement.new(tonumber(_element.name),tonumber(_element.y))
         obstacle:setPosition(tonumber(_element.x),tonumber(_element.y))
-        self:addChild(obstacle)
+        if _type ~= OBSTACLE_TYPE.ice then
+            self:addChild(obstacle,1)
+        else
+            self:addChild(obstacle)
+        end
         if _type == OBSTACLE_TYPE.special then
             if tonumber(_element.y)<=display.cy then
                 obstacle:setPosition(tonumber(_element.x),display.cy-240)

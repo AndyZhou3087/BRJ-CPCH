@@ -379,7 +379,7 @@ end
 
 function Obstacle:collisionEnd()
     if self.m_vo.m_type == OBSTACLE_TYPE.ice then
-        if GameController:isInState(PLAYER_STATE.Slow) then
+        if GameController.isInState(PLAYER_STATE.Slow) then
             GameDispatcher:dispatch(EventNames.EVENT_SLOW_SPEED,{isSlow = false})
         end
     end

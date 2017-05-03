@@ -69,11 +69,17 @@ function GiftView:ctor(parm)
         RewardLabel_2:setString("钻石x"..config.reward.diamond)
     end
     if config.reward.dayDiamond then
-        RewardLabel_2:setString("每日领取x"..config.reward.dayDiamond)
+        RewardLabel_2:setString("钻石x"..config.reward.dayDiamond)
     end
     
     local PriceLabel=cc.uiloader:seekNodeByName(GiftView,"PriceLabel")
-    PriceLabel:setString("信息费"..config.price.."元")
+    if config.reward.diamond then
+        PriceLabel:setString("信息费"..config.price.."元")
+    end
+    if config.reward.dayDiamond then
+        PriceLabel:setString("信息费"..config.price.."元,购买后可每日领取钻石x"..config.reward.dayDiamond)
+    end
+    
     
     local RoleDes=cc.uiloader:seekNodeByName(GiftView,"RoleDes")
     RoleDes:setString(config.roleDes)

@@ -22,7 +22,12 @@ function CommonUI:ctor(parm)
     backbtn:onButtonClicked(function(event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("-----------返回")
-        self:getParent():toClose(true)
+        if parm and parm.isSelect then
+            GameController.setMainSign(true)
+        	app:enterMainScene()
+        else
+            self:getParent():toClose(true) 
+        end
     end)
     
     local Image_3 = cc.uiloader:seekNodeByName(self.CommonUI,"Image_3")
