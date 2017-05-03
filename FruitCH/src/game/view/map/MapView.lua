@@ -120,7 +120,7 @@ function MapView:newGuide(parameters)
     end
     GameDispatcher:dispatch(EventNames.EVENT_GUIDE_CLIP,{mould="ui/Run_icon.png"
         ,pos=_pos,width=btnSize.width,height=btnSize.height,backFunciton=_backChange,
-        hand=false})
+        hand=true})
 end
 
 function MapView:updateDiamond()

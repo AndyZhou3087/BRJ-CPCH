@@ -11,17 +11,17 @@ function ClipGuideView:ctor(parameters)
     local _mask = display.newColorLayer(cc.c4b(0,0,0,OPACITY)):addTo(self)
 
     --遮罩形状(模板)
-    if parameters.mould ~= nil then
+    if parameters.mould then
         self.m_mould = display.newSprite(parameters.mould):addTo(self)
     else
         print("not find _mould!")
     end
 
-    local scale1 = cc.ScaleTo:create(1,1.2)
-    local scale2 = cc.ScaleTo:create(1,1)
-    local seq = cc.Sequence:create(scale1,scale2)
-    local repeteFor = cc.RepeatForever:create(seq)
-    self.m_mould:runAction(repeteFor)
+--    local scale1 = cc.ScaleTo:create(1,1.2)
+--    local scale2 = cc.ScaleTo:create(1,1)
+--    local seq = cc.Sequence:create(scale1,scale2)
+--    local repeteFor = cc.RepeatForever:create(seq)
+--    self.m_mould:runAction(repeteFor)
     
 
     --裁剪节点
@@ -60,6 +60,17 @@ function ClipGuideView:ctor(parameters)
             return true
         end
     end)
+    
+    --手是否开启手指动画
+    if parameters.hand then
+        local res="shouzhi"
+        ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/"..res.."0.png","armature/"..res.."0.plist","armature/"..res..".ExportJson")
+        self.m_finger = ccs.Armature:create(res)
+        self.m_finger:addTo(self)
+        self.m_finger:getAnimation():playWithIndex(0,0,1)
+        self.m_finger:setContentSize(cc.size(10,10))
+        self.m_finger:setPosition(self.m_pos)
+    end
 
 end
 --关闭界面调用
