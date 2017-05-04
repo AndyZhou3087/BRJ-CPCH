@@ -316,7 +316,7 @@ SelectLevel[12]=
         _id=12, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 670,y = 410},
+        pos = {x = 670,y = 400},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -342,7 +342,7 @@ SelectLevel[13]=
         _id=13, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 800,y = 415},
+        pos = {x = 800,y = 400},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -719,7 +719,7 @@ SelectLevel[27]=
         _id=27, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 1935,y = 435},
+        pos = {x = 1935,y = 400},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -881,7 +881,7 @@ SelectLevel[33]=
         _id=33, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 2250,y = 435},
+        pos = {x = 2250,y = 400},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -908,7 +908,7 @@ SelectLevel[34]=
         _id=34, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 2380,y = 435},
+        pos = {x = 2380,y = 400},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
@@ -935,7 +935,7 @@ SelectLevel[35]=
         _id=35, 
         res = "Select/Select_1.png",
         rect = {102,81},
-        pos = {x = 2420,y = 365},
+        pos = {x = 2450,y = 330},
         costPower=1,
         coinAward=false, --金币奖励
         powerAward=false, --体力奖励
