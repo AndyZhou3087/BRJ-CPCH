@@ -77,15 +77,14 @@ end
 
 --退出游戏
 function SDKUtil.exitGame()
-    GameDataManager.saveGameData()
-    GameController.saveSelfScore()
+    GameDataManager.SaveData()
     
     local params = {}
     local sigs = "()V"
-    if luaj then
-        luaj.callStaticMethod(className,"exitGame",params,sigs)
-        return
-    end
+--    if luaj then
+--        luaj.callStaticMethod(className,"exitGame",params,sigs)
+--        return
+--    end
     os.exit(0)
 end
 
