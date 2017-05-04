@@ -829,7 +829,7 @@ function Player:slowSpeed(parameters)
     
     if parameters.data.isSlow then
         self:addBuff({type=PLAYER_STATE.Slow})
-        self.slowlySpeed = MoveSpeed - parameters.data.cutSpeed
+        self.slowlySpeed = parameters.data.cutSpeed
         self.originPos = cc.p(display.cx-100,display.cy-240)
         self.originScaleY = self:getScaleY()
         if self.slowHandler then
