@@ -407,6 +407,9 @@ function Player:playerAttacked(parm)
     self.m_hp = self.m_hp - parm.data.att
     if self.m_hp <= 0 then
         Tools.printDebug("------------角色死亡..")
+        self.slowlySpeed = nil
+        self.originScaleY = nil
+        self.originPos = nil
         if self.backHandler then
             Scheduler.unscheduleGlobal(self.backHandler)
             self.backHandler=nil
@@ -822,6 +825,10 @@ function Player:slowSpeed(parameters)
         return
     end
     
+    if self:isInState(PLAYER_STATE.Spring) then
+    	return
+    end
+    
     if parameters.data.isSlow and self:isInState(PLAYER_STATE.Slow) then
         return
     end
@@ -830,7 +837,7 @@ function Player:slowSpeed(parameters)
     if parameters.data.isSlow then
         self:addBuff({type=PLAYER_STATE.Slow})
         self.slowlySpeed = parameters.data.cutSpeed
-        self.originPos = cc.p(display.cx-100,display.cy-240)
+        self.originPos = cc.p(display.cx-100,self:getPositionY())
         self.originScaleY = self:getScaleY()
         if self.slowHandler then
             Scheduler.unscheduleGlobal(self.slowHandler)
@@ -839,6 +846,8 @@ function Player:slowSpeed(parameters)
         self.slowHandler = Scheduler.scheduleGlobal(handler(self,self.slowMove),FrameTime)
     else
         self:clearBuff(PLAYER_STATE.Slow)
+        self.originScaleY = nil
+        self.originPos = nil
     end
     
 end
@@ -884,13 +893,16 @@ function Player:spring(parameters)
         self:toPlay(PLAYER_ACTION.Jump,0)
         self:toMove(true)
     else
+        if self:isInState(PLAYER_STATE.Slow) then
+            self:clearBuff(PLAYER_STATE.Slow)
+        end
         local x = parameters.data
         if x<self:getPositionX() then
             Tools.printDebug("print error 卡在弹簧--------------")
         	return
         end
         self.slowlySpeed = nil
-        self.originPos = cc.p(display.cx-100,display.cy-240)
+        self.originPos = cc.p(display.cx-100,self:getPositionY())
         self.originScaleY = self:getScaleY()
         if self.backHandler then
             Scheduler.unscheduleGlobal(self.backHandler)
