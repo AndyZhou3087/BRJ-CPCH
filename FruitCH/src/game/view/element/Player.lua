@@ -502,12 +502,8 @@ function Player:revive(parameters)
 
     self.m_hp = self.m_vo.m_hp
     self.m_armature:setVisible(true)
-    
-    local old = self.m_armature
-    local modle = RoleConfig[self.m_curModle].armatureName
-    self:createModle(modle)
-    old:removeFromParent()
 
+    Tools.printDebug("&&&&&&&&&&   角色跳跃状态：",self.m_jump,self:getScaleY())
     if self.m_jump and self:getScaleY() == -1 then
         self:setScaleY(1)
         self:setPosition(display.cx-100,display.cy-240)
@@ -515,13 +511,15 @@ function Player:revive(parameters)
         self:setScaleY(-1)
         self:setPosition(display.cx-100,display.cy+200)
     end
---    if self.originScaleY then
---        Tools.printDebug("----------------角色复活后ScaleY:",self.originScaleY)
---        self:setScaleY(self.originScaleY)
---    end
+
     if self.originPos then
         self:setPositionX(self.originPos.x)
     end
+    
+    local old = self.m_armature
+    local modle = RoleConfig[self.m_curModle].armatureName
+    self:createModle(modle)
+    old:removeFromParent()
     
     self:toPlay(PLAYER_ACTION.Run)
     

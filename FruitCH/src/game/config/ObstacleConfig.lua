@@ -59,7 +59,7 @@ ObstacleConfig[4]=
         speed = 3,   --飞行速度，即固定距离飞行的时间(单位：秒)
     }
     
---下面冰面    
+--冰面    
 ObstacleConfig[5]=
     {
         id = 5,
