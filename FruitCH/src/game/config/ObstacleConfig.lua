@@ -44,7 +44,7 @@ ObstacleConfig[3]=
         res = "ui/obscale_2.png",     --资源路径
         att = 1,
         dispx = 400,   --与屏幕相距多少像素时出现(单位：像素)
-        speed = 5,   --飞行速度，即固定距离飞行的时间(单位：秒)
+        speed = 8,   --飞行速度，即固定距离飞行的时间(单位：秒)
     }
     
 ObstacleConfig[4]=
@@ -69,7 +69,7 @@ ObstacleConfig[5]=
         res = "ui/obscale_4.png",     --资源路径
         upRes = "ui/obscale_5.png",
         att = 1,
-        cutSpeed = 15,  --此为需要减去的速度值，比如原本32的速度，减去15，速度则为为17
+        cutSpeed = 30,  --此为需要减去的速度值，比如原本32的速度，减去15，速度则为为17
         length = 960,   --滑行距离，单位：px
     }
     
