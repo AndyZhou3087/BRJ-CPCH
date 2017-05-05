@@ -25,10 +25,10 @@
   <image source="ui/Prop_magnet.png" width="51" height="46"/>
  </tileset>
  <tileset firstgid="9" name="obscale_5" tilewidth="960" tileheight="110">
-  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_5.png" width="960" height="110"/>
+  <image source="ui/obscale_5.png" width="960" height="110"/>
  </tileset>
  <tileset firstgid="10" name="obscale_4" tilewidth="960" tileheight="62">
-  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_4.png" width="960" height="62"/>
+  <image source="ui/obscale_4.png" width="960" height="62"/>
  </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
@@ -61,7 +61,7 @@
  <objectgroup name="obstacle">
   <object name="1" gid="1073741826" x="410" y="157"/>
   <object name="1" gid="2" x="586" y="509"/>
-  <object gid="9" x="0" y="110"/>
-  <object gid="10" x="1" y="541"/>
+  <object name="5" gid="9" x="0" y="110"/>
+  <object name="5" gid="10" x="1" y="541"/>
  </objectgroup>
 </map>

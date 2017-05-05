@@ -16,7 +16,7 @@
   <image source="ui/obscale_3.png" width="62" height="70"/>
  </tileset>
  <tileset firstgid="6" name="obscale_4" tilewidth="960" tileheight="62">
-  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_4.png" width="960" height="62"/>
+  <image source="ui/obscale_4.png" width="960" height="62"/>
  </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">

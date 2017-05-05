@@ -13,7 +13,7 @@
   <image source="Common/Common_gold.png" width="40" height="40"/>
  </tileset>
  <tileset firstgid="5" name="obscale_5" tilewidth="960" tileheight="110">
-  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_5.png" width="960" height="110"/>
+  <image source="ui/obscale_5.png" width="960" height="110"/>
  </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
@@ -43,6 +43,6 @@
   <object name="3" gid="3" x="880" y="250"/>
   <object name="3" gid="3" x="880" y="350"/>
   <object name="3" gid="3" x="880" y="450"/>
-  <object gid="5" x="0" y="110"/>
+  <object name="5" gid="5" x="0" y="110"/>
  </objectgroup>
 </map>

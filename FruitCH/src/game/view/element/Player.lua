@@ -358,6 +358,7 @@ function Player:update(dt,_x,_y)
     
     --角色向后缓动后恢复
     if self.originPos and self:getPositionX()<self.originPos.x and not self.backHandler and not self.slowHandler then
+        Tools.printDebug("^^^^^^^^^^^^^^^  角色坐标：",self:getPositionX(),self.originPos.x)
         local x,y = self:getPosition()
         if self.slowlySpeed then
             self:setPositionX(x+self.slowlySpeed*0.1)
@@ -407,9 +408,6 @@ function Player:playerAttacked(parm)
     self.m_hp = self.m_hp - parm.data.att
     if self.m_hp <= 0 then
         Tools.printDebug("------------角色死亡..")
-        self.slowlySpeed = nil
-        self.originScaleY = nil
-        self.originPos = nil
         if self.backHandler then
             Scheduler.unscheduleGlobal(self.backHandler)
             self.backHandler=nil
@@ -417,30 +415,35 @@ function Player:playerAttacked(parm)
         if self:isInState(PLAYER_STATE.Slow) then
             self:clearBuff(PLAYER_STATE.Slow)
         end
-        self:deadSprintFlash()
+        self:deadSprintFlash(true)
     end
 end
 
-function Player:deadSprintFlash(parameters)
+function Player:deadSprintFlash(enble)
 	if GameController.getStartPropById(2) then
         GameDataManager.useGoods(2)
     else
-        self:deadContinueFlash()
+        self:deadContinueFlash(enble)
     end
 end
 
-function Player:deadContinueFlash()
+function Player:deadContinueFlash(enble)
 	if GameController.getStartPropById(4) then
         GameDataManager.useGoods(4)
     else
-        self:deadFlash()
+        self:deadFlash(enble)
     end
 end
 
 --
-function Player:deadFlash()
+function Player:deadFlash(enble)
     if GameController.isWin then
     	return
+    end
+    if enble then
+        self.slowlySpeed = nil
+        self.originScaleY = nil
+        self.originPos = nil
     end
     self:death()
 end
@@ -495,9 +498,16 @@ function Player:revive(parameters)
     end
     self.m_buffArr = {}
 
+    GameController.resumeGame(true)
+
     self.m_hp = self.m_vo.m_hp
     self.m_armature:setVisible(true)
---    Tools.printDebug("----------------角色scale：",self.m_jump)
+    
+    local old = self.m_armature
+    local modle = RoleConfig[self.m_curModle].armatureName
+    self:createModle(modle)
+    old:removeFromParent()
+
     if self.m_jump and self:getScaleY() == -1 then
         self:setScaleY(1)
         self:setPosition(display.cx-100,display.cy-240)
@@ -505,12 +515,12 @@ function Player:revive(parameters)
         self:setScaleY(-1)
         self:setPosition(display.cx-100,display.cy+200)
     end
-    if self.originScaleY then
-        Tools.printDebug("----------------角色复活后ScaleY:",self.originScaleY)
-        self:setScaleY(self.originScaleY)
-    end
+--    if self.originScaleY then
+--        Tools.printDebug("----------------角色复活后ScaleY:",self.originScaleY)
+--        self:setScaleY(self.originScaleY)
+--    end
     if self.originPos then
-        self:setPosition(self.originPos)
+        self:setPositionX(self.originPos.x)
     end
     
     self:toPlay(PLAYER_ACTION.Run)
@@ -535,7 +545,6 @@ function Player:revive(parameters)
         end
     end
     
-    GameController.resumeGame(true)
     self:clearObstales()
 end
 
@@ -739,11 +748,11 @@ function Player:deadRelay(parameters)
     self:createModle(modle)
     old:removeFromParent()
     
-    if self.originScaleY then
-        self:setScaleY(self.originScaleY)
-    end
+--    if self.originScaleY then
+--        self:setScaleY(self.originScaleY)
+--    end
     if self.originPos then
-        self:setPosition(self.originPos)
+        self:setPositionX(self.originPos.x)
     end
     
     self.m_jump = false
@@ -846,8 +855,8 @@ function Player:slowSpeed(parameters)
         self.slowHandler = Scheduler.scheduleGlobal(handler(self,self.slowMove),FrameTime)
     else
         self:clearBuff(PLAYER_STATE.Slow)
-        self.originScaleY = nil
-        self.originPos = nil
+--        self.originScaleY = nil
+--        self.originPos = nil
     end
     
 end

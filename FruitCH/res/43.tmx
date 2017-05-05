@@ -22,10 +22,10 @@
   <image source="Common/Common_sliver.png" width="40" height="40"/>
  </tileset>
  <tileset firstgid="8" name="obscale_4" tilewidth="960" tileheight="62">
-  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_4.png" width="960" height="62"/>
+  <image source="ui/obscale_4.png" width="960" height="62"/>
  </tileset>
  <tileset firstgid="9" name="obscale_5" tilewidth="960" tileheight="110">
-  <image source="../../Tencent Files/49637318/FileRecv/FruitCH/res/ui/obscale_5.png" width="960" height="110"/>
+  <image source="ui/obscale_5.png" width="960" height="110"/>
  </tileset>
  <layer name="stage1" width="1" height="1">
   <data encoding="base64" compression="zlib">
