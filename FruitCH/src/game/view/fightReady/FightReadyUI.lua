@@ -96,21 +96,22 @@ function FightReadyUI:ctor(parm)
         Tools.printDebug("-----------开始游戏")
         GameDataManager.generatePlayerVo()  --产生新的角色数据对象
         if parm == GAME_TYPE.LevelMode and GameDataManager.costPower(_levelCon.costPower) then
-                for key, var in ipairs(self.m_goods) do
-                    if var.isSelect then
-                        if GameDataManager.getGoodsNum(var.id)<=0 then
-                            if var.cost.type == COST_TYPE.Gold then
-                                GameDataManager.costGold(var.cost.price)
-                            elseif var.cost.type == COST_TYPE.Diamond then
-                                GameDataManager.costDiamond(var.cost.price)
-                            end
-                            GameDataManager.addGoods(var.id,1)
+            for key, var in ipairs(self.m_goods) do
+                if var.isSelect then
+                    if GameDataManager.getGoodsNum(var.id)<=0 then
+                        if var.cost.type == COST_TYPE.Gold then
+                            GameDataManager.costGold(var.cost.price)
+                        elseif var.cost.type == COST_TYPE.Diamond then
+                            GameDataManager.costDiamond(var.cost.price)
                         end
-                        GameController.setStartProp(var.id,var.isSelect)
+                        GameDataManager.addGoods(var.id,1)
                     end
+                    GameController.setStartProp(var.id,var.isSelect)
                 end
-                GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
-                app:enterGameScene()
+            end
+            GAME_TYPE_CONTROL = GAME_TYPE.LevelMode
+            startGame:setButtonEnabled(false)
+            app:enterGameScene()
 --                self:toClose(true)
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})

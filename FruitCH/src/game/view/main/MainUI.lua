@@ -46,6 +46,7 @@ function MainUI:init(parameters)
 --        _event.target:setScale(1)
     end)
     Endlessbtn:onButtonClicked(function(event)
+        Endlessbtn:setButtonEnabled(false)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE.EndlessMode)
@@ -57,6 +58,7 @@ function MainUI:init(parameters)
     Levelbtn:onButtonRelease(function(_event)    --触摸离开
     end)
     Levelbtn:onButtonClicked(function(event)
+        Levelbtn:setButtonEnabled(false)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if self.m_unlockNum <= 0 then
             GameDataManager.setCurLevelId(1,1)
