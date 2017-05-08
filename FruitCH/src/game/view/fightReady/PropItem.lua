@@ -101,41 +101,57 @@ function PropItem:initPropData()
                 Tools.printDebug("----已放弃使用道具",self.propCon.id)
             end
         else
-            if self.propCon.cost.type == COST_TYPE.Gold then
-                if GameDataManager.getGold()>=self.propCon.cost.price then
-                    GameDataManager.costGold(self.propCon.cost.price)
-                    if self.propCon.id == 5 then
-                        --控制随机数种子
-                        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-                        local id = math.random(1,4)
-                        GameDataManager.addGoods(id,1)
-                        GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
-                    else
-                        for var=1, #self.propCon.content do
-                            local arr = self.propCon.content[var]
-                            GameDataManager.addGoods(arr.id,arr.count)
-                        end
-                    end
+            if GameDataManager.getGoodsNum(self.propCon.id)>0 then
+                GameDataManager.useGoods(self.propCon.id)
+                if self.propCon.id == 5 then
+                    --控制随机数种子
+                    math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+                    local id = math.random(1,4)
+                    GameDataManager.addGoods(id,1)
+                    GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
                 else
-                    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
+                    for var=1, #self.propCon.content do
+                        local arr = self.propCon.content[var]
+                        GameDataManager.addGoods(arr.id,arr.count)
+                    end
                 end
-            elseif self.propCon.cost.type == COST_TYPE.Diamond then
-                if GameDataManager.getDiamond()>=self.propCon.cost.price then
-                    GameDataManager.costDiamond(self.propCon.cost.price)
-                    if self.propCon.id == 5 then
-                        --控制随机数种子
-                        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-                        local id = math.random(1,4)
-                        GameDataManager.addGoods(id,1)
-                        GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
-                    else
-                        for var=1, #self.propCon.content do
-                            local arr = self.propCon.content[var]
-                            GameDataManager.addGoods(arr.id,arr.count)
+            else
+                if self.propCon.cost.type == COST_TYPE.Gold then
+                    if GameDataManager.getGold()>=self.propCon.cost.price then
+                        GameDataManager.costGold(self.propCon.cost.price)
+                        if self.propCon.id == 5 then
+                            --控制随机数种子
+                            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+                            local id = math.random(1,4)
+                            GameDataManager.addGoods(id,1)
+                            GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
+                        else
+                            for var=1, #self.propCon.content do
+                                local arr = self.propCon.content[var]
+                                GameDataManager.addGoods(arr.id,arr.count)
+                            end
                         end
+                    else
+                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="金币不足"})
                     end
-                else
-                    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
+                elseif self.propCon.cost.type == COST_TYPE.Diamond then
+                    if GameDataManager.getDiamond()>=self.propCon.cost.price then
+                        GameDataManager.costDiamond(self.propCon.cost.price)
+                        if self.propCon.id == 5 then
+                            --控制随机数种子
+                            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+                            local id = math.random(1,4)
+                            GameDataManager.addGoods(id,1)
+                            GameDispatcher:dispatch(EventNames.EVENT_OPEN_REWARDPROP,id)
+                        else
+                            for var=1, #self.propCon.content do
+                                local arr = self.propCon.content[var]
+                                GameDataManager.addGoods(arr.id,arr.count)
+                            end
+                        end
+                    else
+                        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足"})
+                    end
                 end
             end
         end

@@ -243,6 +243,7 @@ function GameDataManager.useGoods(_goodsId)
                     table.remove(goodsList,key)
                 end
                 GameDataManager.SaveData()
+                GameDispatcher:dispatch(EventNames.EVENT_PROP_UPDATE,{goodsId = _goodsId})
                 return true
             else
                 return false
