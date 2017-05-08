@@ -46,7 +46,7 @@ function MainUI:init(parameters)
 --        _event.target:setScale(1)
     end)
     Endlessbtn:onButtonClicked(function(event)
-        Endlessbtn:setButtonEnabled(false)
+--        Endlessbtn:setButtonEnabled(false)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         GAME_TYPE_CONTROL = GAME_TYPE.EndlessMode
         GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE.EndlessMode)

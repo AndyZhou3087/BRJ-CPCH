@@ -66,6 +66,7 @@ function Pause:ctor(parm)
         elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
             GameController.setSignPop(false)
             GameController.resumeGame()
+            GameController.setMainSign(true)
             app:enterMainScene()
             Tools.delayCallFunc(0.01,function()
                 GameDispatcher:dispatch(EventNames.EVENT_OPEN_LOAD,{method=2,})
@@ -88,6 +89,7 @@ function Pause:ctor(parm)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
             app:enterSelectScene()
         elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+            GameController.setMainSign(true)
             app:enterMainScene()
         end
     end)
