@@ -50,8 +50,8 @@
   <object name="3" gid="3" x="590" y="435"/>
   <object name="6" gid="1073741829" x="590" y="130"/>
   <object name="3" gid="3" x="338" y="435"/>
-  <object gid="2" x="188" y="509"/>
-  <object gid="2" x="464" y="509"/>
-  <object gid="2" x="730" y="509"/>
+  <object name="1" gid="2" x="188" y="509"/>
+  <object name="1" gid="2" x="464" y="509"/>
+  <object name="1" gid="2" x="730" y="509"/>
  </objectgroup>
 </map>

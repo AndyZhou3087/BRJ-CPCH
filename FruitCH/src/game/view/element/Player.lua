@@ -16,6 +16,7 @@ function Player:ctor()
     self.m_hp = self.m_vo.m_hp
 
     self.m_buffArr = {} --buff列表
+    self.pMoveSpeed = MoveSpeed
 
     --角色死亡
     self.m_isDead = false
@@ -365,6 +366,15 @@ function Player:update(dt,_x,_y)
         else
             self:setPositionX(x+MoveSpeed*0.1)
         end
+    end
+    
+    --针对无尽模式速度改变
+    if GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode and self.pMoveSpeed ~= MoveSpeed then
+        if MoveSpeed>=SpeedMax then
+            MoveSpeed = SpeedMax
+        end
+    	self.pMoveSpeed = MoveSpeed
+        self.m_animation:setSpeedScale(MoveSpeed*0.01)
     end
     
     --冲刺时消除障碍物

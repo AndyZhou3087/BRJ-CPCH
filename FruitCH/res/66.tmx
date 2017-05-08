@@ -32,13 +32,13 @@
   <object name="Common_gold.png" type="1" gid="4" x="510" y="410"/>
   <object name="Common_gold.png" type="1" gid="4" x="410" y="210"/>
   <object name="Common_gold.png" type="1" gid="4" x="435" y="260"/>
-  <object name="Common_gold.png" type="1" gid="4" x="790" y="357"/>
-  <object name="Common_gold.png" type="1" gid="4" x="840" y="457"/>
-  <object name="Common_gold.png" type="1" gid="4" x="715" y="207"/>
-  <object name="Common_gold.png" type="1" gid="4" x="740" y="257"/>
-  <object name="Common_gold.png" type="1" gid="4" x="765" y="307"/>
-  <object name="Common_gold.png" type="1" gid="4" x="815" y="407"/>
-  <object name="Common_gold.png" type="1" gid="4" x="690" y="157"/>
+  <object name="Common_gold.png" type="1" gid="4" x="790" y="360"/>
+  <object name="Common_gold.png" type="1" gid="4" x="840" y="460"/>
+  <object name="Common_gold.png" type="1" gid="4" x="715" y="210"/>
+  <object name="Common_gold.png" type="1" gid="4" x="740" y="260"/>
+  <object name="Common_gold.png" type="1" gid="4" x="765" y="310"/>
+  <object name="Common_gold.png" type="1" gid="4" x="815" y="410"/>
+  <object name="Common_gold.png" type="1" gid="4" x="690" y="160"/>
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle"/>

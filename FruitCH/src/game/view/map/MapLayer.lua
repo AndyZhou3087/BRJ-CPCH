@@ -25,6 +25,9 @@ function MapLayer:ctor(parameters)
     end
     local lvSpeed = levelCon.speed
     MoveSpeed = lvSpeed
+    if MoveSpeed>=SpeedMax then
+        MoveSpeed = SpeedMax
+    end
     GameController.setSpeed(MoveSpeed)
     self.m_backbg = BackGroundMove.new(GameBgRes,0,MoveSpeed):addTo(self)
 
@@ -166,6 +169,10 @@ function MapLayer:addEndlessGroup(parameters)
         self.m_levelCon = ConfigD[GameController.getDataIdByWeight(self.m_weightD,self.m_conD)]
         MoveSpeed = EndlessMode.DistanceD.speed
     end
+    if MoveSpeed>=SpeedMax then
+    	MoveSpeed = SpeedMax
+    end
+    GameController.setSpeed(MoveSpeed)
 end
 
 --触摸
