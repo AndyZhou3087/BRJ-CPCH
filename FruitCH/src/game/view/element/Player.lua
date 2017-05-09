@@ -161,6 +161,11 @@ function Player:isDead(parameters)
 	return self.m_vo.m_hp<=0
 end
 
+--获取是否拥有二次跳跃技能
+function Player:getTwoJump(parameters)
+    return self.m_twoJump
+end
+
 
 --闯关胜利后滑行一段距离
 function Player:LevelWin()
@@ -175,6 +180,7 @@ function Player:LevelWin()
     end
     self.m_buffArr = {}
     MoveSpeed = 0
+    GameController.setSpeed(MoveSpeed)
     
     transition.moveTo(self,{time = 1,x=display.right+100,y=self:getPositionY(),onComplete=function()
         self:dispose()
@@ -239,8 +245,8 @@ function Player:toMove(isSpring)
         self.roleY = self:getPositionY()
     end
     local frameSpeed = MoveSpeed
-    if MoveSpeed >= 100 then
-        frameSpeed = 100
+    if MoveSpeed >= SpeedMax then
+        frameSpeed = SpeedMax
     end
     if not self.m_jump then
         self.m_jump = true
@@ -362,7 +368,9 @@ function Player:update(dt,_x,_y)
         Tools.printDebug("^^^^^^^^^^^^^^^  角色坐标：",self:getPositionX(),self.originPos.x)
         local x,y = self:getPosition()
         if self.slowlySpeed then
-            self:setPositionX(x+self.slowlySpeed*0.1)
+            if not GameController.isInPause() then
+                self:setPositionX(x+self.slowlySpeed*0.1)
+            end
         else
             self:setPositionX(x+MoveSpeed*0.1)
         end

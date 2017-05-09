@@ -589,6 +589,9 @@ function GameDataManager.getNextFightDataId()
     if not fightData[#fightData] then
     	return 1
     end
+    if #fightData >= #SelectLevel then
+        return fightData[#fightData].id
+    end
     return fightData[#fightData].id+1
 end
 --增加当前关卡得分

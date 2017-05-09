@@ -65,7 +65,5 @@
   <object name="Common_sliver.png" type="2" gid="6" x="825" y="310"/>
  </objectgroup>
  <objectgroup name="good"/>
- <objectgroup name="obstacle">
-  <object gid="3" x="615" y="360"/>
- </objectgroup>
+ <objectgroup name="obstacle"/>
 </map>

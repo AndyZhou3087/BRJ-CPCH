@@ -68,7 +68,7 @@ end
 
 function AchieveQuest:initContent(AchieveQuestCon,type)
     self.lv:removeAllItems()
-    Tools.delayCallFunc(0.1,function()
+--    Tools.delayCallFunc(0.1,function()
         for i=1,#AchieveQuestCon do
             local item = self.lv:newItem()
             local content = AchieveQuestItem.new({type=type,config=AchieveQuestCon[i]})
@@ -79,7 +79,7 @@ function AchieveQuest:initContent(AchieveQuestCon,type)
             self.lv:addItem(item)
         end
         self.lv:reload()
-    end)
+--    end)
 end
 
 --关闭界面调用

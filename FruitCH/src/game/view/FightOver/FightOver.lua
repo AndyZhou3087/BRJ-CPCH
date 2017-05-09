@@ -183,7 +183,10 @@ function FightOver:toWin()
                 end)
                 self:toClose(true)
             else
-
+                GameController.setSignPop(false)
+                GameController.resumeGame()
+                GameDataManager.setCurLevelId(self.m_curLevel,self.m_levelIdx)
+                app:enterSelectScene()
             end
         elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
             GameController.setSignPop(false)

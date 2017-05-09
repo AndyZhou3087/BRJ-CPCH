@@ -320,7 +320,7 @@ function Obstacle:collision(_type)
         end
     elseif self.m_vo.m_type == OBSTACLE_TYPE.spring then
         if GameController.getCurPlayer():getJumpState() and not GameController.isInState(PLAYER_STATE.Spring) 
-            and (self.m_posY > display.cy and GameController.getCurPlayer():getScaleY()==-1 or 
+            and not GameController.getCurPlayer():getTwoJump() and (self.m_posY > display.cy and GameController.getCurPlayer():getScaleY()==-1 or 
             self.m_posY < display.cy and GameController.getCurPlayer():getScaleY()==1) then
             Tools.printDebug("--------------弹簧过滤过滤过滤过滤过滤过滤过滤过滤过滤过滤")
         	return
@@ -339,22 +339,20 @@ function Obstacle:collision(_type)
             Tools.printDebug("------------------巨人药水碰撞消失")
             self.isDead = true
             self.obcon:setVisible(false)
-            self.m_dEffect:setVisible(true)
-            self.m_dEffect:getAnimation():play("xiaoshi",0,0)
             if self.m_vo.m_type == OBSTACLE_TYPE.fly then
                 self:stopAllActions()
             end
+            self.m_dEffect:setVisible(true)
+            self.m_dEffect:getAnimation():play("xiaoshi",0,0)
             return
         end
         if GameController.getCurPlayer():getJumpState() and self.m_vo.m_type == OBSTACLE_TYPE.fly then
             Tools.printDebug("------------------攻击状态碰撞消失")
             self.isDead = true
             self.obcon:setVisible(false)
+            self:stopAllActions()
             self.m_dEffect:setVisible(true)
             self.m_dEffect:getAnimation():play("xiaoshi",0,0)
-            if self.m_vo.m_type == OBSTACLE_TYPE.fly then
-                self:stopAllActions()
-            end
             return
         end
         if GameController.isInState(PLAYER_STATE.Defence) or GameController.isInState(PLAYER_STATE.StartProtect) 
@@ -363,11 +361,11 @@ function Obstacle:collision(_type)
             self.isDead = true
             GameDispatcher:dispatch(EventNames.EVENT_PLAYER_ATTACKED,{isSpecial = false,att = self.m_vo.m_att})
             self.obcon:setVisible(false)
-            self.m_dEffect:setVisible(true)
-            self.m_dEffect:getAnimation():play("xiaoshi",0,0)
             if self.m_vo.m_type == OBSTACLE_TYPE.fly then
                 self:stopAllActions()
             end
+            self.m_dEffect:setVisible(true)
+            self.m_dEffect:getAnimation():play("xiaoshi",0,0)
             return
         end
         if self.m_body then
@@ -399,6 +397,7 @@ function Obstacle:dispose()
         self.m_resum = nil
     end
     AudioManager.stopSoundEffect(AudioManager.Sound_Effect_Type.Dart_Sound)
+    self.isDead = false
     if self.m_timer then
         Scheduler.unscheduleGlobal(self.m_timer)
         self.m_timer = nil

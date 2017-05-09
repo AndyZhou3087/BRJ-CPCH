@@ -266,6 +266,10 @@ function MapLayer:collisionBeginCallBack(parameters)
     	return false
     end
     
+    if player:isInState(PLAYER_STATE.StartSprint) or player:isInState(PLAYER_STATE.DeadSprint) or player:isInState(PLAYER_STATE.LimitSprint) then
+        return false
+    end
+    
     if obstacleTag == ELEMENT_TAG.OBSTACLE or obstacleTag == ELEMENT_TAG.GOLD_TAG or obstacleTag == ELEMENT_TAG.GOOD_TAG then
         if obstacleTag == ELEMENT_TAG.OBSTACLE then
             if not obstacle:isDisappear() then
