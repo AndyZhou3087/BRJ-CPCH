@@ -380,7 +380,7 @@ function MapLayer:onEnterFrame(dt)
     --跑了多少米换算公式
    self.pexel = self.pexel + MoveSpeed*0.1/(Pixel/Miles)
    GameDataManager.saveDayRunDistance(MoveSpeed*0.1/(Pixel/Miles))
---    Tools.printDebug("-----------多少米：",self.pexel)
+    Tools.printDebug("-----------多少米：",self.pexel)
     
     self.miles = self.miles + MoveSpeed*0.1
 --    Tools.printDebug("-----------多少像素：",self.miles)
@@ -460,7 +460,7 @@ function MapLayer:initGuide(parameters)
         self:stepJump()
     elseif self.pexel >= 85+per and self.guideStep == 3 then
         self:stepJump()
-    elseif self.pexel >= 115+per and self.guideStep == 4 then
+    elseif self.pexel >= 128+per and self.guideStep == 4 then
         self:stepJump()
     end
 end
