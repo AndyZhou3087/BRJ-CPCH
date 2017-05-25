@@ -37,19 +37,28 @@ function ReviveUI:ctor(parm)
     local SureBtn=cc.uiloader:seekNodeByName(ReviveUI,"SureBtn")
     SureBtn:onButtonClicked(function(event)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
-        self:stopTimer()
-        local payId = Payment.Revive
-        local oId = SDKUtil.getOrderId(payId)
-        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
-            if SDKUtil.PayResult.Success == _res then
-                self:toClose(true)
-                GameDispatcher:dispatch(EventNames.EVENT_ROLE_REVIVE)
-                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
-            else
-                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
-                self:recoverTimer()
-            end
-        end})
+--        self:stopTimer()
+--        local payId = Payment.Revive
+--        local oId = SDKUtil.getOrderId(payId)
+--        SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
+--            if SDKUtil.PayResult.Success == _res then
+--                self:toClose(true)
+--                GameDispatcher:dispatch(EventNames.EVENT_ROLE_REVIVE)
+--                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+--            else
+--                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
+--                self:recoverTimer()
+--            end
+--        end})
+        if GameDataManager.getDiamond() >= RevivePrice then
+            GameDataManager.costDiamond(RevivePrice)
+            self:toClose(true)
+            GameDispatcher:dispatch(EventNames.EVENT_ROLE_REVIVE)
+            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+        else
+            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="钻石不足，购买失败！"})
+--            self:recoverTimer()
+        end
     end)
     
     self.BackCount = cc.uiloader:seekNodeByName(ReviveUI,"BackCount")

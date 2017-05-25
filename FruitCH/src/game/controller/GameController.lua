@@ -10,6 +10,12 @@ GameController.overFrame = false
 GameController.isDead = false
 GameController.isWin = false
 
+GameController.isFightOverBack = false
+
+GameController.buyOrReceive = 0
+
+GameController.isBackMap = false
+
 --额外吸附物品
 GameController.Adsorb_Ex_Goods = 1
 
@@ -214,6 +220,45 @@ function GameController.getDataIdByWeight(_wegt,sorArr)
         end
     end
     return id
+end
+
+local curGiftId = 0
+local curGameGiftId = 0
+local curExitGiftId = 0
+--获取当前计费代码对应礼包
+function GameController.getGiftIdByPayCode(_string)
+    local arr = Tools.Split(_string,'|')
+	for var=1, #GiftConfig do
+		local gift = GiftConfig[var]
+        if gift.payId == arr[1] then
+            curGiftId = gift.id
+		end
+        if gift.payCode and gift.payCode == arr[2] then
+            curGameGiftId = gift.id
+		end
+        if gift.exitPayId and gift.exitPayId == arr[3] then
+			curExitGiftId = gift.id
+		end
+	end
+end
+
+--获取当前礼包id
+function GameController.getCurGiftId()
+    Tools.printDebug("----------礼包计费代码：",curGiftId,curGameGiftId,curExitGiftId)
+    return curGiftId,curGameGiftId,curExitGiftId
+end
+
+
+--判断当前计费代码对应id
+function GameController.getGiftIdByPayId(_payId)
+	for var=1, #GiftConfig do
+		if GiftConfig[var].type == GIFT_TYPE.Vip then
+            if GiftConfig[var].payId == _payId then
+                return GiftConfig[var].id
+			end
+		end
+	end
+	return 0
 end
 
 

@@ -14,6 +14,7 @@ local SignUI = require("game.view.sign.SignUI")
 local AchieveQuest = require("game.view.AchieveQuest.AchieveQuest")
 local ReviveView = require("game.view.revive.ReviveUI")
 local GiftView = require("game.view.gift.GiftView")
+local GiftUI = require("game.view.gift.GiftUI")
 
 local ClipGuideView = require("game.view.clipping.ClipGuideView")
 local GuideView = require("game.view.guide.GuideView")
@@ -63,6 +64,9 @@ function UIController:ctor()
     
     --新手说明界面
     GameDispatcher:addListener(EventNames.EVENT_GUIDE_EXPLAIN,handler(self,self.openGuideView))
+    
+    --其它礼包界面
+    GameDispatcher:addListener(EventNames.EVENT_OPEN_COMMONGIFT,handler(self,self.openCommonGiftView))
 end
 
 --打开战斗准备界面
@@ -142,6 +146,11 @@ end
 function UIController:openGuideView(parameters)
     local _guideUI = GuideView.new(parameters.data)
     _guideUI:show(UI_ZORDER.ALERT_ZORDER)
+end
+
+function UIController:openCommonGiftView(parameters)
+    local _giftUI = GiftUI.new(parameters.data)
+    _giftUI:show(UI_ZORDER.VIEW_ZORDER)
 end
 
 return UIController

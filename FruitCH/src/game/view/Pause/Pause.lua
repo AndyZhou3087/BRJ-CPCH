@@ -54,6 +54,7 @@ function Pause:ctor(parm)
         self.RestartBtn:setButtonEnabled(false)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.isFightOverBack = true
             GameController.setSignPop(false)
             GameController.resumeGame()
             app:enterSelectScene()
@@ -87,6 +88,8 @@ function Pause:ctor(parm)
         GameController.setSignPop(true)
         GameController.resumeGame()
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.isBackMap = true
+            GameController.isFightOverBack = true
             app:enterSelectScene()
         elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
             GameController.setMainSign(true)

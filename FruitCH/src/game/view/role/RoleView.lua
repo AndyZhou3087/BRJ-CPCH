@@ -74,6 +74,7 @@ function RoleView:initRole(parameters)
                 self:LoadRole(self.roleCount)
                 self:upgradeEffect()
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                SDKUtil.umentOnEvent(SDKUtil.EventId.RoleMax..self.roleCount)
             else
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
             end

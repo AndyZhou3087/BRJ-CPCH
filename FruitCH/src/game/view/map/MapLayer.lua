@@ -380,21 +380,18 @@ function MapLayer:onEnterFrame(dt)
     --跑了多少米换算公式
    self.pexel = self.pexel + MoveSpeed*0.1/(Pixel/Miles)
    GameDataManager.saveDayRunDistance(MoveSpeed*0.1/(Pixel/Miles))
-    Tools.printDebug("-----------多少米：",self.pexel)
+--    Tools.printDebug("-----------多少米：",self.pexel)
     
     self.miles = self.miles + MoveSpeed*0.1
 --    Tools.printDebug("-----------多少像素：",self.miles)
+    
+    --游戏内弹礼包
     if not DataPersistence.getAttribute("first_into") and GAME_TYPE_CONTROL == GAME_TYPE.LevelMode and not self.isGiftPop then
         if self.m_levelCon.giftGap and self.miles >= self.m_levelCon.giftGap then
             self.isGiftPop = true
-            if not GameDataManager.getRoleModle(GiftConfig[1].roleId) then
-                GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 1,isGame = true,animation = true})
-            elseif not GameDataManager.getRoleModle(GiftConfig[2].roleId) then
-                GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 2,isGame = true,animation = true})
-            elseif not GameDataManager.getRoleModle(GiftConfig[3].roleId) then
-                GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 3,isGame = true,animation = true})
-            elseif not GameDataManager.getRoleModle(GiftConfig[4].roleId) then
-                GameDispatcher:dispatch(EventNames.EVENT_OPEN_GIFTROLE,{giftId = 4,isGame = true,animation = true})
+            local id,gId,eid = GameController.getCurGiftId()
+            if GiftConfig[gId] then
+                GameDispatcher:dispatch(EventNames.EVENT_OPEN_COMMONGIFT,{giftId = gId,animation = true,isGame = true})
             end
     	end
     end

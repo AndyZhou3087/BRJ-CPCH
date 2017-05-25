@@ -24,6 +24,7 @@ function SignUI:ctor(parameters)
         AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Button_Click_Sound)
         Tools.printDebug("--------领取奖励")
         self:getReward()
+        SDKUtil.umentOnEvent(SDKUtil.EventId.Sign)
     end)
     
     local CloseBtn = cc.uiloader:seekNodeByName(self.content,"CloseBtn")

@@ -267,6 +267,9 @@ end
 
 --飞行障碍物执行飞行动画
 function Obstacle:executeMove(parameters)
+    if self:getPositionX()<display.cx then
+    	self:setPositionX(display.right)
+    end
     local _speed
     if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
     	_speed = SelectLevel[GameDataManager.getCurLevelId()].speed

@@ -65,6 +65,8 @@ function GameDataManager.init()
     GameDataManager.initDailyTaskData()
     --初始化角色礼包信息
     GameDataManager.initGiftData()
+    --初始化vip礼包信息
+    GameDataManager.initVipGiftData()
 end
 
 function GameDataManager.isMusicOpen()
@@ -244,6 +246,7 @@ function GameDataManager.useGoods(_goodsId)
                 end
                 GameDataManager.SaveData()
                 GameDispatcher:dispatch(EventNames.EVENT_PROP_UPDATE,{goodsId = _goodsId})
+                SDKUtil.umentUse(GoodsConfig[var.id].discrebe,1,GoodsConfig[var.id].cost.price)
                 return true
             else
                 return false
@@ -523,6 +526,7 @@ function GameDataManager.updateUserLv(_roleId,_lv)
         printf("chjh error id=%d的角色你暂未拥有，不能升级",_roleId)
     end
     GameDispatcher:dispatch(EventNames.EVENT_ROLEUPGRADE_UPDATE)
+    SDKUtil.umentOnEvent(SDKUtil.EventId.RoleUpgrade.._roleId.."_".._lv)
 end
 
 function GameDataManager.getRoleLevel(_roleId)
@@ -1040,7 +1044,7 @@ local gift={}
 
 --初始礼包信息
 function GameDataManager.initGiftData()
-    local giftArr = DataPersistence.getAttribute("gift")
+    local giftArr = DataPersistence.getAttribute("rolegift")
     for key, var in pairs(giftArr) do
         gift[var.giftId] = var
     end
@@ -1048,6 +1052,9 @@ end
 
 --购买礼包
 function GameDataManager.buyGift(giftId)
+    if gift[giftId] then
+    	return
+    end
     if not gift[giftId] then
     	gift[giftId] = {}
     end
@@ -1060,7 +1067,9 @@ function GameDataManager.buyGift(giftId)
     gift[giftId].giftId=giftId
     gift[giftId].dayDiamond = GiftConfig[giftId].reward.dayDiamond
     GameDataManager.addDiamond(gift[giftId].dayDiamond)
-    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..gift[giftId].dayDiamond.."钻石"})
+    Tools.delayCallFunc(0.5,function()
+        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..gift[giftId].dayDiamond.."钻石"})
+    end)
 end
 
 --领取礼包
@@ -1070,16 +1079,99 @@ function GameDataManager.updateGift()
         if var.year==_curTime.year and var.month==_curTime.month and var.day==_curTime.day then
         	
         else
-            var.year = _curTime.year
-            var.month = _curTime.month
-            var.day = _curTime.day
-            GameDataManager.addDiamond(var.dayDiamond)
-            GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..var.dayDiamond.."钻石"})
+            if var.year<_curTime.year or var.month<_curTime.month or var.day<_curTime.day then
+                var.year = _curTime.year
+                var.month = _curTime.month
+                var.day = _curTime.day
+                GameDataManager.addDiamond(var.dayDiamond)
+                GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..var.dayDiamond.."钻石"})
+                SDKUtil.umentBonus("Diamond",var.dayDiamond,var.dayDiamond,1)
+            end
         end
     end
 end
 --================================End==============================
 
+
+--=========================vip包月礼包相关=========================
+local vipGift={}
+local vipMouth = false
+
+--初始礼包信息
+function GameDataManager.initVipGiftData()
+    local vipGiftArr = DataPersistence.getAttribute("vipgift")
+    for key, var in pairs(vipGiftArr) do
+        vipGift[var.id] = var
+    end
+end
+
+--购买礼包
+function GameDataManager.buyVipGift(id)
+    if vipGift[id] then
+    	return
+    end
+    if not vipGift[id] then
+        vipGift[id] = {}
+    end
+    local _curTime = TimeUtil.getDate()
+    --购买日期记录
+    vipGift[id].year = _curTime.year
+    vipGift[id].month = _curTime.month
+    vipGift[id].day = _curTime.day
+    vipGift[id].count = 30
+    --领取id记录
+    vipGift[id].id=id
+    vipGift[id].dayDiamond = GiftConfig[id].dayDiamond
+    GameDataManager.addDiamond(vipGift[id].dayDiamond)
+    if GiftConfig[id].type == GIFT_TYPE.Vip then
+        GameDispatcher:dispatch(EventNames.EVENT_GIFT_UPDATE)
+    end
+    Tools.delayCallFunc(0.5,function()
+        GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..vipGift[id].dayDiamond.."钻石"})
+    end)
+end
+
+--领取礼包
+function GameDataManager.updateVipGift()
+    local _curTime = TimeUtil.getDate()
+    for key, var in pairs(vipGift) do
+        if vipMouth and var.count <= 0 then
+            var.count = var.count + 31
+        end
+        if var.count <= 0 then
+            var = {}
+            var = nil
+        else
+            if var.year==_curTime.year and var.month==_curTime.month and var.day==_curTime.day then
+
+            else
+                if var.year<_curTime.year or var.month<_curTime.month or var.day<_curTime.day then
+                    var.year = _curTime.year
+                    var.month = _curTime.month
+                    var.day = _curTime.day
+                    var.count = var.count - 1
+                    GameDataManager.addDiamond(var.dayDiamond)
+                    GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="已获得"..var.dayDiamond.."钻石"})
+                    SDKUtil.umentBonus("Diamond",var.dayDiamond,var.dayDiamond,1)
+                end
+            end
+        end
+    end
+end
+
+function GameDataManager.renewVip(isMonth)
+    vipMouth = isMonth
+end
+
+--是否购买vip礼包包月
+function GameDataManager.isMonthVip(id)
+    if not vipGift[id] then
+		return false
+	end
+	return true
+end
+
+--================================End==============================
 
 --游戏数据保存
 function GameDataManager.SaveData(parameters)
@@ -1146,7 +1238,14 @@ function GameDataManager.SaveData(parameters)
     for key, var in pairs(gift) do
         table.insert(giftArr,var)
     end
-    DataPersistence.updateAttribute("gift",giftArr)
+    DataPersistence.updateAttribute("rolegift",giftArr)
+    
+    --vip礼包
+    local vipGiftArr = {}
+    for key, var in pairs(vipGift) do
+        table.insert(vipGiftArr,var)
+    end
+    DataPersistence.updateAttribute("vipgift",vipGiftArr)
 
     --物品相关
     DataPersistence.updateAttribute("goods_list",goodsList)

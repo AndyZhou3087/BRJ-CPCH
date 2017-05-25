@@ -186,6 +186,7 @@ function Player:LevelWin()
         self:dispose()
         if DataPersistence.getAttribute("first_into") then
             DataPersistence.updateAttribute("first_into",false)
+            SDKUtil.umentOnEvent(SDKUtil.EventId.GuideFinish)
         	app:enterMainScene()
         else
             --弹结算界面
@@ -216,8 +217,8 @@ function Player:toPlay(_actionName,loop)
 end
 
 function Player:clickJumpfunc()
-    if self.playerY and self.m_jump and ((self.playerY<display.cy and self:getPositionY()>= display.cy+170-self:getAreaSize().height*0.4) or 
-        (self.playerY>display.cy and self:getPositionY()<= display.cy-210+self:getAreaSize().height*0.4)) then
+    if self.playerY and self.m_jump and ((self.playerY<display.cy and self:getPositionY()>= display.cy+150-self:getAreaSize().height*0.4) or 
+        (self.playerY>display.cy and self:getPositionY()<= display.cy-190+self:getAreaSize().height*0.4)) then
         self.clickJump = true
         Tools.printDebug("---------缓冲区域二次点击")
     else

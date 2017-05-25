@@ -102,7 +102,10 @@ function GameApp:ctor()
     DataPersistence.insertAttribute("getGold_total",0)
     
     --角色礼包每日领奖
-    DataPersistence.insertAttribute("gift",{})
+    DataPersistence.insertAttribute("rolegift",{})
+    
+    --vip礼包每日领奖
+    DataPersistence.insertAttribute("vipgift",{})
 end
 
 function GameApp:run()
@@ -160,7 +163,7 @@ function GameApp:alert(_params)
         self.m_alert = nil
     end
     if tolua.isnull(self.m_alert) then
-        self.m_alert = Alert.new(_params.type,_params.okStr,_params.cancleStr,_params.isClose)
+        self.m_alert = Alert.new(_params.type,_params.okStr,_params.cancleStr,_params.isClose,_params.pType)
         self.m_alert:show(UI_ZORDER.ALERT_ZORDER)
     end
     if _params.title then

@@ -95,8 +95,11 @@ function FightOver:initWidget()
         GameController.setSignPop(true)
         GameController.resumeGame()
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.isBackMap = true
+            GameController.isFightOverBack = true
             app:enterSelectScene()
         elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
+            GameController.setMainSign(true)
             app:enterMainScene()
         end
         self:toClose(true)
@@ -122,6 +125,9 @@ end
 
 --过关胜利界面
 function FightOver:toWin()
+    if not GameDataManager.getFightData(self.m_curLevel) then
+        SDKUtil.umentFinishLevel(self.m_curLevel)
+    end
     local _isFirst = GameDataManager.saveLevelData()  --存储关卡数据
     self.initGoldCount = GameDataManager.getGold()
     self.getGoldCount = 0
@@ -170,6 +176,7 @@ function FightOver:toWin()
         self.backBtn:setButtonEnabled(false)
         self.Continuebtn:setButtonEnabled(false)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.isFightOverBack = true
             if  self.m_curLevel < #SelectLevel then
                 GameController.setSignPop(false)
                 GameController.resumeGame()
@@ -208,6 +215,9 @@ function FightOver:toWin()
 end
 
 function FightOver:toFail()
+    if not GameDataManager.getFightData(self.m_curLevel) then
+        SDKUtil.umentFailLevel(self.m_curLevel)
+    end
     for var=1, 3 do
         self["star_"..var]:setButtonImage("disabled","ui/StarDark.png")
     end
@@ -222,6 +232,7 @@ function FightOver:toFail()
         self.backBtn:setButtonEnabled(false)
         self.Continuebtn:setButtonEnabled(false)
         if GAME_TYPE_CONTROL == GAME_TYPE.LevelMode then
+            GameController.isFightOverBack = true
             GameController.setSignPop(false)
             GameController.resumeGame()
             app:enterSelectScene()
@@ -234,6 +245,7 @@ function FightOver:toFail()
             self:toClose(true)
         elseif GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode then
             GameController.setSignPop(false)
+            GameController.setMainSign(true)
             GameController.resumeGame()
             app:enterMainScene()
             Tools.delayCallFunc(0.01,function()
@@ -248,8 +260,8 @@ function FightOver:toFail()
 end
 
 function FightOver:onEnterFrame(parameters)
-    self.initGoldCount = self.initGoldCount + 1
-    self.getGoldCount = self.getGoldCount + 1
+    self.initGoldCount = self.initGoldCount + 5
+    self.getGoldCount = self.getGoldCount + 5
     self.GetGold:setString("获得金币："..self.getGoldCount)
     self.m_goldCount:setString(self.initGoldCount)
     if self.getGoldCount >= GameDataManager.getAllFightCoins() then

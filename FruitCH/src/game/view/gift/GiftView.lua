@@ -9,15 +9,18 @@ function GiftView:ctor(parm)
     self.isGmae = parm.isGame
     self._id = parm.giftId
     
+    local config = GiftConfig[self._id]
+    if not config then
+        self:toClose(true)
+        return
+    end
+    
     local _mask = display.newColorLayer(cc.c4b(0,0,0,OPACITY)):addTo(self)
     if parm.isGame then
         GameController.pauseGame(true) --游戏暂停
     end
-
-    local config = GiftConfig[self._id]
-    if not config then
-    	return
-    end
+    
+    SDKUtil.umentOnEvent(SDKUtil.EventId.GiftPop..self._id)
 
     local GiftView = cc.uiloader:load("json/GiftView.json")
     self:addChild(GiftView)
@@ -73,11 +76,20 @@ function GiftView:ctor(parm)
     end
     
     local PriceLabel=cc.uiloader:seekNodeByName(GiftView,"PriceLabel")
-    if config.reward.diamond then
-        PriceLabel:setString("信息费"..config.price.."元")
-    end
-    if config.reward.dayDiamond then
-        PriceLabel:setString("信息费"..config.price.."元,购买后可每日领取钻石x"..config.reward.dayDiamond)
+    if GameController.buyOrReceive == 0 then
+        if config.reward.diamond then
+            PriceLabel:setString("信息费"..config.price.."元")
+        end
+        if config.reward.dayDiamond then
+            PriceLabel:setString("信息费"..config.price.."元,购买后可每日领取钻石x"..config.reward.dayDiamond)
+        end
+    else
+        if config.reward.diamond then
+            PriceLabel:setString("可获得角色和钻石x"..config.reward.diamond)
+        end
+        if config.reward.dayDiamond then
+            PriceLabel:setString("可每日领取钻石x"..config.reward.dayDiamond)
+        end
     end
     
     
@@ -99,6 +111,7 @@ function GiftView:ctor(parm)
                     GameDataManager.buyGift(self._id)
                 end
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                SDKUtil.umentOnEvent(SDKUtil.EventId.GiftBuy..self._id)
                 self:toClose(true)
             else
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
@@ -121,12 +134,17 @@ function GiftView:ctor(parm)
                     GameDataManager.buyGift(self._id)
                 end
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                SDKUtil.umentOnEvent(SDKUtil.EventId.GiftBuy..self._id)
                 self:toClose(true)
             else
                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
             end
         end})
     end)
+    local BuyGet=cc.uiloader:seekNodeByName(GiftView,"BuyGet")
+    BuyGet:setButtonEnabled(false) 
+    BuyGet:setButtonImage("disabled","ui/Mode_"..GameController.buyOrReceive..".png")
+    
     
     local CloseBtn=cc.uiloader:seekNodeByName(GiftView,"CloseBtn")
     CloseBtn:onButtonClicked(function(event)
@@ -135,7 +153,9 @@ function GiftView:ctor(parm)
     end)
     
     --给阴影层加监听
-    _mask:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+    local Panel_9 = cc.uiloader:seekNodeByName(GiftView,"Panel_9")
+    Panel_9:setTouchEnabled(true)
+    Panel_9:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
         if event.name == "began" then
             local payId = config.payId
             local oId = SDKUtil.getOrderId(payId)
@@ -149,6 +169,7 @@ function GiftView:ctor(parm)
                         GameDataManager.buyGift(self._id)
                     end
                     GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                    SDKUtil.umentOnEvent(SDKUtil.EventId.GiftBuy..self._id)
                     self:toClose(true)
                 else
                     GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})

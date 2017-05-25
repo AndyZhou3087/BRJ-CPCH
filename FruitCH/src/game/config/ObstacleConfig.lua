@@ -69,7 +69,7 @@ ObstacleConfig[5]=
         res = "ui/obscale_4.png",     --资源路径
         upRes = "ui/obscale_5.png",
         att = 1,
-        cutSpeed = 30,  --此为需要减去的速度值，比如原本32的速度，减去15，速度则为为17
+        cutSpeed = 40,  --此为需要减去的速度值，比如原本32的速度，减去15，速度则为为17
         length = 960,   --滑行距离，单位：px
     }
     

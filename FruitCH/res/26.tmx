@@ -38,17 +38,14 @@
   <object name="Common_copper.png" type="3" gid="6" x="110" y="460"/>
   <object name="Common_copper.png" type="3" gid="6" x="840" y="160"/>
   <object name="Common_copper.png" type="3" gid="6" x="460" y="460"/>
-  <object name="Common_copper.png" type="3" gid="6" x="85" y="410"/>
   <object name="Common_sliver.png" type="2" gid="7" x="910" y="160"/>
   <object name="Common_sliver.png" type="2" gid="7" x="610" y="160"/>
-  <object name="Common_sliver.png" type="2" gid="7" x="60" y="360"/>
   <object name="Common_sliver.png" type="2" gid="6" x="320" y="460"/>
   <object name="Common_sliver.png" type="2" gid="7" x="680" y="160"/>
   <object name="Common_sliver.png" type="2" gid="7" x="510" y="360"/>
   <object name="Common_copper.png" type="3" gid="6" x="485" y="410"/>
-  <object name="Common_copper.png" type="3" gid="6" x="35" y="310"/>
-  <object name="Common_gold.png" type="1" gid="3" x="10" y="260"/>
   <object name="Common_sliver.png" type="2" gid="7" x="560" y="260"/>
+  <object name="Common_gold.png" type="1" gid="3" x="40" y="460"/>
  </objectgroup>
  <objectgroup name="good">
   <object name="10" gid="8" x="585" y="210"/>

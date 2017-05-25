@@ -19,17 +19,17 @@
  </layer>
  <objectgroup name="gold">
   <object name="Common_gold.png" type="1" gid="4" x="205" y="460"/>
-  <object name="Common_gold.png" type="1" gid="4" x="285" y="460"/>
-  <object name="Common_gold.png" type="1" gid="4" x="365" y="460"/>
-  <object name="Common_gold.png" type="1" gid="4" x="395" y="410"/>
-  <object name="Common_gold.png" type="1" gid="4" x="425" y="360"/>
-  <object name="Common_gold.png" type="1" gid="4" x="455" y="310"/>
-  <object name="Common_gold.png" type="1" gid="4" x="545" y="160"/>
-  <object name="Common_gold.png" type="1" gid="4" x="625" y="160"/>
-  <object name="Common_gold.png" type="1" gid="4" x="705" y="160"/>
-  <object name="Common_gold.png" type="1" gid="4" x="785" y="160"/>
-  <object name="Common_gold.png" type="1" gid="4" x="515" y="210"/>
-  <object name="Common_gold.png" type="1" gid="4" x="485" y="260"/>
+  <object name="Common_copper.png" type="3" gid="4" x="285" y="460"/>
+  <object name="Common_copper.png" type="3" gid="4" x="365" y="460"/>
+  <object name="Common_copper.png" type="3" gid="4" x="395" y="410"/>
+  <object name="Common_copper.png" type="3" gid="4" x="425" y="360"/>
+  <object name="Common_copper.png" type="3" gid="4" x="455" y="310"/>
+  <object name="Common_copper.png" type="3" gid="4" x="545" y="160"/>
+  <object name="Common_copper.png" type="3" gid="4" x="625" y="160"/>
+  <object name="Common_copper.png" type="3" gid="4" x="705" y="160"/>
+  <object name="Common_copper.png" type="3" gid="4" x="785" y="160"/>
+  <object name="Common_copper.png" type="3" gid="4" x="515" y="210"/>
+  <object name="Common_copper.png" type="3" gid="4" x="485" y="260"/>
   <object name="Common_gold.png" type="1" gid="4" x="865" y="160"/>
  </objectgroup>
  <objectgroup name="good"/>

@@ -40,14 +40,14 @@ function AchieveQuestItem:initCotent(_type)
     RewardImg:setButtonEnabled(false)
     local Count = cc.uiloader:seekNodeByName(content,"Count")
     if self.m_con.rewardType == REWARD_TYPE.Gold then
-        RewardImg:setButtonImage("disabled","Common/Common_gold.png")
+        RewardImg:setButtonImage("disabled","gift/ShopGold_2.png")
         Count:setString(self.m_con.reward)
     elseif self.m_con.rewardType == REWARD_TYPE.Diamond then
-        RewardImg:setButtonImage("disabled","Common/Common_diamond.png")
+        RewardImg:setButtonImage("disabled","gift/ShopDiamond_2.png")
         Count:setString(self.m_con.reward)
     else
         local id = self.m_con.reward.goodsId
-        RewardImg:setButtonImage("disabled",GoodsConfig[id].res)
+        RewardImg:setButtonImage("disabled",GoodsConfig[id].small)
         Count:setString(self.m_con.reward.count)
     end
     

@@ -9,7 +9,7 @@ local Dialog = class("Dialog",BaseUI)
 @param2:确定按钮文字
 @Param3:取消按钮文字
 ]]
-function Dialog:ctor(_type,_okStr,_cancleStr,_isClose)
+function Dialog:ctor(_type,_okStr,_cancleStr,_isClose,_pType)
     Dialog.super.ctor(self)
 
     self.m_type = _type or Alert_Type.Type_One
@@ -27,6 +27,13 @@ function Dialog:ctor(_type,_okStr,_cancleStr,_isClose)
 
     self.m_content = cc.uiloader:seekNodeByName(_dialog,"Label_6")      --提示内容
     self.m_content:setString("是否确认购买？")
+    self.p_content = cc.uiloader:seekNodeByName(_dialog,"Label_8")
+    self.p_content:setString("是否确认购买？")
+    self.p_content:setVisible(false)
+    if _pType == 1 then
+    	self.m_content:setVisible(false)
+    	self.p_content:setVisible(true)
+    end
 
     local _leftBtn = cc.uiloader:seekNodeByName(_dialog,"Button_7")   --左边按钮
     _leftBtn:setVisible(false)

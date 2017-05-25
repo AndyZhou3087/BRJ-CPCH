@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="960" tileheight="540">
+ <tileset firstgid="1" name="GameBg" tilewidth="960" tileheight="540">
+  <image source="Common/GameBg.jpg" width="1060" height="540"/>
+ </tileset>
+ <tileset firstgid="2" name="obscale_1" tilewidth="62" tileheight="80">
+  <image source="ui/obscale_1.png" width="62" height="80"/>
+ </tileset>
+ <tileset firstgid="3" name="obscale_2" tilewidth="60" tileheight="62">
+  <image source="ui/obscale_2.png" width="60" height="62"/>
+ </tileset>
+ <tileset firstgid="4" name="Common_copper" tilewidth="40" tileheight="40">
+  <image source="Common/Common_copper.png" width="40" height="40"/>
+ </tileset>
+ <tileset firstgid="5" name="Common_sliver" tilewidth="40" tileheight="40">
+  <image source="Common/Common_sliver.png" width="40" height="40"/>
+ </tileset>
+ <tileset firstgid="6" name="Common_gold" tilewidth="40" tileheight="40">
+  <image source="Common/Common_gold.png" width="40" height="40"/>
+ </tileset>
+ <layer name="stage1" width="1" height="1">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgAAAACAAC
+  </data>
+ </layer>
+ <objectgroup name="gold">
+  <object name="Common_sliver.png" type="2" gid="5" x="850" y="400"/>
+  <object name="Common_copper.png" type="3" gid="4" x="790" y="400"/>
+  <object name="Common_copper.png" type="3" gid="4" x="100" y="220"/>
+  <object name="Common_copper.png" type="3" gid="4" x="160" y="220"/>
+  <object name="Common_copper.png" type="3" gid="4" x="280" y="220"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="340" y="220"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="220" y="220"/>
+  <object name="Common_copper.png" type="3" gid="4" x="730" y="400"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="670" y="400"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="400" y="220"/>
+  <object name="Common_gold.png" type="1" gid="4" x="610" y="400"/>
+  <object name="Common_gold.png" type="1" gid="6" x="40" y="220"/>
+  <object name="Common_gold.png" type="1" gid="6" x="910" y="400"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="550" y="400"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="730" y="460"/>
+  <object name="Common_copper.png" type="3" gid="4" x="790" y="460"/>
+  <object name="Common_gold.png" type="1" gid="6" x="550" y="460"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="850" y="460"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="910" y="460"/>
+  <object name="Common_copper.png" type="3" gid="4" x="670" y="460"/>
+  <object name="Common_copper.png" type="3" gid="4" x="610" y="460"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="40" y="160"/>
+  <object name="Common_gold.png" type="1" gid="4" x="100" y="160"/>
+  <object name="Common_copper.png" type="3" gid="4" x="280" y="160"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="160" y="160"/>
+  <object name="Common_copper.png" type="3" gid="4" x="220" y="160"/>
+  <object name="Common_sliver.png" type="2" gid="5" x="340" y="160"/>
+  <object name="Common_gold.png" type="1" gid="6" x="400" y="160"/>
+ </objectgroup>
+ <objectgroup name="good"/>
+ <objectgroup name="obstacle"/>
+</map>

@@ -28,27 +28,19 @@
  </layer>
  <objectgroup name="gold">
   <object name="Common_copper.png" type="3" gid="5" x="410" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="100" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="270" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="270" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="190" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="240" y="360"/>
   <object name="Common_copper.png" type="3" gid="5" x="460" y="460"/>
-  <object name="Common_copper.png" type="3" gid="5" x="100" y="410"/>
   <object name="Common_sliver.png" type="2" gid="6" x="410" y="410"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="150" y="410"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="220" y="410"/>
-  <object name="Common_gold.png" type="1" gid="7" x="150" y="360"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="240" y="410"/>
   <object name="Common_gold.png" type="1" gid="7" x="460" y="410"/>
-  <object name="Common_gold.png" type="1" gid="7" x="220" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="700" y="410"/>
+  <object name="Common_gold.png" type="1" gid="7" x="190" y="360"/>
+  <object name="Common_copper.png" type="3" gid="5" x="720" y="410"/>
   <object name="Common_copper.png" type="3" gid="5" x="510" y="460"/>
   <object name="Common_copper.png" type="3" gid="5" x="510" y="410"/>
-  <object name="Common_copper.png" type="3" gid="5" x="650" y="360"/>
-  <object name="Common_sliver.png" type="2" gid="6" x="650" y="410"/>
-  <object name="Common_gold.png" type="1" gid="7" x="700" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="820" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="770" y="360"/>
-  <object name="Common_copper.png" type="3" gid="5" x="820" y="410"/>
-  <object name="Common_copper.png" type="3" gid="5" x="770" y="410"/>
+  <object name="Common_copper.png" type="3" gid="5" x="670" y="360"/>
+  <object name="Common_sliver.png" type="2" gid="6" x="670" y="410"/>
+  <object name="Common_gold.png" type="1" gid="7" x="720" y="360"/>
  </objectgroup>
  <objectgroup name="good"/>
  <objectgroup name="obstacle">

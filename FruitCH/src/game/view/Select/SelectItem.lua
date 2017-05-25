@@ -39,8 +39,9 @@ end
 function SelectItem:initLevelVo(level)
     GameDataManager.setCurLevelId(level,level)
     GameDispatcher:dispatch(EventNames.EVENT_OPEN_READY,GAME_TYPE.LevelMode)
---    GameDataManager.generatePlayerVo()  --产生新的角色数据对象
---    app:enterGameScene()
+    if not GameDataManager.getFightData(level) then
+        SDKUtil.umentStartLevel(level)
+    end
 end
 
 function SelectItem:initLevelData(level)

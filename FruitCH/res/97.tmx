@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="960" tileheight="540">
+ <tileset firstgid="1" name="GameBg" tilewidth="960" tileheight="540">
+  <image source="Common/GameBg.jpg" width="1060" height="540"/>
+ </tileset>
+ <tileset firstgid="2" name="obscale_1" tilewidth="62" tileheight="80">
+  <image source="ui/obscale_1.png" width="62" height="80"/>
+ </tileset>
+ <tileset firstgid="3" name="obscale_2" tilewidth="60" tileheight="62">
+  <image source="ui/obscale_2.png" width="60" height="62"/>
+ </tileset>
+ <tileset firstgid="4" name="Prop_2" tilewidth="48" tileheight="49">
+  <image source="ui/Prop_2.png" width="48" height="49"/>
+ </tileset>
+ <tileset firstgid="5" name="Common_copper" tilewidth="40" tileheight="40">
+  <image source="Common/Common_copper.png" width="40" height="40"/>
+ </tileset>
+ <tileset firstgid="6" name="Common_sliver" tilewidth="40" tileheight="40">
+  <image source="Common/Common_sliver.png" width="40" height="40"/>
+ </tileset>
+ <tileset firstgid="7" name="Common_gold" tilewidth="40" tileheight="40">
+  <image source="Common/Common_gold.png" width="40" height="40"/>
+ </tileset>
+ <tileset firstgid="8" name="obscale_3" tilewidth="62" tileheight="70">
+  <image source="ui/obscale_3.png" width="62" height="70"/>
+ </tileset>
+ <tileset firstgid="9" name="Prop_3" tilewidth="53" tileheight="44">
+  <image source="ui/Prop_3.png" width="53" height="44"/>
+ </tileset>
+ <layer name="stage1" width="1" height="1">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgAAAACAAC
+  </data>
+ </layer>
+ <objectgroup name="gold"/>
+ <objectgroup name="good">
+  <object name="8" gid="9" x="400" y="310"/>
+ </objectgroup>
+ <objectgroup name="obstacle">
+  <object name="2" gid="2" x="476" y="509"/>
+  <object name="2" gid="2" x="172" y="509"/>
+  <object name="2" gid="1073741826" x="520" y="157"/>
+  <object name="2" gid="1073741826" x="620" y="157"/>
+  <object name="2" gid="1073741826" x="720" y="157"/>
+ </objectgroup>
+</map>

@@ -112,6 +112,7 @@ function ShopItemUI:initContent(shopConfig,pos)
                         if GameDataManager.getDiamond() >= shopConfig.price.rate then
                             GameDataManager.costDiamond(shopConfig.price.rate)
                             GameDataManager.addGold(shopConfig.content)
+                            SDKUtil.umentBuy("Gold",shopConfig.content,shopConfig.price.rate)
                         else
                             GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text="钻石不足"})
                         end
@@ -123,7 +124,9 @@ function ShopItemUI:initContent(shopConfig,pos)
                         SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
                             if SDKUtil.PayResult.Success == _res then
                                 GameDataManager.addDiamond(shopConfig.content)
+                                SDKUtil.umentPay(shopConfig.price.rate,shopConfig.content)
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                                SDKUtil.umentOnEvent(SDKUtil.EventId.DiamondBuy..shopConfig.id)
                             else
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
                             end
@@ -160,7 +163,9 @@ function ShopItemUI:initContent(shopConfig,pos)
                         SDKUtil.toPay({goodsId=payId,orderId=oId,callback=function(_res)
                             if SDKUtil.PayResult.Success == _res then
                                 GameDataManager.addPower(shopConfig.content)
+                                SDKUtil.umentPayEx(shopConfig.price.rate,"Power",shopConfig.content,5)
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买成功"})
+                                SDKUtil.umentOnEvent(SDKUtil.EventId.PowerBuy)
                             else
                                 GameDispatcher:dispatch(EventNames.EVENT_FLY_TEXT,{text ="购买失败"})
                             end
@@ -177,7 +182,8 @@ function ShopItemUI:initContent(shopConfig,pos)
             end,
             cancleFunc=function(parameters)
             end,
-            isClose = true
+            isClose = true,
+            pType = 1,
         })
     end)
 

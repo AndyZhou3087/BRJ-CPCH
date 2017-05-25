@@ -31,6 +31,9 @@ EventNames.EVENT_OPEN_SIGNUI = "event_open_signui"
 --角色礼包界面
 EventNames.EVENT_OPEN_GIFTROLE = "event_open_giftrole"
 
+--其它礼包界面
+EventNames.EVENT_OPEN_COMMONGIFT = "event_open_commongift"
+
 --[[
 裁剪（遮罩）
 mould: "ui/uiImg/xxx.png"  裁剪模板(图片) 
@@ -96,6 +99,9 @@ EventNames.EVENT_ACHIEVE_UPDATE = "event_achieve_update"
 
 --角色升级提示刷新
 EventNames.EVENT_ROLEUPGRADE_UPDATE = "event_roleupgrade_update"
+
+--主界面vip礼包更新
+EventNames.EVENT_GIFT_UPDATE = "event_gift_update"
 
 --====================战斗内
 
