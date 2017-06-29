@@ -1,15 +1,15 @@
 --[[
 战斗场景
 ]]
---local MapView = require("game.view.map.MapView")
---local MapLayer = require("game.view.map.MapLayer")
+local MapView = require("game.view.map.MapView")
+local MapLayer = require("game.view.map.MapLayer")
 local scheduler = require("framework.scheduler")
 
 local GameScene = class("GameScene", function()
     return display.newPhysicsScene("GameScene")
 end)
 
-local Gravity = 0    --重力
+local Gravity = -315    --重力
 
 --@param1:战斗场景资源加载完成后的回调方法
 function GameScene:ctor(_completeFunc)
@@ -46,13 +46,11 @@ end
 
 function GameScene:onEnter()
 
+    self.m_map = MapLayer.new()
+    self:addChild(self.m_map)
 
---    self.m_map = MapLayer.new()
---    self:addChild(self.m_map)
---    GameController.setCurMapLayer(self.m_map)
-
---    self.m_fightView = MapView.new()
---    self:addChild(self.m_fightView,UI_ZORDER.VIEW_ZORDER)
+    self.m_fightView = MapView.new()
+    self:addChild(self.m_fightView,UI_ZORDER.VIEW_ZORDER)
 
 --    AudioManager.playGroundMusic(AudioManager.Ground_Music_Type.Fight_Bg,true)
     
@@ -60,9 +58,9 @@ function GameScene:onEnter()
 --        GameDispatcher:dispatch(EventNames.EVENT_GUIDE_EXPLAIN,{animation = true})
 --    end
 
---    Tools.delayCallFunc(0.001,function()
---        self.m_map:initPhyPos()
---    end)
+    Tools.delayCallFunc(0.001,function()
+        self.m_map:initPlayerPos()
+    end)
 
     self.m_handlerStart=Tools.delayCallFunc(0.1,handler(self,self.updateStart))
 

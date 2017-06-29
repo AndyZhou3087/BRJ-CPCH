@@ -8,7 +8,7 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 function FlyText:ctor(parameters)
     FlyText.super.ctor(self)
 
-    local successfulLab=display.newTTFLabel({text=parameters.text,size = 30,color=cc.c3b(255,255,255)}):addTo(self,2)
+    local successfulLab=display.newTTFLabel({text=parameters.text,size = 42,color=cc.c3b(255,255,255)}):addTo(self,2)
     successfulLab:setPosition(display.cx,display.cy)
     local _textSize = successfulLab:getCascadeBoundingBox().size
 

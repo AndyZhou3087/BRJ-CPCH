@@ -15,29 +15,22 @@ function GoodsElement:ctor(_id)
      
     self.m_isAttract=false
     self.m_isRetain=false
-    
-    --特效
---    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("effect/daoju0.png", "effect/daoju0.plist" , "effect/daoju.ExportJson" )
---    local effect = ccs.Armature:create("daoju")
---    self:addChild(effect)
---    effect:getAnimation():playWithIndex(0)
---    effect=cc.POSITION_TYPE_GROUPED
-    --背景图标
-    local bg = display.newSprite("ui/Prop_bg.png"):addTo(self)
-    bg:setPosition(cc.p(23,22))
+
+--    --背景图标
+--    local bg = display.newSprite("ui/Prop_bg.png"):addTo(self)
+--    bg:setPosition(cc.p(23,22))
 
     self.m_img = PhysicSprite.new(self.m_goodsCon.res):addTo(self)
-    self.m_img:setAnchorPoint(cc.p(0,0))
-    self:addBody(cc.p(20,25))
+    self:addBody(cc.p(0,0))
 
 end  
 
 function GoodsElement:addBody(_offset)
     local size=self.m_img:getCascadeBoundingBox()
     self.m_body=cc.PhysicsBody:createBox(size,Special_MATERIAL,_offset)
-    self.m_body:setCategoryBitmask(0x1111)
+    self.m_body:setCategoryBitmask(0x01)
     self.m_body:setContactTestBitmask(0x1111)
-    self.m_body:setCollisionBitmask(0x0000)
+    self.m_body:setCollisionBitmask(0x03)
     self.m_body:setDynamic(false)
     self.m_body:setTag(ELEMENT_TAG.GOOD_TAG)
     self:setPhysicsBody(self.m_body)
@@ -68,7 +61,7 @@ end
 
 --被碰触
 function GoodsElement:collision(_isAtracted)
-    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Get_Prop_Sound)
+--    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Get_Prop_Sound)
     GameDataManager.useGoodsExp(self.m_goodsId)
 
     self:dispose()

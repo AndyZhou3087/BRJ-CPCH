@@ -5,6 +5,7 @@ local GameDataManager = {}
 
 local ModleVo = require("game.data.ModleVo")
 local GoodsVo = require("game.data.GoodsVo")
+local SceneVo = require("game.data.SceneVo")
 local playerVo = clone(require("game.data.PlayerVo"))
 
 local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
@@ -17,21 +18,29 @@ local cacheGoodsDic = {}
 --===================玩家数据相关=========================
 local userData = {}
 local modleDic = {}
+local sceneDic = {}
 local powerInfo={}   --体力恢复信息
 local music=false
 local sound=false
 local curRoleID = 0 --当前出战角色id
+local curSceneID = 0 --当前出战场景
 
 local bossData = {}
 
 --初始化玩家信息
 function GameDataManager.initUserData()
-    userData.gold = DataPersistence.getAttribute("user_gold")    --金币
     userData.diamond = DataPersistence.getAttribute("user_diamond") --钻石
-    userData.points = DataPersistence.getAttribute("user_points")  --玩家积分
+    userData.record = DataPersistence.getAttribute("bestscore")      --记录初始化
+    
     local modleList = DataPersistence.getAttribute("modle_list")  --角色皮肤列表
     for key, var in pairs(modleList) do
         modleDic[var.roleId] = var
+    end
+    
+    curSceneID = DataPersistence.getAttribute("cur_sceneID")
+    local sceneList = DataPersistence.getAttribute("scene_list")  --场景列表
+    for key, var in pairs(sceneList) do
+        sceneDic[var.sceneId] = var
     end
 
     music=DataPersistence.getAttribute("music")
@@ -48,9 +57,9 @@ function GameDataManager.initUserData()
     GameDataManager.initPlayerVo()
     --初始化物品数据
     GameDataManager.initGoodsData()
+    --初始化房间楼层权重
+    GameDataManager.initRoomWeight()
 
-    --初始化签到信息
---    GameDataManager.initSignData()
     --初始化礼包信息
 --    GameDataManager.initGift()
 
@@ -74,27 +83,6 @@ function GameDataManager.setSound(isOpen)
     sound=isOpen
 end
 
---扣除金币
---@return:true扣除成功，false扣除失败
-function GameDataManager.costGold(_value)
-    if userData.gold >= _value then
-        userData.gold = userData.gold - _value
---        GameDispatcher:dispatch(EventNames.EVENT_GOLD_CHANGE)
-        return true
-    else
-        return false
-    end
-end
---增加金币
-function GameDataManager.addGold(_value)
-    userData.gold = userData.gold + _value
---    GameDispatcher:dispatch(EventNames.EVENT_GOLD_CHANGE)
-    return true
-end
---获取金币
-function GameDataManager.getGold()
-    return userData.gold
-end
 --扣除钻石
 --@return:true扣除成功，false扣除失败
 function GameDataManager.costDiamond(_value)
@@ -102,7 +90,7 @@ function GameDataManager.costDiamond(_value)
         userData.diamond = userData.diamond - _value
         --及时存档
         GameDataManager.saveGameData()
---        GameDispatcher:dispatch(EventNames.EVENT_DIAMOND_CHANGE)
+        GameDispatcher:dispatch(EventNames.EVENT_DIAMOND_CHANGE)
         return true
     else
         return false
@@ -113,7 +101,7 @@ function GameDataManager.addDiamond(_value)
     userData.diamond = userData.diamond + _value
     --及时存档
     GameDataManager.saveGameData()
---    GameDispatcher:dispatch(EventNames.EVENT_DIAMOND_CHANGE)
+    GameDispatcher:dispatch(EventNames.EVENT_DIAMOND_CHANGE)
     return true
 end
 --获取钻石
@@ -129,99 +117,63 @@ function GameDataManager.unLockModle(_roleId)
     local _modleVo = clone(ModleVo)
     _modleVo.roleId = _roleId
     modleDic[_roleId] = _modleVo
-    _modleVo.level = GameDataManager.updateUserLv(_roleId,RoleConfig[_roleId].initLv)
+    GameDataManager.setCurFightRole(_roleId)
+    GameDispatcher:dispatch(EventNames.EVENT_UPDATE_ROLE,{id = _roleId})
 end
 
 --是否拥有相应角色
 function GameDataManager.getRoleModle(_roleId)
     return modleDic[_roleId]
 end
---检测是否有新的解锁皮肤
-function GameDataManager.toCheckLockedModle(_lv)
-    for key, var in pairs(RoleConfig) do
-        if (not GameDataManager.getRoleModle(var.id)) and (_lv>=var.openLv) then
-            GameDataManager.unLockModle(var.id)
-        end
-    end
-end
 
---增加积分
-function GameDataManager.addPoints(_value)
-    userData.points = userData.points + _value
---    GameDispatcher:dispatch(EventNames.EVENT_POINTS_CHANGE)
+local points_game = 1
+--增加分数(游戏内)(分数即为楼层)
+function GameDataManager.setPoints(_value)
+    points_game = _value
+    GameDispatcher:dispatch(EventNames.EVENT_UPDATE_FLOOR)
     return true
 end
 
---扣除积分
---@return:true扣除成功，false扣除失败
-function GameDataManager.costPoints(_value)
-    if userData.points >= _value then
-        userData.points = userData.points - _value
---        GameDispatcher:dispatch(EventNames.EVENT_POINTS_CHANGE)
-        return true
-    else
-        return false
-    end
+--重置游戏分数
+function GameDataManager.resetPoints()
+    points_game = 1
+    GameDispatcher:dispatch(EventNames.EVENT_UPDATE_FLOOR)
 end
---获取积分
+
+--获取分数
 function GameDataManager.getPoints()
-    return userData.points
+    return points_game
 end
 
---===================End=========================
-
---===================签到信息=========================
-local signList={}
-
-function GameDataManager.reward(parameters)
-    signList.curTable.m_rand = math.random(1,table.getn(SignReward))
+--保存最佳分数
+function GameDataManager.saveRecord(_record)
+    userData.record = _record
+    GameDispatcher:dispatch(EventNames.EVENT_UPDATE_BEST)
+    GameDataManager.saveGameData()
+    Tools.printDebug("保存记录",_record)
 end
 
-function GameDataManager.getReward(parameters)
-    return signList.curTable.m_rand
+--得到最高记录
+function GameDataManager.getRecord()
+    return userData.record
 end
 
---初始化签到信息
-function GameDataManager.initSignData()
-    signList.curTable = DataPersistence.getAttribute("user_sign")
-    signList.curTable.m_rand = DataPersistence.getAttribute("sign_reward")
+local diamond_game = 0
+--添加游戏中得到的钻石(当前游戏)
+function GameDataManager.addGameDiamond(_dia)
+    diamond_game= diamond_game+_dia
+    return true
 end
 
-function GameDataManager.resetSign()   --签到7天重置
-    if signList.curTable.signs == 7 and (signList.curTable.day~=TimeUtil.getDate().day or signList.curTable.month~=TimeUtil.getDate().month or signList.curTable.year~=TimeUtil.getDate().year) then
-        signList.curTable.day = TimeUtil.getDate().day
-        signList.curTable.month = TimeUtil.getDate().month
-        signList.curTable.year = TimeUtil.getDate().year
-        signList.curTable.signs = 0
-        GameDataManager.reward()
-        return true
-else
-    return false
-end
-end
---当天是否签到
-function GameDataManager.isDateSign()
-    if signList.curTable.day==TimeUtil.getDate().day and signList.curTable.month==TimeUtil.getDate().month and signList.curTable.year==TimeUtil.getDate().year then
-        return true
-    else
-
-        --       GameDataManager.setWarning("sign")
-        GameDispatcher:dispatch(EventNames.EVENT_UPDATE_SIGNSTART)
-        return false
-    end
-end
---获得签到的次数
-function GameDataManager.getSignCount()
-    return signList.curTable.signs
+--返回游戏中得到的钻石
+function GameDataManager.getGameDiamond()
+    return diamond_game
 end
 
---更新签到
-function GameDataManager.updateSign()
-    signList.curTable.day = TimeUtil.getDate().day
-    signList.curTable.month = TimeUtil.getDate().month
-    signList.curTable.year = TimeUtil.getDate().year
-    signList.curTable.signs = signList.curTable.signs+1
+function GameDataManager.resetGameDiamond()
+    diamond_game = 0
 end
+
 --===================End=========================
 
 
@@ -230,28 +182,7 @@ end
 function GameDataManager.initPlayerVo()
     local roleConfig = RoleConfig[curRoleID]
     if roleConfig then
-        local _lv = GameDataManager.getRoleModle(curRoleID).roleLv
-        playerVo.m_roleId = curRoleID
-        playerVo.m_level = _lv
         playerVo.m_lifeNum = roleConfig.lifeNum
-        playerVo.m_hp = roleConfig.hp     --血量
-        playerVo.m_att = roleConfig.att           -- 攻击力
-        playerVo.m_score_rate = GameDataManager.getScoreRate(curRoleID,_lv)   --分数加成
-        playerVo.m_coin_rate = GameDataManager.getMoneyRate(curRoleID,_lv)    --金币加成
-        playerVo.m_jump = roleConfig.jump --弹跳值
-        playerVo.m_damageArea = roleConfig.damageArea    --破坏面积（以角色中心点向外扩散的矩形区域长宽半径）
-        playerVo.m_sprintTime = roleConfig.sprintTime   --冲刺时间
-        playerVo.m_magnetTime = roleConfig.magnetTime   --磁铁时间
-        playerVo.m_invincibleTime = roleConfig.invincibleTime   --无敌时间
-        playerVo.m_rocketTime = roleConfig.rocketTime
-        playerVo.m_superRocketTime = roleConfig.superRocketTime
-        playerVo.m_leisheqiang = roleConfig.role_qiang  --镭射枪
-        playerVo.m_daibuji = roleConfig.role_daibuji  --代步机
-        playerVo.m_roleArm  = roleConfig.armatureName   --角色原动画
-        playerVo.m_sprintTimeAdd= roleConfig.sprintTimeAdd   --冲刺时间延长 (s)
-        playerVo.m_invincibleTimeAdd=roleConfig.invincibleTimeAdd   --无敌时间延长(s)
-        playerVo.m_protectTimeAdd=roleConfig.protectTimeAdd       --护盾时间延长(s)
-        playerVo.m_speed = roleConfig.speed    --移动速度
     end
 end
 
@@ -317,6 +248,36 @@ function GameDataManager.getLife()
 end
 --===================End=========================
 
+--===================场景信息相关=========================
+--解锁新场景
+function GameDataManager.unLockScene(_sceneId)
+    if sceneDic[_sceneId] then
+        return
+    end
+    local _sceneVo = clone(SceneVo)
+    _sceneVo.sceneId = _sceneId
+    sceneDic[_sceneId] = _sceneVo
+    GameDataManager.setCurFightScene(_sceneId)
+    GameDispatcher:dispatch(EventNames.EVENT_UPDATE_SCENE,{id = _sceneId})
+end
+
+--是否拥有相应场景
+function GameDataManager.getSceneModle(_sceneId)
+    return sceneDic[_sceneId]
+end
+
+--设置当前出战场景id
+function GameDataManager.setCurFightScene(_sceneId)
+    curSceneID = _sceneId
+end
+
+--获取当前出战场景id
+function GameDataManager.getFightScene()
+    return curSceneID
+end
+
+--===================End=========================
+
 --===================使用道具相关=========================
 local goodsList = {}
 --初始化物品信息
@@ -367,21 +328,23 @@ end
 function GameDataManager.useGoodsExp(_goodsId)
     local goodsCon = GoodsConfig[_goodsId]
     if goodsCon then
-        if goodsCon.type == GoodsType.Magnet_Type then
-            print("chjh 处理磁铁类型道具")
-            GameDispatcher:dispatch(EventNames.EVENT_USE_MAGNATE,{time=goodsCon.time+GameDataManager.getPlayerVo().m_magnetTime,radius=goodsCon.radius})
-        elseif goodsCon.type == GoodsType.Defend_Type then
-            print("chjh 处理防护罩类型道具")
-            GameDispatcher:dispatch(EventNames.EVENT_USE_SHIELD,{type=2,time=goodsCon.time,damageArea=goodsCon.damageArea})
-        elseif goodsCon.type == GoodsType.Drink_Type then
-            print("chjh 处理化学饮料类型道具")
-            GameDispatcher:dispatch(EventNames.EVENT_USE_DRINK,{time=goodsCon.time+GameDataManager.getPlayerVo().m_invincibleTime,att=goodsCon.att,damageArea=goodsCon.damageArea})
-        elseif goodsCon.type == GoodsType.Thor_Type then
-            print("chjh 处理雷神之锤类型道具")
+        if goodsCon.type == GOODS_TYPE.Magnet then
+            Tools.printDebug("brj 处理磁铁类型道具")
+--            GameDispatcher:dispatch(EventNames.EVENT_USE_MAGNATE,{time=goodsCon.time+GameDataManager.getPlayerVo().m_magnetTime,radius=goodsCon.radius})
+        elseif goodsCon.type == GOODS_TYPE.Phantom then
+            Tools.printDebug("brj 幻影药水")
+--            GameDispatcher:dispatch(EventNames.EVENT_USE_SHIELD,{type=2,time=goodsCon.time,damageArea=goodsCon.damageArea})
+        elseif goodsCon.type == GOODS_TYPE.Rocket then
+            Tools.printDebug("brj 冲刺火箭")
+--            GameDispatcher:dispatch(EventNames.EVENT_USE_DRINK,{time=goodsCon.time+GameDataManager.getPlayerVo().m_invincibleTime,att=goodsCon.att,damageArea=goodsCon.damageArea})
+        elseif goodsCon.type == GOODS_TYPE.SlowPotion then
+            Tools.printDebug("brj 迟钝药水")
+        elseif goodsCon.type == GOODS_TYPE.TokenAdd then
+            Tools.printDebug("brj 获得一代币")
         end
         return true
     else
-        printf("chjh error 找不到id=%d的道具配置",_goodsId)
+        printf("brj error 找不到id=%d的道具配置",_goodsId)
         return false
     end
 end
@@ -396,6 +359,98 @@ function GameDataManager.getGoodsNum(_goodsId)
     return 0
 end
 --=======================end==============================
+
+--======================随机获取房间类型======================
+local configArrD = {}
+local _weightD = 0
+local configArrC = {}
+local _weightC = 0
+local configArrB = {}
+local _weightB = 0
+local configArrA = {}
+local _weightA = 0
+local configArrS = {}
+local _weightS = 0
+local configArrR = {}
+local _weightR = 0
+local configArrF = {}
+local _weightF = 0
+function GameDataManager.initRoomWeight()
+    configArrD,_weightD = GameDataManager.getSorting(MapGroupConfigD)
+    configArrC,_weightC = GameDataManager.getSorting(MapGroupConfigC)
+    configArrB,_weightB = GameDataManager.getSorting(MapGroupConfigB)
+    configArrA,_weightA = GameDataManager.getSorting(MapGroupConfigA)
+    configArrS,_weightS = GameDataManager.getSorting(MapGroupConfigS)
+    configArrR,_weightR = GameDataManager.getSorting(MapRunningConfig)
+    configArrF,_weightF = GameDataManager.getSorting(MapFirstGroup)
+end
+
+--组合排序
+function GameDataManager.getSorting(arr)
+    local configArr = {}
+    local _weight = 0
+    for key, var in pairs(arr) do
+        table.insert(configArr,var)
+    end
+    for vr=1, #configArr do
+        for var=vr+1, #configArr do
+            if configArr[vr].probability > configArr[var].probability then
+                local temp
+                temp = configArr[vr]
+                configArr[vr] = configArr[var]
+                configArr[var] = temp
+            end
+        end
+    end
+    for var=1, #arr do
+        _weight = _weight + arr[var].probability
+    end
+    return configArr,_weight
+end
+
+--按权重抽取一组数据
+function GameDataManager.getDataIdByWeight(_type)
+    local _weight,configArr
+    if not _type then
+        configArr = configArrR
+        _weight = _weightR
+    else
+        if _type == Map_Grade.floor_D then
+            configArr = configArrD
+            _weight = _weightD
+        elseif _type == Map_Grade.floor_C then
+            configArr = configArrC
+            _weight = _weightC
+        elseif _type == Map_Grade.floor_B then
+            configArr = configArrB
+            _weight = _weightB
+        elseif _type == Map_Grade.floor_A then
+            configArr = configArrA
+            _weight = _weightA
+        elseif _type == Map_Grade.floor_S then
+            configArr = configArrS
+            _weight = _weightS
+        else
+            configArr = configArrF
+            _weight = _weightF
+        end 
+    end
+    local _wegt = math.random(1,_weight)
+    Tools.printDebug("brj Hopscotch 随机权重值：",_wegt,_weight)
+    local t = 0
+    --得到当前id
+    local id = 0
+    for var=1, #configArr do
+        t = t + configArr[var].probability
+        if t >= _wegt then
+            id = configArr[var]._id
+            return id
+        end
+    end
+    return id
+end
+
+--========================end==============================
 
 --=======================礼包相关==============================
 --礼包数据初始化
@@ -472,7 +527,7 @@ end
 --领取vip礼包
 function GameDataManager.toGetVipGift()
     if VIPGiftData.lastCount <= 0 then
-        print("领取次数已经用完")
+        Tools.printDebug("领取次数已经用完")
         return false
     end
     local curDate = TimeUtil.getDate()
@@ -523,18 +578,22 @@ function GameDataManager.saveGameData()
 --        return
 --    end
 
-    DataPersistence.updateAttribute("user_gold",userData.gold)
     DataPersistence.updateAttribute("user_diamond",userData.diamond)
-
-    DataPersistence.updateAttribute("cur_roleID",playerVo.m_roleId)
-    DataPersistence.updateAttribute("user_sign",signList.curTable)--存储签到数据
-    DataPersistence.updateAttribute("sign_reward",GameDataManager.getReward())
+    DataPersistence.updateAttribute("bestscore",userData.record)
+    DataPersistence.updateAttribute("cur_roleID",curRoleID)
+    DataPersistence.updateAttribute("cur_sceneID",curSceneID)
 
     local modleList = {}
     for key, var in pairs(modleDic) do
         table.insert(modleList,var)
     end
     DataPersistence.updateAttribute("modle_list",modleList)
+    
+    local sceneList = {}
+    for key, var in pairs(sceneDic) do
+        table.insert(sceneList,var)
+    end
+    DataPersistence.updateAttribute("scene_list",sceneList)
 
     local cacheArr = {}
     for key, var in pairs(cacheGoodsDic) do
@@ -548,7 +607,7 @@ function GameDataManager.saveGameData()
     DataPersistence.updateAttribute("music",music)
     DataPersistence.updateAttribute("sound",sound)
 
-    DataPersistence.updateAttribute("vip_gift",{getDate=VIPGiftData.r_stamp,endDate=VIPGiftData.e_stamp})
+--    DataPersistence.updateAttribute("vip_gift",{getDate=VIPGiftData.r_stamp,endDate=VIPGiftData.e_stamp})
 
     DataPersistence.toSaveData()
 end

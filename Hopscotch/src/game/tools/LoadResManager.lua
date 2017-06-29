@@ -7,33 +7,63 @@ local PreLoadType =
         Animation=1,--动画类型
         Sound=2,--声音类型
         Texture=3,--图片类型
+        Animate = 4, --帧动画
     }
 --战斗中预加载资源
 local fightRes = {
-    {type = PreLoadType.Animation,plist="role/nv_pao0.plist",png="role/nv_pao0.png",json="role/nv_pao.ExportJson"},
-    {type = PreLoadType.Animation,plist="role/chongci0.plist",png="role/chongci0.png",json="role/chongci.ExportJson"},
-    {type = PreLoadType.Animation,plist="role/nan30.plist",png="role/nan30.png",json="role/nan3.ExportJson"},
-    {type = PreLoadType.Animation,plist="role/nan40.plist",png="role/nan40.png",json="role/nan4.ExportJson"},
-    {type = PreLoadType.Animation,plist="role/nan50.plist",png="role/nan50.png",json="role/nan5.ExportJson"},
-    {type = PreLoadType.Animation,plist="role/nan60.plist",png="role/nan60.png",json="role/nan6.ExportJson"},
-    {type = PreLoadType.Animation,plist="armature/xiaoshi0.plist",png="armature/xiaoshi0.png",json="armature/xiaoshi.ExportJson"},
-    {type = PreLoadType.Animation,plist="armature/nan5fp0.plist",png="armature/nan5fp0.png",json="armature/nan5fp.ExportJson"},
-    {type = PreLoadType.Animation,plist="armature/tanh0.plist",png="armature/tanh0.png",json="armature/tanh.ExportJson"},
-    {type = PreLoadType.Animation,plist="armature/xitieshi0.plist",png="armature/xitieshi0.png",json="armature/xitieshi.ExportJson"},
-    {type = PreLoadType.Animation,plist="armature/dc0.plist",png="armature/dc0.png",json="armature/dc.ExportJson"},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Button_Click_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Dart_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Diamond_Cost},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Get_Prop_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.GetGold_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Jump_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Magnet_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Player_Up_Lv},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.RoleMan_Dead},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.RoleWomen_Dead},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Sprint_Sound},
-    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Win_Sound},
+    {type = PreLoadType.Texture,plist="map/Room.plist",png="map/Room.png"},
+    {type = PreLoadType.Texture,plist="role/RoleJump1.plist",png="role/RoleJump1.png"},
+    {type = PreLoadType.Animate,plist = "role/RoleJump.plist"},
+--    {type = PreLoadType.Animation,plist="role/nv_pao0.plist",png="role/nv_pao0.png",json="role/nv_pao.ExportJson"},
+--    {type = PreLoadType.Animation,plist="role/chongci0.plist",png="role/chongci0.png",json="role/chongci.ExportJson"},
+--    {type = PreLoadType.Animation,plist="role/nan30.plist",png="role/nan30.png",json="role/nan3.ExportJson"},
+--    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Button_Click_Sound},
+--    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Dart_Sound},
+--    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Diamond_Cost},
+--    {type = PreLoadType.Sound,sound=AudioManager.Sound_Effect_Type.Get_Prop_Sound},
 }
+
+local playerRes = {
+    {type = PreLoadType.Texture,plist="role/Role1.plist",png="role/Role1.png"},
+    {type = PreLoadType.Texture,plist="role/Role2.plist",png="role/Role2.png"},
+    {type = PreLoadType.Texture,plist="role/Role3.plist",png="role/Role3.png"},
+    {type = PreLoadType.Texture,plist="role/Role4.plist",png="role/Role4.png"},
+    {type = PreLoadType.Texture,plist="role/Role5.plist",png="role/Role5.png"},
+    {type = PreLoadType.Texture,plist="role/Role6.plist",png="role/Role6.png"},
+    {type = PreLoadType.Texture,plist="role/Role7.plist",png="role/Role7.png"},
+    {type = PreLoadType.Texture,plist="role/Role8.plist",png="role/Role8.png"},
+    {type = PreLoadType.Texture,plist="role/Role9.plist",png="role/Role9.png"},
+    {type = PreLoadType.Texture,plist="role/Role10.plist",png="role/Role10.png"},
+    {type = PreLoadType.Animate,plist = "role/RoleAni.plist"},
+}
+
+--加载角色动画
+function LoadResManager.toLoadPlayerRes(_completeFunc)
+    local curPlayerRes = clone(playerRes)
+    local function toLoadRes(parameters)
+        if #curPlayerRes == 0 then
+            if _completeFunc then
+                _completeFunc()
+            end
+        else
+            local resObj = table.remove(curPlayerRes,1)
+            if resObj then
+                if resObj.type == PreLoadType.Texture then
+                    display.addSpriteFrames(resObj.plist,resObj.png)
+                    Tools.delayCallFunc(0.01,function()
+                        toLoadRes()
+                    end)
+                elseif resObj.type == PreLoadType.Animate then
+                    cc.AnimationCache:getInstance():addAnimations(resObj.plist)
+                    Tools.delayCallFunc(0.01,function()
+                        toLoadRes()
+                    end)
+                end
+            end
+        end
+    end
+    toLoadRes()
+end
 
 --加载战斗场景资源
 function LoadResManager.toLoadFightRes(_completeFunc)
@@ -58,6 +88,11 @@ function LoadResManager.toLoadFightRes(_completeFunc)
                     end)
                 elseif resObj.type == PreLoadType.Sound then
                     AudioManager.preLoadSound(resObj.sound)
+                    Tools.delayCallFunc(0.01,function()
+                        toLoadRes()
+                    end)
+                elseif resObj.type == PreLoadType.Animate then
+                    cc.AnimationCache:getInstance():addAnimations(resObj.plist)
                     Tools.delayCallFunc(0.01,function()
                         toLoadRes()
                     end)

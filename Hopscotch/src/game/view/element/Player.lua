@@ -1,997 +1,222 @@
 local LiveThing = import(".LiveThing")
 local Player = class("Player", LiveThing)
 
-local Special_MATERIAL=cc.PhysicsMaterial(0,0,0)
 local BuffState = require("game.view.element.BuffState")
+local PhysicSprite = require("game.custom.PhysicSprite")
 local Scheduler = require("framework.scheduler")
 
-local Flash_Skeep_Time = 0.1 --闪动间隔
+local MASS = 200
+local DENSITY = 10   --密度
+local FRICTION   = 0    --摩擦力
+local ELASTICITY = 0    --反弹力
+local Speed_Max = 600   --人物最大速度
+local DustRepair=5
 
-local FrameCount = 25
 
 ---人物类
 function Player:ctor()
     Player.super.ctor(self)
     self.m_vo = GameDataManager.getPlayerVo()
-    self.m_hp = self.m_vo.m_hp
-
     self.m_buffArr = {} --buff列表
-    self.pMoveSpeed = MoveSpeed
 
-    --角色死亡
-    self.m_isDead = false
-    GameController.isWin = false
-    
+    self.m_life = self.m_vo.m_lifeNum
+    self.m_speed = MAP_SPEED.floor_D
+
     self.m_jump = false
-    self.m_run = true
-    self.touchCount = 0
-    
+
     self.m_curModle = GameDataManager.getFightRole()
     local modle = RoleConfig[self.m_curModle].armatureName
-    self:createModle(modle)
-
-    self.p_siz=cc.size(80,110)--角色本身区域限定
-    self.pSize = cc.size(60,100)--与障碍物碰撞区域
-    self.p_offset = cc.p(20,50)
-    self:addBody(self.p_offset,self.pSize)
-    
-    self.m_twoJump = false
-    self.m_isMagnet = false
-    local actSkill = RoleConfig[self.m_curModle].skillAct
-    for var=1, #actSkill do
-        if actSkill[var].type == PLAYER_ACT_TYPE.Twojump then
-    		self.m_twoJump = true
-        elseif actSkill[var].type == PLAYER_ACT_TYPE.Magnet then
-            self:magnetSkill(actSkill[var].radius)
-        elseif actSkill[var].type == PLAYER_ACT_TYPE.Protect then
-            self:protectSkill()
-    	end
+    local res = RoleConfig[self.m_curModle].roleImg
+    local jump = RoleConfig[self.m_curModle].jumpName
+    local p_size
+    if modle then
+        self.m_modle=modle
+        self.m_jumpModle = jump
+        self.m_armature = display.newSprite(res):addTo(self)
+        self:createModle(modle)
+        self.m_armature:setScale(0.45)
+        p_size = cc.size(50,75)
+    else
+        self.m_armature = PhysicSprite.new(res):addTo(self)
+        self.m_armature:setScale(0.45)
+        p_size = self.m_armature:getCascadeBoundingBox().size
     end
+    self:addBody(cc.p(0,0),p_size)
     
-    --控制随机数种子
-    math.randomseed(tostring(os.time()):reverse():sub(1, #RoleConfig))
-    
-    --受伤害
-    GameDispatcher:addListener(EventNames.EVENT_PLAYER_ATTACKED,handler(self,self.playerAttacked))
-    --开局冲刺
-    GameDispatcher:addListener(EventNames.EVENT_START_SPRINT,handler(self,self.sprinting))
-    --死亡冲刺
-    GameDispatcher:addListener(EventNames.EVENT_DEAD_SPRINT,handler(self,self.deadSprint))
-    --开局护盾
-    GameDispatcher:addListener(EventNames.EVENT_START_PROTECT,handler(self,self.startProtect))
-    --死亡接力
-    GameDispatcher:addListener(EventNames.EVENT_DEAD_RELAY,handler(self,self.deadRelay))
-    --吸铁石
-    GameDispatcher:addListener(EventNames.EVENT_MANGET,handler(self,self.manget))
-    --巨人药水
-    GameDispatcher:addListener(EventNames.EVENT_GRANT_DRINK,handler(self,self.grantDrink))
-    --极限冲刺
-    GameDispatcher:addListener(EventNames.EVENT_LIMIT_SPRINT,handler(self,self.limitSprint))
-    --金币转换
-    GameDispatcher:addListener(EventNames.EVENT_TRANSFORM_GOLD,handler(self,self.transformGold))
-    --速度减慢
-    GameDispatcher:addListener(EventNames.EVENT_SLOW_SPEED,handler(self,self.slowSpeed))
-    --弹簧
-    GameDispatcher:addListener(EventNames.EVENT_OBSCALE_SPRING,handler(self,self.spring))
-    --游戏内护盾
-    GameDispatcher:addListener(EventNames.EVENT_GAME_PROTECT,handler(self,self.gameProtect))
-    
-
-    --角色暂停和恢复
-    GameDispatcher:addListener(EventNames.EVENT_PLAYER_PAUSE,handler(self,self.pause))
-    GameDispatcher:addListener(EventNames.EVENT_PLAYER_REGAIN,handler(self,self.regain))
-    --角色复活
-    GameDispatcher:addListener(EventNames.EVENT_ROLE_REVIVE,handler(self,self.revive))
+    --角色主动技能
+--    GameDispatcher:addListener(EventNames.EVENT_PLAYER_SKILL,handler(self,self.actSkill))
 
 end
 
---创建人物模型动画[_place:角色位置]
+--创建人物模型动画
 function Player:createModle(_actionName)
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/".._actionName.."0.png", "role/".._actionName.."0.plist" , "role/".._actionName..".ExportJson" )
-
-    self.m_armature = ccs.Armature:create(_actionName)
-    self:addChild(self.m_armature)
-    self:setAnchorPoint(cc.p(0,0))
-    self.m_animation = self.m_armature:getAnimation()
-    self.m_animation:setSpeedScale(MoveSpeed*0.01)
-    self:toPlay(PLAYER_ACTION.Run)
-    self.m_animation:setMovementEventCallFunc(handler(self,self.armatureMoveEvent))
-    self.m_animation:setFrameEventCallFunc(handler(self,self.onActionFrameEvent))
+    local animation = cc.AnimationCache:getInstance():getAnimation(_actionName)
+    local animate = cc.Animate:create(animation)
+    local seq = cc.RepeatForever:create(animate)
+    self.m_armature:runAction(seq)
 end
-
 
 function Player:addBody(_offset,size)
-    self.m_body=cc.PhysicsBody:createBox(size,Special_MATERIAL,_offset)
-    self.m_body:setCategoryBitmask(0x1101)
+    local _size = nil
+    if size == nil then
+        _size = self.m_armature:getCascadeBoundingBox().size
+    else
+        _size = size
+    end
+    self.m_size=_size
+    self.m_body = cc.PhysicsBody:createBox(_size,
+    cc.PhysicsMaterial(DENSITY,ELASTICITY,FRICTION),_offset)
+    self.m_body:setMass(MASS)
+    self.m_body:setCategoryBitmask(0x03)
     self.m_body:setContactTestBitmask(0x1111)
-    self.m_body:setCollisionBitmask(0x1111)
-    self.m_body:setDynamic(true)
+    self.m_body:setCollisionBitmask(0x03)
+    self.m_body:setRotationEnable(false)
+    self.m_body:setMoment(0)
     self.m_body:setTag(ELEMENT_TAG.PLAYER_TAG)
+    self.m_body:setVelocityLimit(Speed_Max)
     self:setPhysicsBody(self.m_body)
-end
 
-
-function Player:onActionFrameEvent(_bone,_evt,_begin,_end)
-    if _evt == nil then
-        return
-    end
-
-    -- if _evt == "run_over" then
-    --     if not self:isInState(PLAYER_STATE.WalkMachine) then
-    --         self.m_runNum = self.m_runNum+1
-    --         if self.m_runNum == 6 then
-    --             self.m_runNum=0
-    --             self:toPlay(PLAYER_ACTION.Run_Two)
-    --         end
-    --     else
-    --         self.m_FireNum = self.m_FireNum+1
-    --         if self.m_FireNum == GoodsConfig[2].interval_time then
-    --             self.m_FireNum=0
-    --             if not tolua.isnull(self.m_fireBone) then
-    --                 self.m_fireBone:updateDisplayedOpacity(0)
-    --                 self.m_walkFire:setVisible(true)
-    --                 self:delayShow(self.m_fireBone)
-    --             end
-    --             WalkFire_State = true
-    --         end
-    --     end
-    --     return
-    -- end
-end
-
---角色动画桢函数回调
-function Player:armatureMoveEvent(armatureBack,movementType,movementID)
-    if movementID==PLAYER_ACTION.Jump and movementType==ccs.MovementEventType.complete then
-        self:toPlay(PLAYER_ACTION.Attack,0)
-    elseif movementID==PLAYER_ACTION.Attack and movementType==ccs.MovementEventType.complete then
---        self:toPlay(PLAYER_ACTION.Down,0)
---    elseif movementID==PLAYER_ACTION.Down and movementType==ccs.MovementEventType.complete then
-        self:toPlay(PLAYER_ACTION.Run)
-        self.m_jump = false
-        self.m_run = true
-    end
 end
 
 --获取对象数据
 function Player:getVo()
     return self.m_vo
 end
-
-function Player:isDead(parameters)
-	return self.m_vo.m_hp<=0
+function Player:getBody(parameters)
+    return self.m_body
 end
 
---获取是否拥有二次跳跃技能
-function Player:getTwoJump(parameters)
-    return self.m_twoJump
-end
-
-
---闯关胜利后滑行一段距离
-function Player:LevelWin()
-    GameController.isWin = true
-    
-    --清除所有buff
-    for var=#self.m_buffArr,1,-1  do
-        local _buff = self.m_buffArr[var]
-        if _buff then
-            self:clearBuff(_buff:getType())
-        end
-    end
-    self.m_buffArr = {}
-    MoveSpeed = 0
-    GameController.setSpeed(MoveSpeed)
-    
-    transition.moveTo(self,{time = 1,x=display.right+100,y=self:getPositionY(),onComplete=function()
-        self:dispose()
-        if DataPersistence.getAttribute("first_into") then
-            DataPersistence.updateAttribute("first_into",false)
-            SDKUtil.umentOnEvent(SDKUtil.EventId.GuideFinish)
-        	app:enterMainScene()
-        else
-            --弹结算界面
-            GameDispatcher:dispatch(EventNames.EVENT_OPEN_OVER,{type=GAMEOVER_TYPE.Win})
-        end
-    end})
-end
-
---重置角色状态
-function Player:reSetUD()
-    self.m_jump = false
-    self.m_run = true
-end
-
---角色动画切换(_place:角色位置,_animation动画名称)
-function Player:toPlay(_actionName,loop)
-    if not self.m_twoJump and self.m_jump and _actionName == PLAYER_ACTION.Jump and not self:isInState(PLAYER_STATE.Spring) 
-        and not self.clickJump then
-        Tools.printDebug("---------动画被挡了")
-    	return
-    end
-    local _loop = loop or 1
-    self.m_animation:play(_actionName,0,_loop)
-    Tools.printDebug("Fruit PaoKu 角色跳跃:",_actionName)
-    if _actionName==PLAYER_ACTION.Run then
-        self:reSetUD()
-    end
-end
-
-function Player:clickJumpfunc()
-    if self.playerY and self.m_jump and ((self.playerY<display.cy and self:getPositionY()>= display.cy+150-self:getAreaSize().height*0.4) or 
-        (self.playerY>display.cy and self:getPositionY()<= display.cy-190+self:getAreaSize().height*0.4)) then
-        self.clickJump = true
-        Tools.printDebug("---------缓冲区域二次点击")
-    else
-        self.clickJump = false
-    end
-end
-
---角色移动
-function Player:toMove(isSpring)
-    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Jump_Sound)
-    if self.backHandler then
-        Scheduler.unscheduleGlobal(self.backHandler)
-        self.backHandler=nil
-    end
-    
---    if self:isInState(PLAYER_STATE.Slow) then
---        self:clearBuff(PLAYER_STATE.Slow)
---    end
-
-    self.touchCount = self.touchCount + 1
-    if self.touchCount == 1 then
-        self.playerY = self:getPositionY()
-    end
-    if self.touchCount > 1 then
-        self.roleY = self:getPositionY()
-    end
-    local frameSpeed = MoveSpeed
-    if MoveSpeed >= SpeedMax then
-        frameSpeed = SpeedMax
-    end
-    if not self.m_jump then
-        self.m_jump = true
-        self.m_run = false
-        local direction = 1
-        if self:getPositionY()<display.cy then
-            direction = 1
-        else
-            direction = -1
-        end
-        transition.moveBy(self,{time=FrameCount/frameSpeed,x=0,y=direction*(440-self:getAreaSize().height*0.4),onComplete=function()
-            self.m_jump = false
-            self.m_run = true
-            self.touchCount = 0
-            self:setScaleY(direction*-1)
-            if self:getScaleY() == -1 then
-                local x,y = self:getPosition()
-                self:setPositionY(y+self:getAreaSize().height*0.4)
-            else
-                local x,y = self:getPosition()
-                self:setPositionY(y-self:getAreaSize().height*0.4)
-            end
-        end})
-    else
-        if self.touchCount == 2 and (self.m_twoJump or isSpring or self.clickJump) then
-            Tools.printDebug("---------缓冲区域二次点击hhhhhhhhhhhhhhhh")
-            self:stopAllActions()
-            local direction = 1
-            local m_pY
-            if self.playerY<display.cy then
-                direction = 1
-                m_pY = display.cy-240+self:getAreaSize().height*0.4
-            else
-                direction = -1
-                m_pY = display.cy+200-self:getAreaSize().height*0.4
-            end
-            transition.moveTo(self,{time=FrameCount/frameSpeed,x=self:getPositionX(),y=m_pY,onComplete = function()
-                self.clickJump = false
-                self.m_jump = false
-                self.m_run = true
-                self.touchCount = 0
-                self:setScaleY(direction)
-                if direction == -1 then
-                    local x,y = self:getPosition()
-                    self:setPositionY(y+self:getAreaSize().height*0.4)
-                else
-                    local x,y = self:getPosition()
-                    self:setPositionY(y-self:getAreaSize().height*0.4)
-                end
-                if self:isInState(PLAYER_STATE.Spring) then
-                    self:clearBuff(PLAYER_STATE.Spring)
-                end
-            end})
-        elseif self.touchCount > 2 and isSpring then
-            self:stopAllActions()
-            local direction = 1
-            local m_pY
-            if self.roleY<display.cy then
-                direction = -1
-                m_pY = display.cy+200-self:getAreaSize().height*0.4
-            else
-                direction = 1
-                m_pY = display.cy-240+self:getAreaSize().height*0.4
-            end
-            transition.moveTo(self,{time=FrameCount/frameSpeed,x=self:getPositionX(),y=m_pY,onComplete = function()
-                self.m_jump = false
-                self.m_run = true
-                self.touchCount = 0
-                self:setScaleY(direction)
-                if direction == -1 then
-                    local x,y = self:getPosition()
-                    self:setPositionY(y+self:getAreaSize().height*0.4)
-                else
-                    local x,y = self:getPosition()
-                    self:setPositionY(y-self:getAreaSize().height*0.4)
-                end
-                if self:isInState(PLAYER_STATE.Spring) then
-                    self:clearBuff(PLAYER_STATE.Spring)
-                end
-            end})
-        end
-    end
-    
-end
-
---获取状态
-function Player:getJumpState(parameters)
-    return self.m_jump
-end
-
---获取角色刚体大小
-function Player:getSize(parameters)
-    return self.p_siz
-end
-
-function Player:getAreaSize(parameters)
-    return self.p_siz
-end
-
-function Player:getOffset(parameters)
-    return self.p_offset
-end
-
-function Player:update(dt,_x,_y)
-    if self.m_propManget then
-        GameController.detect(self,cc.p(_x,_y),self.m_propRadius)
-    elseif self.startSprintManget then
-        GameController.detect(self,cc.p(_x,_y),self.startSprintRadius)
-    elseif self.deadSprintManget then
-        GameController.detect(self,cc.p(_x,_y),self.deadSprintRadius)
-    elseif self.limitSprintManget then
-        GameController.detect(self,cc.p(_x,_y),self.limitSprintRadius)
-    elseif self.m_isMagnet then
-        GameController.detect(self,cc.p(_x,_y),self.m_radius)
-    end
-    
-    --角色向后缓动后恢复
-    if self.originPos and self:getPositionX()<self.originPos.x and not self.backHandler and not self.slowHandler then
-        Tools.printDebug("^^^^^^^^^^^^^^^  角色坐标：",self:getPositionX(),self.originPos.x)
-        local x,y = self:getPosition()
-        if self.slowlySpeed then
-            if not GameController.isInPause() then
-                self:setPositionX(x+self.slowlySpeed*0.1)
-            end
-        else
-            self:setPositionX(x+MoveSpeed*0.1)
-        end
-    end
-    
-    --针对无尽模式速度改变
-    if GAME_TYPE_CONTROL == GAME_TYPE.EndlessMode and self.pMoveSpeed ~= MoveSpeed then
-        if MoveSpeed>=SpeedMax then
-            MoveSpeed = SpeedMax
-        end
-    	self.pMoveSpeed = MoveSpeed
-        self.m_animation:setSpeedScale(MoveSpeed*0.01)
-    end
-    
-    --冲刺时消除障碍物
-    if self:isInState(PLAYER_STATE.StartSprint) or self:isInState(PLAYER_STATE.DeadSprint) or self:isInState(PLAYER_STATE.LimitSprint) then
-    	self:clearObstales()
-    end
-end
-
---全屏清除障碍物
-function Player:clearObstales(parameters)
-    local allObstales = GameController.getScreenObstacles()
-    for key, var in pairs(allObstales) do
-        if var:getVo().m_type ~= OBSTACLE_TYPE.spring then
-            var:removeSelf()
-        end
+function Player:setGravityEnable(_enable)
+    if self.m_body then
+        self.m_body:setGravityEnable(_enable)
 	end
 end
 
---====================角色buff=================
---角色受伤害
-function Player:playerAttacked(parm)
-    if self:isInState(PLAYER_STATE.StartProtect) then
-        self:clearBuff(PLAYER_STATE.StartProtect)
-        return
+--上跳状态
+function Player:toJump(ty,isTwoJump)
+    self.m_jump = true
+--    Tools.printDebug("---------------hehehahi------------",isTwoJump)
+--    if isTwoJump then
+        self.m_body:setCollisionBitmask(0x06)
+        self:setGravityEnable(false)
+        self:stopAllActions()
+--        self.m_armature:stopAllActions()
+        self:createModle(self.m_jumpModle)
+        local x,y = self:getPosition()
+        local move = cc.MoveBy:create(0.2,cc.p(0,ty-y+self.m_size.width*0.5+50))
+        local move2 = cc.MoveBy:create(0.1,cc.p(0,-20))
+        local easeOut = cc.EaseCubicActionOut:create(move)
+        local easeIn = cc.EaseCubicActionIn:create(move2)
+        local callfunc = cc.CallFunc:create(function()
+            self.m_body:setCollisionBitmask(0x03)
+            self:setGravityEnable(true)
+            self.m_jump = false
+            self.m_armature:stopAllActions()
+            self:createModle(self.m_modle)
+        end)
+        local seq = cc.Sequence:create(easeOut,easeIn,callfunc)
+        self:runAction(seq)
+--    else
+--        self.m_body:setCollisionBitmask(0x06)
+--        self:setGravityEnable(false)
+--        self:stopAllActions()
+--        self.m_armature:stopAllActions()
+--        self:createModle(self.m_jumpModle)
+--        local x,y = self:getPosition()
+--        local move = cc.MoveTo:create(0.3,cc.p(x,ty+self.m_size.width*0.5+30))
+--        local easeOut = cc.EaseCubicActionOut:create(move)
+--        local callfunc = cc.CallFunc:create(function()
+--            self.m_body:setCollisionBitmask(0x03)
+--            self:setGravityEnable(true)
+--            self.m_jump = false
+--            self.m_armature:stopAllActions()
+--            self:createModle(self.m_modle)
+--        end)
+--        local seq = cc.Sequence:create(easeOut,callfunc)
+--        self:runAction(seq)
+--    end
+
+--    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Jump_High_Sound)
+end
+
+--帧回调
+function Player:update(dt,_x,_y)
+    if self.m_isMagnet then
+        GameController.detect(self,cc.p(_x,_y),self.m_radius,GameController.Adsorb_Ex_Goods_Eeg)
     end
-    if self:isInState(PLAYER_STATE.Defence) then
-    	self:clearBuff(PLAYER_STATE.Defence)
-    	return
+    self.oldX = _x
+    self.oldY = _y
+--    Tools.printDebug("brj  player  posX: ",_x)
+
+    local _vec = self.m_body:getVelocity()
+    if math.abs(_vec.y)>Speed_Max then
+        _vec.y = 0
     end
-    if self:isInState(PLAYER_STATE.GameDefence) then
-        self:clearBuff(PLAYER_STATE.GameDefence)
-        return
+
+    local _scaleX=self:getScaleX()
+    if _scaleX<0 then
+        _vec.x=self.m_speed
+    else
+        _vec.x=-self.m_speed
     end
-    if self:isInState(PLAYER_STATE.StartSprint) or self:isInState(PLAYER_STATE.DeadSprint) then
-        return
-    end
-    if self:isInState(PLAYER_STATE.LimitSprint) then
-        return
-    end
+    self:setBodyVelocity(_vec)
+
+end
+
+function Player:getArmature(parameters)
+    return self.m_armature
+end
+
+
+--角色复活
+function Player:relive(parameters)
     
-    self.m_hp = self.m_hp - parm.data.att
-    if self.m_hp <= 0 then
-        Tools.printDebug("------------角色死亡..")
-        if self.backHandler then
-            Scheduler.unscheduleGlobal(self.backHandler)
-            self.backHandler=nil
-        end
-        if self:isInState(PLAYER_STATE.Slow) then
-            self:clearBuff(PLAYER_STATE.Slow)
-        end
-        self:deadSprintFlash(true)
-    end
-end
-
-function Player:deadSprintFlash(enble)
-	if GameController.getStartPropById(2) then
-        GameDataManager.useGoods(2)
-    else
-        self:deadContinueFlash(enble)
-    end
-end
-
-function Player:deadContinueFlash(enble)
-	if GameController.getStartPropById(4) then
-        GameDataManager.useGoods(4)
-    else
-        self:deadFlash(enble)
-    end
-end
-
---
-function Player:deadFlash(enble)
-    if GameController.isWin then
-    	return
-    end
-    if enble then
-        self.slowlySpeed = nil
-        self.originScaleY = nil
-        self.originPos = nil
-    end
-    self:death()
 end
 
 --角色死亡
-function Player:death()
+function Player:selfDead()
     if self.m_isDead then
-        return
-    end
-    self.m_isDead = true
-    GameController.isDead = true
-    
-    if GameDataManager.getFightRole() == 2 then
-        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.RoleWomen_Dead)
-    else
-        AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.RoleMan_Dead)
-    end
-
-    self:stopAllActions()
-    self:toPlay(PLAYER_ACTION.Down)
-    
-    self.m_hp = 0
-    
-    --背景和障碍停止移动
-    MoveSpeed = 0
---        self:getParent():toDelay()
-
-    self.m_armature:setVisible(false)
-
-    --清除所有buff
-    for var=#self.m_buffArr,1,-1  do
-        local _buff = self.m_buffArr[var]
-        if _buff then
-            self:clearBuff(_buff:getType())
-        end
-    end
-    self.m_buffArr = {}
-    
-    --复活界面
-    GameDispatcher:dispatch(EventNames.EVENT_REVIVE_VIEW,{animation = true})
-end
-
---角色复活
-function Player:revive(parameters)
-
-    --清除所有状态
-    for var=#self.m_buffArr,1,-1  do
-        local _buff = self.m_buffArr[var]
-        if _buff~=nil then
-            self:clearBuff(_buff:getType())
-        end
-    end
-    self.m_buffArr = {}
-
-    GameController.resumeGame(true)
-
-    self.m_hp = self.m_vo.m_hp
-    self.m_armature:setVisible(true)
-
-    Tools.printDebug("&&&&&&&&&&   角色跳跃状态：",self.m_jump,self:getScaleY())
-    if self.m_jump and self:getScaleY() == -1 then
-        self:setScaleY(1)
-        self:setPosition(display.cx-100,display.cy-240)
-    elseif self.m_jump and self:getScaleY() == 1 then
-        self:setScaleY(-1)
-        self:setPosition(display.cx-100,display.cy+200)
-    end
-
-    if self.originPos then
-        self:setPositionX(self.originPos.x)
-    end
-    
-    local old = self.m_armature
-    local modle = RoleConfig[self.m_curModle].armatureName
-    self:createModle(modle)
-    old:removeFromParent()
-    
-    self:toPlay(PLAYER_ACTION.Run)
-    
-    self.m_isDead = false
-    GameController.isWin = false
-    GameController.isDead = false
-    GameController.isWin = false
-    self.m_jump = false
-    self.m_run = true
-
-    self.m_twoJump = false
-    self.m_isMagnet = false
-    local actSkill = RoleConfig[self.m_curModle].skillAct
-    for var=1, #actSkill do
-        if actSkill[var].type == PLAYER_ACT_TYPE.Twojump then
-            self.m_twoJump = true
-        elseif actSkill[var].type == PLAYER_ACT_TYPE.Magnet then
-            self:magnetSkill(actSkill[var].radius)
-        elseif actSkill[var].type == PLAYER_ACT_TYPE.Protect then
-            self:protectSkill()
-        end
-    end
-    
-    self:clearObstales()
-end
-
---巨人药水
-function Player:grantDrink(parameters)
-    Tools.printDebug("----------巨人药水")
-    if self:isInState(PLAYER_STATE.GrankDrink) then
-        return
-    end
-
-    local _lv = GameDataManager.getRoleLevel(self.m_curModle)
-    local _time = parameters.data.time+GameDataManager.getUnActSkillTime(self.m_curModle,_lv,GOODS_TYPE.GrantDrink)
-    self:addBuff({type=PLAYER_STATE.GrankDrink,time = _time})
-    self.m_grankHandler = Tools.delayCallFunc(parameters.data.time,function()
-        self:clearBuff(PLAYER_STATE.GrankDrink)
-    end)
-    GameDataManager.setGamePropTime(PLAYER_STATE.GrankDrink,_time)
-
-    self.m_armature:setScale(parameters.data.scale)
-    self.m_body:removeFromWorld()
-    local _size = cc.size(self.m_armature:getCascadeBoundingBox().size.width*0.6*parameters.data.scale,
-        self.m_armature:getCascadeBoundingBox().size.height*parameters.data.scale*0.7)
-
-    if self:isInState(PLAYER_STATE.StartSprint) or self:isInState(PLAYER_STATE.DeadSprint) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
-        self:addBody(cc.p(10,80),_size)
-    else
-        if self:getScaleY() == 1 then
-            self:addBody(cc.p(10,80),_size)
-        else
-            self:addBody(cc.p(10,-80),_size)
-        end
-    end
-end
-
---吸铁石
-function Player:manget(parameters)
-	Tools.printDebug("--------吸铁石道具")
-	if self:isInState(PLAYER_STATE.MagnetProp) then
-        return
-	end
-    if self:isInState(PLAYER_STATE.Magnet) then
-        return
-    end
-    
-	self.m_propManget = true
-    self.m_propRadius = parameters.data.radius
-    
-    local _lv = GameDataManager.getRoleLevel(self.m_curModle)
-    local _time = parameters.data.time+GameDataManager.getUnActSkillTime(self.m_curModle,_lv,GOODS_TYPE.Magnet)
-    self:addBuff({type=PLAYER_STATE.MagnetProp,time = _time})
-    self.m_manHandler = Tools.delayCallFunc(parameters.data.time,function()
-        self:clearBuff(PLAYER_STATE.MagnetProp)
-    end)
-    
-    --特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xitieshi0.png", "armature/xitieshi0.plist" , "armature/xitieshi.ExportJson")
-    self.m_manget = ccs.Armature:create("xitieshi")
-    self.m_manget:getAnimation():playWithIndex(0)
-    self.m_manget:setPosition(20,60)
-    self:addChild(self.m_manget)
-    
-    GameDataManager.setGamePropTime(PLAYER_STATE.MagnetProp,_time)
-end
-
---开局护盾
-function Player:startProtect(parameters)
-    if self:isDead() then
-        return
-    end
-	Tools.printDebug("-----开局护盾")
-	--护盾特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
-    self.m_huduen = ccs.Armature:create("huduen")
-    self.m_huduen:getAnimation():playWithIndex(0)
-    self.m_huduen:setPosition(20,60)
-    self:addChild(self.m_huduen)
-	
-    self:addBuff({type=PLAYER_STATE.StartProtect,time = parameters.data.time})
---    self.m_proHandler = Tools.delayCallFunc(parameters.data.time,function()
---        self:clearBuff(PLAYER_STATE.StartProtect)
---    end)
-end
-
---游戏内吃到护盾
-function Player:gameProtect(parameters)
-    if self:isDead() then
-        return
-    end
-    if self:isInState(PLAYER_STATE.StartProtect) then
-        return
-    end
-    if self:isInState(PLAYER_STATE.GameDefence) then
-        self:clearBuff(PLAYER_STATE.GameDefence)
-    end
-    
-    if self:isInState(PLAYER_STATE.Defence) then
-        return
-    end
-    
-    Tools.printDebug("-----游戏内护盾")
-    --护盾特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
-    self.m_protect = ccs.Armature:create("huduen")
-    self.m_protect:getAnimation():playWithIndex(0)
-    self.m_protect:setPosition(20,60)
-    self:addChild(self.m_protect)
-    
-    self:addBuff({type=PLAYER_STATE.GameDefence,time = parameters.data.time})
-end
-
---开局冲刺
-function Player:sprinting(parameters)
-
-    if self:isDead() then
     	return
     end
-    Tools.printDebug("-----------开局冲刺")
-    
-    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Sprint_Sound)
-    --冲刺特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
-    self.m_spdeffect = ccs.Armature:create("chongci")
-    self.m_spdeffect:getAnimation():playWithIndex(0)
-    self.m_spdeffect:setPosition(-80,60)
-    
-    self:toPlay(PLAYER_ACTION.Run,0)
-    self:addChild(self.m_spdeffect,10)
-    
-    self.oldX,self.oldY = self:getPosition()
-    self:setPosition(cc.p(display.cx,display.cy))
-    if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
-    end
-    
-    self:addBuff({type=PLAYER_STATE.StartSprint,time = parameters.data.time})
-    self.initSpeed = MoveSpeed
-    MoveSpeed = parameters.data.speed
-    self.m_handler = Tools.delayCallFunc(parameters.data.time,function()
-        self:clearBuff(PLAYER_STATE.StartSprint)
-    end)
-    self.startSprintManget = true
-    self.startSprintRadius = parameters.data.radius
-    
-    GameDataManager.setGamePropTime(PLAYER_STATE.StartSprint,parameters.data.time,parameters.data.speed)
-    
-end
---死亡冲刺
-function Player:deadSprint(parameters)
-    if self:isDead() then
-        return
-    end
-    Tools.printDebug("-----------死亡冲刺")
-    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Sprint_Sound)
-    --冲刺特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
-    self.m_deadDffect = ccs.Armature:create("chongci")
-    self.m_deadDffect:getAnimation():playWithIndex(0)
-    self.m_deadDffect:setPosition(-80,60)
-
-    self:stopAllActions()
-    self:toPlay(PLAYER_ACTION.Run,0)
-    self:addChild(self.m_deadDffect,10)
-
-    self.m_scaleY = self:getScaleY()
-    self:setScaleY(1)
-    self:setPosition(cc.p(display.cx,display.cy))
-    if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
-    end
-
-    self:addBuff({type=PLAYER_STATE.DeadSprint,time = parameters.data.time})
-    self.deadSpeed = MoveSpeed
-    MoveSpeed = parameters.data.speed
-    self.m_dHandler = Tools.delayCallFunc(parameters.data.time,function()
-        self:clearBuff(PLAYER_STATE.DeadSprint)
-    end)
-    self.deadSprintManget = true
-    self.deadSprintRadius = parameters.data.radius
-    
-    GameDataManager.setGamePropTime(PLAYER_STATE.DeadSprint,parameters.data.time,parameters.data.speed)
-end
---死亡接力
-function Player:deadRelay(parameters)
-    --清除所有buff
-    for var=#self.m_buffArr,1,-1  do
-        local _buff = self.m_buffArr[var]
-        if _buff then
-            self:clearBuff(_buff:getType())
-        end
-    end
-    self.m_buffArr = {}
-
-    self:reSetUD()
-    self.m_hp = self.m_vo.m_hp
-
-    local old = self.m_armature
-    local random = math.random(1,GameDataManager.getRoleModelCount())
-    Tools.printDebug("-----------死亡接力..",random)
-    local modle = RoleConfig[random].armatureName
-    self:createModle(modle)
-    old:removeFromParent()
-    
---    if self.originScaleY then
---        self:setScaleY(self.originScaleY)
---    end
-    if self.originPos then
-        self:setPositionX(self.originPos.x)
-    end
-    
-    self.m_jump = false
-    self.m_run = true
-    self:clearObstales()
-end
---极限冲刺
-function Player:limitSprint(parameters)
-	
-    if self:isDead() then
-        return
-    end
-    
-    if self:isInState(PLAYER_STATE.LimitSprint) then
-    	return
-    end
-    if self:isInState(PLAYER_STATE.DeadSprint) then
-    	return
-    end
-    if self:isInState(PLAYER_STATE.StartSprint) then
-        return
-    end
-    
-    Tools.printDebug("----------极限冲刺")
-    
-    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Sprint_Sound)
-    --冲刺特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("role/chongci0.png", "role/chongci0.plist" , "role/chongci.ExportJson")
-    self.m_limitDffect = ccs.Armature:create("chongci")
-    self.m_limitDffect:getAnimation():playWithIndex(0)
-    self.m_limitDffect:setPosition(-80,60)
-
-    self:stopAllActions()
-    self:toPlay(PLAYER_ACTION.Run,0)
-    self:addChild(self.m_limitDffect,10)
-
-    self.m_scaleY = self:getScaleY()
-    self:setScaleY(1)
-    self:setPosition(cc.p(display.cx,display.cy))
-    if self:isInState(PLAYER_STATE.GrankDrink) then
-        self:setPosition(cc.p(display.cx,display.cy-50))
-    end
-
-    self:addBuff({type=PLAYER_STATE.LimitSprint,time = parameters.data.time})
-    self.limitSpeed = MoveSpeed
-    MoveSpeed = parameters.data.speed
-    local _lv = GameDataManager.getRoleLevel(self.m_curModle)
-    local _time = parameters.data.time+GameDataManager.getUnActSkillTime(self.m_curModle,_lv,GOODS_TYPE.LimitSprint)
-    self.m_limitHandler = Tools.delayCallFunc(parameters.data.time,function()
-        self:clearBuff(PLAYER_STATE.LimitSprint)
-    end)
-    self.limitSprintManget = true
-    self.limitSprintRadius = parameters.data.radius
-
-    GameDataManager.setGamePropTime(PLAYER_STATE.LimitSprint,_time,parameters.data.speed)
-end
---金币转换
-function Player:transformGold(parameters)
-    if self:isDead() then
-        return
-    end
-    if self:isInState(PLAYER_STATE.TransformGold) then
-    	return
-    end
-    Tools.printDebug("----------金币转换")
-    
-    local _lv = GameDataManager.getRoleLevel(self.m_curModle)
-    local _time = parameters.data.time+GameDataManager.getUnActSkillTime(self.m_curModle,_lv,GOODS_TYPE.ConverGold)
-    self:addBuff({type=PLAYER_STATE.TransformGold,time = parameters.data.time})
-    self.m_transHandler = Tools.delayCallFunc(parameters.data.time,function()
-        self:clearBuff(PLAYER_STATE.TransformGold)
-    end)
-    GameDataManager.setGamePropTime(PLAYER_STATE.TransformGold,_time)
-end
-
---速度减慢(滑冰)
-function Player:slowSpeed(parameters)
-    if self:isDead() then
-        return
-    end
-    
-    if self:isInState(PLAYER_STATE.Spring) then
-    	return
-    end
-    
-    if parameters.data.isSlow and self:isInState(PLAYER_STATE.Slow) then
-        return
-    end
-    Tools.printDebug("----------速度减慢")
-    
-    if parameters.data.isSlow then
-        self:addBuff({type=PLAYER_STATE.Slow})
-        self.slowlySpeed = parameters.data.cutSpeed
-        self.originPos = cc.p(display.cx-100,self:getPositionY())
-        self.originScaleY = self:getScaleY()
-        if self.slowHandler then
-            Scheduler.unscheduleGlobal(self.slowHandler)
-            self.slowHandler=nil
-        end
-        self.slowHandler = Scheduler.scheduleGlobal(handler(self,self.slowMove),FrameTime)
-    else
-        self:clearBuff(PLAYER_STATE.Slow)
---        self.originScaleY = nil
---        self.originPos = nil
-    end
-    
-end
-
-function Player:slowMove()
-    if not self.slowlySpeed or MoveSpeed == 0 then
-    	return
-    end
-    local x,y = self:getPosition()
-    self:setPosition(x-self.slowlySpeed*0.1,y)
-    if self:getPositionX()<=-self:getSize().width then
-        if self.slowHandler then
-            Scheduler.unscheduleGlobal(self.slowHandler)
-            self.slowHandler=nil
-        end
-        self:deadSprintFlash()
-    end
-end
-
-
---弹簧障碍物
-function Player:spring(parameters)
-    if self:isDead() then
-        return
-    end
-    if self:isInState(PLAYER_STATE.StartSprint) then
-        return
-    end
-    if self:isInState(PLAYER_STATE.DeadSprint) then
-        return
-    end
-    if self:isInState(PLAYER_STATE.LimitSprint) then
-        return
-    end
-    if self:isInState(PLAYER_STATE.Spring) then
-        self:clearBuff(PLAYER_STATE.Spring)
-    end
-    
-    Tools.printDebug("----------弹簧跳跃",self:getJumpState())
-    
-    if self:getJumpState() then
-        self:addBuff({type=PLAYER_STATE.Spring})
-        self:toPlay(PLAYER_ACTION.Jump,0)
-        self:toMove(true)
-    else
-        if self:isInState(PLAYER_STATE.Slow) then
-            self:clearBuff(PLAYER_STATE.Slow)
-        end
-        local x = parameters.data
-        if x<self:getPositionX() then
-            Tools.printDebug("print error 卡在弹簧--------------")
-        	return
-        end
-        self.slowlySpeed = nil
-        self.originPos = cc.p(display.cx-100,self:getPositionY())
-        self.originScaleY = self:getScaleY()
-        if self.backHandler then
-            Scheduler.unscheduleGlobal(self.backHandler)
-            self.backHandler=nil
-        end
-        self.backHandler = Scheduler.scheduleGlobal(handler(self,self.backMove),FrameTime)
-    end
-end
-
---向后移动
-function Player:backMove(parameters)
-    local x,y = self:getPosition()
-    self:setPosition(x-MoveSpeed*0.1,y)
-    if self:getPositionX()<=-self:getSize().width then
-        if self.backHandler then
-            Scheduler.unscheduleGlobal(self.backHandler)
-            self.backHandler=nil
-        end
-        self:deadSprintFlash()
-    end
-end
-
---==================End===================
-
---================角色技能buff=============
---吸金币
-function Player:magnetSkill(radius)
-    self:addBuff({type=PLAYER_STATE.Magnet})
-    self.m_radius = radius
-    self.m_isMagnet = true
-    --特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/xitieshi0.png", "armature/xitieshi0.plist" , "armature/xitieshi.ExportJson")
-    self.m_mangetSelf = ccs.Armature:create("xitieshi")
-    self.m_mangetSelf:getAnimation():playWithIndex(0)
-    self.m_mangetSelf:setPosition(20,60)
-    self:addChild(self.m_mangetSelf)
-end
-
---护盾技能
-function Player:protectSkill(parameters)
-    Tools.printDebug("----------角色的护盾")
-    self:addBuff({type=PLAYER_STATE.Defence})
-    --护盾特效
-    ccs.ArmatureDataManager:getInstance():addArmatureFileInfo("armature/huduen0.png", "armature/huduen0.plist" , "armature/huduen.ExportJson")
-    self.m_protectSkill = ccs.Armature:create("huduen")
-    self.m_protectSkill:getAnimation():playWithIndex(0)
-    self.m_protectSkill:setPosition(20,60)
-    self:addChild(self.m_protectSkill)
-end
---================End=======================
-
---判断玩家是否处于某种状态
-function Player:isInState(_state)
-    if #self.m_buffArr > 0 then
-        for key, var in ipairs(self.m_buffArr) do
-            if _state == var:getType() then
-                return true
+    self.m_vo.m_lifeNum = self.m_vo.m_lifeNum - 1
+    if self.m_vo.m_lifeNum <= 0 then
+        self.m_isDead = true
+        if GameDataManager.getPoints() <= 20 then
+            if GameDataManager.getPoints()>=GameDataManager.getRecord() then
+                GameDataManager.saveRecord(GameDataManager.getPoints())
             end
+            --低于20层回到起点
+            if not tolua.isnull(self:getParent()) then
+                self:getParent():backOriginFunc()
+            end
+        else
+            --弹出结算界面
+            GameDispatcher:dispatch(EventNames.EVENT_OPEN_SETTLEMENT) 
         end
-        return false
-    else
-        return false
     end
+end
+
+function Player:setDeadReback()
+    self.m_isDead = false
+end
+
+--停止移动
+function Player:toStopMove(parameters)
+    self.m_stopVec = self.m_body:getVelocity()
+end
+--恢复移动
+function Player:resumeMove(parameters)
+    self:setBodyVelocity(self.m_stopVec)
+end
+
+--增加一条生命
+function Player:addLifeNum(_count)
+    self.m_vo.m_lifeNum = self.m_vo.m_lifeNum + _count
+end
+
+--改变速度
+function Player:changeSpeed(_speed)
+    self.m_speed = _speed
 end
 
 --添加buff
@@ -1012,370 +237,101 @@ function Player:clearBuff(_type)
     end
 
     if bIsClear==true then
-        if _type==PLAYER_STATE.StartSprint then
-            if self.m_handler then
-                Scheduler.unscheduleGlobal(self.m_handler)
-                self.m_handler = nil
-            end
-            if not tolua.isnull(self.m_spdeffect) then
-                self.m_spdeffect:removeFromParent()
-                self.m_spdeffect = nil
-            end
-            self:toPlay(PLAYER_ACTION.Run)
-            self:setPosition(cc.p(self.oldX,self.oldY))
-            self.oldX,self.oldY = nil,nil
-            MoveSpeed = self.initSpeed
-            self.initSpeed = nil
-            self.startSprintManget = false
-            self.startSprintRadius = nil
-            self:clearObstales()
-        elseif _type == PLAYER_STATE.DeadSprint then
-            if self.m_dHandler then
-                Scheduler.unscheduleGlobal(self.m_dHandler)
-                self.m_dHandler = nil
-            end
-            if not tolua.isnull(self.m_deadDffect) then
-                self.m_deadDffect:removeFromParent()
-                self.m_deadDffect = nil
-            end
-            self:toPlay(PLAYER_ACTION.Run)
-            self:setScaleY(self.m_scaleY)
-            if self.m_scaleY == 1 then
-                self:setPosition(cc.p(display.cx-100,display.cy-240))
-            else
-                self:setPosition(cc.p(display.cx-100,display.cy+200))
-            end
-            MoveSpeed = self.deadSpeed
-            self.deadSpeed = nil
-            self.m_scaleY = nil
-            self.deadSprintManget = false
-            self.deadSprintRadius = nil
-            self:deadContinueFlash()
-            self:clearObstales()
-        elseif _type == PLAYER_STATE.StartProtect then
-            if not tolua.isnull(self.m_huduen) then
-                self.m_huduen:removeFromParent()
-                self.m_huduen = nil
-            end
-        
-        elseif _type == PLAYER_STATE.MagnetProp then
-            self.m_propManget = false
-            if self.m_manHandler then
-                Scheduler.unscheduleGlobal(self.m_manHandler)
-                self.m_manHandler = nil
-            end
-            if not tolua.isnull(self.m_manget) then
-                self.m_manget:removeFromParent()
-                self.m_manget = nil
-            end
-            
-        elseif _type == PLAYER_STATE.GrankDrink then
-            if self.m_grankHandler then
-                Scheduler.unscheduleGlobal(self.m_grankHandler)
-                self.m_grankHandler = nil
-            end
-            self.m_armature:setScale(1)
-            self.m_body:removeFromWorld()
-            local offset
-            if self:getScaleY() == -1 then
-            	offset = cc.p(10,-50)
-            else
-                offset = self.p_offset
-            end
-            self:addBody(offset,self.pSize)
-            self:clearObstales()
-        elseif _type == PLAYER_STATE.LimitSprint then
-            if self.m_limitHandler then
-                Scheduler.unscheduleGlobal(self.m_limitHandler)
-                self.m_limitHandler = nil
-            end
-            if not tolua.isnull(self.m_limitDffect) then
-                self.m_limitDffect:removeFromParent()
-                self.m_limitDffect = nil
-            end
-            self:toPlay(PLAYER_ACTION.Run)
-            self:setScaleY(self.m_scaleY)
-            if self.m_scaleY == 1 then
-                self:setPosition(cc.p(display.cx-100,display.cy-240))
-            else
-                self:setPosition(cc.p(display.cx-100,display.cy+200))
-            end
-            MoveSpeed = self.limitSpeed
-            self.limitSpeed = nil
-            self.m_scaleY = nil
-            self.limitSprintManget = false
-            self.limitSprintRadius = nil
-            self:clearObstales()
-        elseif _type == PLAYER_STATE.TransformGold then
-            if self.m_transHandler then
-                Scheduler.unscheduleGlobal(self.m_transHandler)
-                self.m_transHandler = nil
-            end
-        elseif _type == PLAYER_STATE.Slow then
-            if self.slowHandler then
-                Scheduler.unscheduleGlobal(self.slowHandler)
-                self.slowHandler=nil
-            end
-        elseif _type == PLAYER_STATE.Magnet then
-            if not tolua.isnull(self.m_mangetSelf) then
-                self.m_mangetSelf:removeFromParent()
-                self.m_mangetSelf = nil
-            end
-        elseif _type == PLAYER_STATE.Defence then
-            if not tolua.isnull(self.m_protectSkill) then
-                self.m_protectSkill:removeFromParent()
-                self.m_protectSkill = nil
-            end
-        elseif _type == PLAYER_STATE.GameDefence then
-            if not tolua.isnull(self.m_protect) then
-                self.m_protect:removeFromParent()
-                self.m_protect = nil
-            end
-        end
+--        if _type==PLAYER_STATE.Slider then
+--           
+--        end
     end
-
 end
-
-function Player:isPlayerDead()
-    return self.m_isDead
-end
-
---添加闪烁状态
-function Player:blank(_par)
-    --添加状态
-    self:addBuff({type=PLAYER_STATE.DropLife,time=_par})
-    local _time = _par
-    self:toFlash(_time)
-    self.m_dropLifeHandle = Tools.delayCallFunc(_time,function()
-        self:toStopFlash()
-        self:clearBuff(PLAYER_STATE.DropLife)
-    end)
-end
-
---掉生命时闪烁
-function Player:toFlash(_time)
-    self.m_isFlashed = true
-    local toFadeOut
-    toFadeOut = function(parameters)
-        if not self.m_isFlashed then
-            return
+--判断玩家是否处于某种状态
+function Player:isInState(_state)
+    if #self.m_buffArr > 0 then
+        for key, var in ipairs(self.m_buffArr) do
+            if _state == var:getType() then
+                return true
+            end
         end
-        if not tolua.isnull(self.m_armature) then
-            transition.fadeOut(self.m_armature,{time=Flash_Skeep_Time,onComplete=function()
-                transition.fadeIn(self.m_armature,{time=Flash_Skeep_Time,onComplete=function()
-                    toFadeOut()
-                end})
-            end})
-        end
+        return false
+    else
+        return false
     end
-    toFadeOut()
+end
+--判断角色是否死亡
+function Player:isDead()
+    return self.m_vo.m_lifeNum<=0
 end
 
+--获取角色大小
+function Player:getSize()
+    return self.m_size
+end
 
-function Player:toStopFlash()
-    self.m_isFlashed = false
-    if not tolua.isnull(self.m_armature) then
-        transition.stopTarget(self.m_armature)
-        self.m_armature:setOpacity(255)
+--获取角色速度
+function Player:getSpeed()
+    return self.m_speed
+end
+
+--获取跳跃值
+function Player:getJump()
+	return self.m_jump
+end
+
+function Player:toPlay(_actionName)
+    self.m_action = _actionName
+    if not tolua.isnull(self.m_animation) then
+        self.m_animation:play(_actionName)
     end
 end
 
-function Player:pause(parameters)
-    Tools.printDebug("角色游戏暂停")
-    if not tolua.isnull(self.m_armature) then
-        if self:isInState(PLAYER_STATE.MagnetProp) then
-            Tools.printDebug("卸载吸铁石定时器")
-            GameDataManager.setGamePauseTime(PLAYER_STATE.MagnetProp)
-            if self.m_manHandler then
-                Scheduler.unscheduleGlobal(self.m_manHandler)
-                self.m_manHandler = nil
-            end
-        end
-        if self:isInState(PLAYER_STATE.GrankDrink) then
-            Tools.printDebug("卸载巨人定时器")
-            GameDataManager.setGamePauseTime(PLAYER_STATE.GrankDrink)
-            if  self.m_grankHandler then
-                Scheduler.unscheduleGlobal(self.m_grankHandler)
-                self.m_grankHandler = nil
-            end
-        end
-        if self:isInState(PLAYER_STATE.StartSprint) then
-            Tools.printDebug("卸载开局冲刺定时器")
-            GameDataManager.setGamePauseTime(PLAYER_STATE.StartSprint)
-            if  self.m_handler then
-                Scheduler.unscheduleGlobal(self.m_handler)
-                self.m_handler = nil
-            end
-        end
-        if self:isInState(PLAYER_STATE.DeadSprint) then
-            Tools.printDebug("卸载死亡冲刺定时器")
-            GameDataManager.setGamePauseTime(PLAYER_STATE.DeadSprint)
-            if  self.m_dHandler then
-                Scheduler.unscheduleGlobal(self.m_dHandler)
-                self.m_dHandler = nil
-            end
-        end
-        if self:isInState(PLAYER_STATE.LimitSprint) then
-            Tools.printDebug("卸载极限冲刺定时器")
-            GameDataManager.setGamePauseTime(PLAYER_STATE.LimitSprint)
-            if  self.m_limitHandler then
-                Scheduler.unscheduleGlobal(self.m_limitHandler)
-                self.m_limitHandler = nil
-            end
-        end
-        if self:isInState(PLAYER_STATE.TransformGold) then
-            Tools.printDebug("卸载金币转换定时器")
-            GameDataManager.setGamePauseTime(PLAYER_STATE.TransformGold)
-            if  self.m_transHandler then
-                Scheduler.unscheduleGlobal(self.m_transHandler)
-                self.m_transHandler = nil
-            end
-        end
+--这个是供在mapLayer里调用
+function Player:setVelocity(vec)
+--    if self:isInState(PLAYER_STATE.Sprint)==false then
+        self:setBodyVelocity(vec)
+--    end
+
+end
+--恢复角色速度上限
+function Player:resumeVelocLimit()
+    if self:isInState(PLAYER_STATE.Scale) then
+        self.m_body:setVelocityLimit(Speed_Max*0.5)
+    else
+        self.m_body:setVelocityLimit(Speed_Max)
     end
 end
 
-function Player:regain(parameters)
-    Tools.printDebug("角色游戏恢复")
-    if not tolua.isnull(self.m_armature) then
-        if self:isInState(PLAYER_STATE.MagnetProp) then
-            Tools.printDebug("重启吸铁石定时器")
-            local leftTime = GameDataManager.getLeftTime(PLAYER_STATE.MagnetProp)
-            GameDataManager.setGamePropTime(PLAYER_STATE.MagnetProp,leftTime)
-            self.m_manHandler = Tools.delayCallFunc(leftTime,function()
-                self:clearBuff(PLAYER_STATE.MagnetProp)
-            end)
-        end
-        if self:isInState(PLAYER_STATE.GrankDrink) then
-            Tools.printDebug("重启巨人定时器")
-            local leftTime = GameDataManager.getLeftTime(PLAYER_STATE.GrankDrink)
-            GameDataManager.setGamePropTime(PLAYER_STATE.GrankDrink,leftTime)
-            self.m_grankHandler = Tools.delayCallFunc(leftTime,function()
-                self:clearBuff(PLAYER_STATE.GrankDrink)
-            end)
-        end
-        if self:isInState(PLAYER_STATE.StartSprint) then
-            MoveSpeed = GameDataManager.getMapSpeed(PLAYER_STATE.StartSprint)
-            local leftTime = GameDataManager.getLeftTime(PLAYER_STATE.StartSprint)
-            GameDataManager.setGamePropTime(PLAYER_STATE.StartSprint,leftTime,MoveSpeed)
-            self.m_handler = Tools.delayCallFunc(leftTime,function()
-                self:clearBuff(PLAYER_STATE.StartSprint)
-            end)
-            Tools.printDebug("重启开局冲刺定时器",MoveSpeed)
-        end
-        if self:isInState(PLAYER_STATE.DeadSprint) then
-            Tools.printDebug("重启死亡冲刺定时器")
-            MoveSpeed = GameDataManager.getMapSpeed(PLAYER_STATE.DeadSprint)
-            local leftTime = GameDataManager.getLeftTime(PLAYER_STATE.DeadSprint)
-            GameDataManager.setGamePropTime(PLAYER_STATE.DeadSprint,leftTime,MoveSpeed)
-            self.m_dHandler = Tools.delayCallFunc(leftTime,function()
-                self:clearBuff(PLAYER_STATE.DeadSprint)
-            end)
-        end
-        if self:isInState(PLAYER_STATE.LimitSprint) then
-            Tools.printDebug("重启极限冲刺定时器")
-            MoveSpeed = GameDataManager.getMapSpeed(PLAYER_STATE.LimitSprint)
-            local leftTime = GameDataManager.getLeftTime(PLAYER_STATE.LimitSprint)
-            GameDataManager.setGamePropTime(PLAYER_STATE.LimitSprint,leftTime,MoveSpeed)
-            self.m_limitHandler = Tools.delayCallFunc(leftTime,function()
-                self:clearBuff(PLAYER_STATE.LimitSprint)
-            end)
-        end
-        if self:isInState(PLAYER_STATE.TransformGold) then
-            Tools.printDebug("重启金币转换定时器")
-            local leftTime = GameDataManager.getLeftTime(PLAYER_STATE.TransformGold)
-            GameDataManager.setGamePropTime(PLAYER_STATE.TransformGold,leftTime)
-            self.m_transHandler = Tools.delayCallFunc(leftTime,function()
-                self:clearBuff(PLAYER_STATE.TransformGold)
-            end)
-        end
+--用于本类调用设置刚体速度 
+function Player:setBodyVelocity(_vec)
+    if tolua.isnull(self.m_body) or self:isDead() then
+		return
+	end
+    local _limit = self.m_body:getVelocityLimit()
+    if _limit > 0 then
+        self.m_body:setVelocity(_vec)
     end
 end
 
-function Player:dispose()
+--销毁生物
+--_isDoor：是否碰到结算门而销毁角色
+function Player:dispose(_isDoor)
+--    AudioManager.clear(AudioManager.Sound_Effect_Type.Player_Normal_Step)
+--    AudioManager.clear(AudioManager.Sound_Effect_Type.Player_Big_Sound)
 
-    GameDispatcher:removeListenerByName(EventNames.EVENT_PLAYER_ATTACKED)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_START_SPRINT)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_DEAD_SPRINT)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_START_PROTECT)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_DEAD_RELAY)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_MANGET)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_GRANT_DRINK)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_PLAYER_PAUSE)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_PLAYER_REGAIN)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_LIMIT_SPRINT)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_TRANSFORM_GOLD)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_SLOW_SPEED)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_OBSCALE_SPRING)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_ROLE_REVIVE)
-    GameDispatcher:removeListenerByName(EventNames.EVENT_GAME_PROTECT)
-    
-    self.m_isDead = false
-    GameController.isDead = false
-    self.m_jump = false
-    self.m_run = true
-    GameController.isWin = false
-    
-    if self.m_handler then
-        Scheduler.unscheduleGlobal(self.m_handler)
-        self.m_handler = nil
-    end
-    
-    if self.m_dHandler then
-        Scheduler.unscheduleGlobal(self.m_dHandler)
-        self.m_dHandler = nil
-    end
-    
-    if self.m_proHandler then
-        Scheduler.unscheduleGlobal(self.m_proHandler)
-        self.m_proHandler = nil
-    end
-    
-    if self.m_manHandler then
-        Scheduler.unscheduleGlobal(self.m_manHandler)
-        self.m_manHandler = nil
-    end
-    if self.m_grankHandler then
-        Scheduler.unscheduleGlobal(self.m_grankHandler)
-        self.m_grankHandler = nil
-    end
-    if self.m_limitHandler then
-        Scheduler.unscheduleGlobal(self.m_limitHandler)
-        self.m_limitHandler = nil
-    end
-    if self.m_transHandler then
-        Scheduler.unscheduleGlobal(self.m_transHandler)
-        self.m_transHandler = nil
+    transition.stopTarget(self)
+
+--    GameDispatcher:removeListenerByName(EventNames.EVENT_PLAYER_DEAD)
+
+    if self.m_body then
+        self.m_body:removeFromWorld()
     end
 
-    if self.m_dropLifeHandle then
-        Scheduler.unscheduleGlobal(self.m_dropLifeHandle)
-        self.m_dropLifeHandle=nil
-    end
+--    if self.ImmortalHandler then
+--        Scheduler.unscheduleGlobal(self.ImmortalHandler)
+--        self.ImmortalHandler=nil
+--    end
     
-    if self.backHandler then
-        Scheduler.unscheduleGlobal(self.backHandler)
-        self.backHandler=nil
-    end
-    
-    if self.slowHandler then
-        Scheduler.unscheduleGlobal(self.slowHandler)
-        self.slowHandler=nil
-    end
-    
-
-    --清除所有buff
-    for var=#self.m_buffArr,1,-1  do
-        local _buff = self.m_buffArr[var]
-        if _buff then
-            self:clearBuff(_buff:getType())
-        end
-    end
-    self.m_buffArr = {}
 
     GameController.stopDetect()
 
     self.super.dispose(self)
 end
-
 
 return Player

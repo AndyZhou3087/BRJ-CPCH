@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?plist version="1.0"?>
+<dict>
+    <key>animations</key>
+    <dict>
+        <key>RoleJump_1</key>
+        <dict>
+            <key>delay</key>
+            <real>0.1</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump_1.png</string>
+                <string>RoleJump_2.png</string>
+                <string>RoleJump_3.png</string>
+                <string>RoleJump_4.png</string>
+            </array>
+        </dict>
+    </dict>
+</dict>

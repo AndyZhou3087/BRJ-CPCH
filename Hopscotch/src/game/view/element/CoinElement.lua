@@ -6,15 +6,10 @@ local CoinElement=class("CoinElement",BaseElement)
 
 local PhysicSprite=require("game.custom.PhysicSprite")  
 
-local Scheduler = require("framework.scheduler")
-
 function CoinElement:ctor(parm)
     CoinElement.super.ctor(self)
     
-    self.m_type = parm.type
-    
-    self.m_img = PhysicSprite.new("Common/"..parm.res):addTo(self)
-    self:setAnchorPoint(cc.p(0,0))
+    self.m_img = display.newSprite(parm.res):addTo(self)
     self.m_img:setAnchorPoint(cc.p(0,0))
     self.m_size = self.m_img:getCascadeBoundingBox().size
 
@@ -26,50 +21,13 @@ function CoinElement:getSize()
     return self.m_size
 end
 
-function CoinElement:onEnterFrame()
-    local _x,_y = self:getPosition()
-    self:setPosition(_x-MoveSpeed*0.1,_y)
-    if self:getPositionX()<=display.right and self.m_type ~= Coin_Type.Coin_Gold then
-    	if GameController.isInState(PLAYER_STATE.TransformGold) and not self.m_trans then
-    	   self.m_trans = true
-           local old = self.m_img
-           self.m_img = PhysicSprite.new("Common/Common_gold.png"):addTo(self)
-           old:removeFromParent()
-    	end
-        if not GameController.isInState(PLAYER_STATE.TransformGold) then
-            self.m_trans = false
-    	end
-    end
-    if self:getPositionX()<=-self:getSize().width then
-        if not tolua.isnull(self) then
-            self:dispose()
-        end
-    end
-end
-
 --被碰触
 function CoinElement:collision()
-    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.GetGold_Sound)
-    if GameController.isInState(PLAYER_STATE.TransformGold) then
-    	GameDataManager.addLevelCoin(3)
-        self:dispose()
-        return
-    end
-
-    if self.m_type == Coin_Type.Coin_Copper then
-        GameDataManager.addLevelCoin(1)
-    elseif self.m_type == Coin_Type.Coin_Silver then
-        GameDataManager.addLevelCoin(2)
-    else
-        GameDataManager.addLevelCoin(3)
-    end
-    GameDataManager.addCurrencyCount(self.m_type,1)
-
+--    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.GetGold_Sound)
+    GameDataManager.addDiamond(1)
+    GameDataManager.addGameDiamond(1)
+    
     self:dispose()
-end
-
-function CoinElement:startScheduler(parameters)
-    self.moveHandler = Scheduler.scheduleGlobal(handler(self,self.onEnterFrame),FrameTime)
 end
 
 
@@ -113,11 +71,6 @@ function CoinElement:dispose(parameters)
         return
     end
     self.m_isDisposed = true
-    
-    if self.moveHandler then
-        Scheduler.unscheduleGlobal(self.moveHandler)
-        self.moveHandler=nil
-    end
     
     self.m_trans = nil
     

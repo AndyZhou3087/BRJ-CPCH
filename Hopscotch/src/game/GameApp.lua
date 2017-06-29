@@ -10,13 +10,19 @@ require("game.config.RoomsBgConfig")
 require("game.config.RoomGoodsConfig")
 require("game.config.OrnamentsConfig")
 require("game.config.CoinsConfig")
-require("game.config.MapGroupConfig")
+require("game.config.MapGroupConfigD")
+require("game.config.MapGroupConfigC")
+require("game.config.MapGroupConfigB")
+require("game.config.MapGroupConfigA")
+require("game.config.MapGroupConfigS")
+require("game.config.MapRunningConfig")
+require("game.config.MapFirstGroup")
 require("game.config.PaymentConfig")
 require("game.config.RoleConfig")
 require("game.config.GoodsConfig")
-require("game.config.ShopConfig")
-require("game.config.SignRewardConfig")
 require("game.config.GiftConfig")
+require("game.config.SceneConfig")
+require("game.config.DiamondConfig")
 
 PoolManager = require("game.tools.PoolManager")
 TimeUtil = require("game.tools.TimeUtil")
@@ -41,26 +47,24 @@ local GameApp = class("GameApp", cc.mvc.AppBase)    --继承AppBase：app = self
 function GameApp:ctor()
     GameApp.super.ctor(self,"GameApp","game")    --替换app目录
     
-    DataPersistence.insertAttribute("user_gold",InitGold)    --金币
     DataPersistence.insertAttribute("user_diamond",InitDiamond)  --钻石
-    DataPersistence.insertAttribute("user_score",10)    --玩家积分
+    DataPersistence.insertAttribute("bestscore",0)    --最佳分数
 
     --音乐、音效
     DataPersistence.insertAttribute("music",true)
     DataPersistence.insertAttribute("sound",true)
 
     DataPersistence.insertAttribute("cur_roleID",1)      --当前使用角色id
-    DataPersistence.insertAttribute("modle_list",{ModleVo={roleId =1,isOwn = true,roleLv = 1},})    --已经解锁的角色模型列表，元素为ModleVo
+    DataPersistence.insertAttribute("modle_list",{ModleVo={roleId =1,isOwn = true},})    --已经解锁的角色模型列表，元素为ModleVo
+    
+    DataPersistence.insertAttribute("cur_sceneID",1)      --当前使用场景
+    DataPersistence.insertAttribute("scene_list",{SceneVo={sceneId =1,isOwn = true},})    --已经解锁的场景列表，元素为SceneVo
 
     --物品相关
     DataPersistence.insertAttribute("goods_list",{})    --拥有物品列表，列表元素为GoodsVo
+    --需要缓存的使用道具记录,{当前使用的道具id列表}
+    DataPersistence.insertAttribute("cacheGoods",{})
 
-    --体力相关
---    DataPersistence.insertAttribute("recover_power_endTime",0) --距体力回满结束时间戳
-
-    --设置签到
---    DataPersistence.insertAttribute("user_sign",{signs=0,day=10,month=8,year=2014})
---    DataPersistence.insertAttribute("sign_reward",1)
 
     --角色礼包每日领奖
 --    DataPersistence.insertAttribute("rolegift",{})
@@ -74,6 +78,16 @@ function GameApp:run()
     if DataPersistence.init() then
         self:enterScene("MainScene")
     end
+end
+
+function GameApp:enterLoadScene()
+    cc.FileUtils:getInstance():addSearchPath("res/")
+    self:enterScene("LoadScene")
+end
+
+function GameApp:enterMainScene(parameters)
+    cc.FileUtils:getInstance():addSearchPath("res/")
+    self:enterScene("MainScene")
 end
 
 function GameApp:enterGameScene(parameters)
