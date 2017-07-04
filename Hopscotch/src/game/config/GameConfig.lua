@@ -24,9 +24,9 @@ Sequent_Click_Time = 0.05
 GOLD_SPEED=40
 
 --横跑出现的层数(每50层出现一次)
-RunningFloorNum = 50
+RunningFloorNum = 60
 --随机每多少层出现一次
-RunningMin = 50
+RunningMin = RunningFloorNum
 RunningMax = 100
 
 --初始化房间数
@@ -63,6 +63,7 @@ MAPROOM_TYPE =
         Lean = 2,     --倾斜类型
         Special = 3,   --特殊吊杆类型
         Running = 4,  --横向奔跑类型
+        TwoLean = 5,    --双向倾斜
     }
 --横跑时的方向
 MAPRUNNING_TYPE = 

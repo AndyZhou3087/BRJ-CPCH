@@ -6,7 +6,7 @@
 Room_Size = cc.size(692,99)--坐标：x:[29,721]
 
 --=====所有坐标x都要从29开始计算(如果为0，则Room_Distance.x+0)
-Room_Distance = cc.p(29,721)
+Room_Distance = cc.p(30,722)
 
 Grid_Size = cc.size(90,90)
 
@@ -52,6 +52,45 @@ RoomBgs[2]=
     }
     
 RoomBgs[3]=
+    {
+        bg = {{res="#Room_bg_1.png",x=Room_Distance.x+17,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+17+94,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+16+94*2,y=16},
+            {res="#Room_bg_1.png",x=Room_Distance.x+15+94*3,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+14+94*4,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+13+94*5,y=16},
+            {res="#Room_bg_1.png",x=Room_Distance.x+12+94*6,y=16},},--房间背景(背景窗户随机其实是在有背景图的几张图随机抽取一张替换图片为窗户)
+        wallLeftRight = {{res="#Room_wall.png",x=Room_Distance.x+0,y=16},{res="#Room_wall.png",x=Room_Distance.x+668,y=16},},--左右两侧墙壁
+        floor = {{res="#Room_floor_5.png",x=Room_Distance.x+0,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17+94,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+17+94*2,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17+94*3,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+17+94*4,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17+94*5,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+17+94*6,y=0},{res="#Room_floor_6.png",x=Room_Distance.x+10+94*7,y=0},},--地板
+    }
+    
+    
+--==============================双向倾斜===========================
+
+RoomBgs[4]=
+    {
+        bg = {{res="#Room_bg_1.png",x=Room_Distance.x+17,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+17+94,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+16+94*2,y=16},
+            {res="#Room_bg_1.png",x=Room_Distance.x+15+94*3,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+14+94*4,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+13+94*5,y=16},
+            {res="#Room_bg_1.png",x=Room_Distance.x+12+94*6,y=16},},--房间背景(背景窗户随机其实是在有背景图的几张图随机抽取一张替换图片为窗户)
+        wallLeftRight = {{res="#Room_wall.png",x=Room_Distance.x+0,y=16,type = RoomWall_Type.Left},{res="#Room_wall.png",x=Room_Distance.x+668,y=16,type = RoomWall_Type.Right},},--左右两侧墙壁
+        floor = {{res="#Room_floor_3.png",x=Room_Distance.x+0,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17+94,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+16+94*2,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+15+94*3,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+14+94*4,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+13+94*5,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+12+94*6,y=0},{res="#Room_floor_4.png",x=Room_Distance.x+10+94*7,y=0},},--地板
+    }
+RoomBgs[5]=
+    {
+        bg = {{res="#Room_bg_4.png",x=Room_Distance.x+17,y=16,type = RoomBg_Type.Half},{res="#Room_bg_2.png",x=Room_Distance.x+17+47,y=16,type = RoomBg_Type.Full},
+            {res="#Room_window_4.png",x=Room_Distance.x+16+94+47,y=16,type = RoomBg_Type.Window},{res="#Room_bg_2.png",x=Room_Distance.x+15+94*2+47,y=16,type = RoomBg_Type.Full},
+            {res="#Room_bg_2.png",x=Room_Distance.x+14+94*3+47,y=16,type = RoomBg_Type.Full},{res="#Room_bg_2.png",x=Room_Distance.x+13+94*4+47,y=16,type = RoomBg_Type.Full},
+            {res="#Room_bg_2.png",x=Room_Distance.x+12+94*5+47,y=16,type = RoomBg_Type.Full},{res="#Room_bg_3.png",x=Room_Distance.x+11+94*6+47,y=16,type = RoomBg_Type.Half},},--房间背景(背景窗户随机其实是在有背景图的几张图随机抽取一张替换图片为窗户)
+        wallLeftRight = {{res="#Room_wall.png",x=Room_Distance.x+0,y=16},{res="#Room_wall.png",x=Room_Distance.x+668,y=16,type = RoomWall_Type.Right}},--左右两侧墙壁
+        floor = {{res="#Room_floor_5.png",x=Room_Distance.x+0,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+17,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+16+94,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+15+94*2,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+14+94*3,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+13+94*4,y=0},
+            {res="#Room_floor_7.png",x=Room_Distance.x+12+94*5,y=0},{res="#Room_floor_7.png",x=Room_Distance.x+11+94*6,y=0},
+            {res="#Room_floor_6.png",x=Room_Distance.x+10+94*7,y=0},},--地板
+    }
+
+RoomBgs[6]=
     {
         bg = {{res="#Room_bg_1.png",x=Room_Distance.x+17,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+17+94,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+16+94*2,y=16},
             {res="#Room_bg_1.png",x=Room_Distance.x+15+94*3,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+14+94*4,y=16},{res="#Room_bg_1.png",x=Room_Distance.x+13+94*5,y=16},

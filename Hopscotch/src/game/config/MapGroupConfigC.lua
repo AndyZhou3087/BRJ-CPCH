@@ -40,7 +40,7 @@ MapGroupConfigC[2]=
         roomType = MAPROOM_TYPE.Lean,
         direction = false,       --当类型为奔跑类型时的方向，非奔跑类型可不加此参数
         distance = 40,        --房间x轴倾斜距离(单位：像素)
-        probability = 60,     --权重
+        probability = 0,     --权重
     } 
 
 MapGroupConfigC[3]= 
@@ -56,6 +56,19 @@ MapGroupConfigC[3]=
         lineX = 0,    --钢架线离边距的距离
         direction = false,       --当类型为奔跑类型时的方向，非奔跑类型可不加此参数
         distance = 0,        --房间x轴倾斜距离(单位：像素)
+        probability = 0,     --权重
+    } 
+    
+MapGroupConfigC[4]= 
+    { 
+        _id=4, 
+        roomBgs={1,2,2,2,2,2,2,2,2,3}, --房间背景地面
+        ornaments={2,1,1,1,1,1,1,1,1,1}, ---小挂件
+        coins={0,0,0,0,1,0,0,0,0,0}, ---钻石
+        roomGoods={0,0,0,0,0,1,0,0,0,0}, ---道具
+        roomType = MAPROOM_TYPE.TwoLean,
+        direction = false,       --当类型为奔跑类型时的方向，非奔跑类型可不加此参数
+        distance = 40,        --房间x轴倾斜距离(单位：像素)
         probability = 60,     --权重
     } 
     

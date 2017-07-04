@@ -32,13 +32,15 @@ function MapRoom:ctor(_idx,_levelCon,_floorNum)
     
     if _levelCon.roomType == MAPROOM_TYPE.Special and _idx == 10 then
         local spRes = SceneConfig[GameDataManager.getFightScene()].specailRes
-        local left = display.newSprite(spRes):addTo(self)
-        left:setPosition(cc.p(0+_levelCon.lineX,0))
-        left:setAnchorPoint(cc.p(0,0))
-        local right = display.newSprite(spRes):addTo(self)
-        right:setScaleX(-1)
-        right:setPosition(cc.p(display.right-_levelCon.lineX,0))
-        right:setAnchorPoint(cc.p(0,0))
+        if spRes then
+            local left = display.newSprite(spRes):addTo(self)
+            left:setPosition(cc.p(0+_levelCon.lineX,0))
+            left:setAnchorPoint(cc.p(0,0))
+            local right = display.newSprite(spRes):addTo(self)
+            right:setScaleX(-1)
+            right:setPosition(cc.p(display.right-_levelCon.lineX,0))
+            right:setAnchorPoint(cc.p(0,0))
+        end
     end
     
     local _roomBgVo = RoomBgs[_levelCon.roomBgs[_idx]] or {}
@@ -227,6 +229,7 @@ end
 --设置坐标
 --_isJustBody：是否调整刚体坐标
 function MapRoom:initPosition(_x,_y,_isJustBody)
+    self.roomX = _x
     if _y ~= 0 and _isJustBody then
         for i=#self.m_blocks, 1, -1 do
             local _block = self.m_blocks[i]
@@ -254,6 +257,11 @@ function MapRoom:initPosition(_x,_y,_isJustBody)
             end
         end
     end
+end
+
+--获取横跑房间的x坐标
+function MapRoom:getRoomX()
+    return self.roomX
 end
 
 --获取房间中的物体块表
@@ -329,6 +337,7 @@ function MapRoom:dispose(parameters)
         if not tolua.isnull(self:getParent()) then
             if not tolua.isnull(self:getParent():getParent()) then
                 self:getParent():getParent():disposeSpecial(math.floor(self.m_floorNum/10))
+                Tools.printDebug("----------brj 这里可能有执行：",math.floor(self.m_floorNum/10))
             end
         end
     end

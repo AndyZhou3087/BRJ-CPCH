@@ -6,13 +6,112 @@
         <key>RoleJump_1</key>
         <dict>
             <key>delay</key>
-            <real>0.1</real>
+            <real>0.15</real>
             <key>frames</key>
             <array>
                 <string>RoleJump_1.png</string>
                 <string>RoleJump_2.png</string>
                 <string>RoleJump_3.png</string>
                 <string>RoleJump_4.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_2</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump2_1.png</string>
+                <string>RoleJump2_2.png</string>
+                <string>RoleJump2_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_3</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump3_1.png</string>
+                <string>RoleJump3_2.png</string>
+                <string>RoleJump3_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_4</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump4_1.png</string>
+                <string>RoleJump4_2.png</string>
+                <string>RoleJump4_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_5</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump5_1.png</string>
+                <string>RoleJump5_2.png</string>
+                <string>RoleJump5_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_6</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump6_1.png</string>
+                <string>RoleJump6_2.png</string>
+                <string>RoleJump6_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_7</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump7_1.png</string>
+                <string>RoleJump7_2.png</string>
+                <string>RoleJump7_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_8</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump8_1.png</string>
+                <string>RoleJump8_2.png</string>
+                <string>RoleJump8_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_9</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump9_1.png</string>
+                <string>RoleJump9_2.png</string>
+                <string>RoleJump9_3.png</string>
+            </array>
+        </dict>
+        <key>RoleJump_10</key>
+        <dict>
+            <key>delay</key>
+            <real>0.15</real>
+            <key>frames</key>
+            <array>
+                <string>RoleJump10_1.png</string>
+                <string>RoleJump10_2.png</string>
+                <string>RoleJump10_3.png</string>
             </array>
         </dict>
     </dict>

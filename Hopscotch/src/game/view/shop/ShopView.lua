@@ -8,6 +8,7 @@ local CustomListView = require("game.custom.CustomListView")
 local ShopItem = require("game.view.shop.ShopItem")
 
 local shopX = {300,450,600,750,900,1050,1200,150,0}
+local sceneX = {340,510,680,850,1020,1190,1360,170,0}
 local roleX = {300,450,600,750,900,1050,1200,1350,1500,1650,1800,1950,150,0}
 
 function ShopView:ctor(parameters)
@@ -244,7 +245,7 @@ function ShopView:initSceneList()
     self.sceneBuy = cc.uiloader:seekNodeByName(self.m_json,"sceneBuy")
     
     self.sceneLv = CustomListView.new {
-        viewRect = cc.rect(0, self.Panel_scene:getPositionY(), 750, 200),
+        viewRect = cc.rect(-40, self.Panel_scene:getPositionY(), 850, 200),
         direction = cc.ui.UIScrollView.DIRECTION_HORIZONTAL}
         :onTouch(handler(self, self.touchListenerScene))
         :addTo(self)
@@ -263,11 +264,11 @@ function ShopView:initSceneList()
         local item = self.sceneLv:newItem()
         self["sceneitem"..i] = ShopItem.new(Shop_Type.scene,self.sceneArr[i])
         item:addContent(self["sceneitem"..i])
-        item:setItemSize(150, 142)
+        item:setItemSize(170, 142)
         self.sceneLv:addItem(item)
     end
     
-    for key, var in ipairs(shopX) do
+    for key, var in ipairs(sceneX) do
         self["sceneX"..key] = var
     end
     self.sceneLv:reload()

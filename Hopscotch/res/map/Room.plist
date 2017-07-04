@@ -394,10 +394,23 @@
                 <key>sourceSize</key>
                 <string>{94,83}</string>
             </dict>
+            <key>Scene_sea.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{423,250},{73,69}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{73,69}}</string>
+                <key>sourceSize</key>
+                <string>{73,69}</string>
+            </dict>
             <key>Special_line.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{423,250},{3,99}}</string>
+                <string>{{498,250},{3,99}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -417,7 +430,7 @@
             <key>size</key>
             <string>{512,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:1224fb989d60cd22ff50090d5adab7d8$</string>
+            <string>$TexturePacker:SmartUpdate:a088436e5ab9949aeffc18488941f6fd$</string>
             <key>textureFileName</key>
             <string>Room.png</string>
         </dict>

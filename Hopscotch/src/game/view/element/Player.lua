@@ -93,14 +93,13 @@ function Player:setGravityEnable(_enable)
 end
 
 --上跳状态
-function Player:toJump(ty,isTwoJump)
+function Player:toJump(ty,isRunning)
     self.m_jump = true
 --    Tools.printDebug("---------------hehehahi------------",isTwoJump)
---    if isTwoJump then
+    if isRunning ~= MAPROOM_TYPE.Running then
         self.m_body:setCollisionBitmask(0x06)
         self:setGravityEnable(false)
         self:stopAllActions()
---        self.m_armature:stopAllActions()
         self:createModle(self.m_jumpModle)
         local x,y = self:getPosition()
         local move = cc.MoveBy:create(0.2,cc.p(0,ty-y+self.m_size.width*0.5+50))
@@ -116,25 +115,24 @@ function Player:toJump(ty,isTwoJump)
         end)
         local seq = cc.Sequence:create(easeOut,easeIn,callfunc)
         self:runAction(seq)
---    else
---        self.m_body:setCollisionBitmask(0x06)
---        self:setGravityEnable(false)
---        self:stopAllActions()
---        self.m_armature:stopAllActions()
---        self:createModle(self.m_jumpModle)
---        local x,y = self:getPosition()
---        local move = cc.MoveTo:create(0.3,cc.p(x,ty+self.m_size.width*0.5+30))
---        local easeOut = cc.EaseCubicActionOut:create(move)
---        local callfunc = cc.CallFunc:create(function()
---            self.m_body:setCollisionBitmask(0x03)
---            self:setGravityEnable(true)
---            self.m_jump = false
---            self.m_armature:stopAllActions()
---            self:createModle(self.m_modle)
---        end)
---        local seq = cc.Sequence:create(easeOut,callfunc)
---        self:runAction(seq)
---    end
+    else
+        self.m_body:setCollisionBitmask(0x06)
+        self:setGravityEnable(false)
+        self:stopAllActions()
+        self:createModle(self.m_jumpModle)
+        local x,y = self:getPosition()
+        local move = cc.MoveTo:create(0.3,cc.p(x,ty+self.m_size.width*0.5+30))
+        local easeOut = cc.EaseCubicActionOut:create(move)
+        local callfunc = cc.CallFunc:create(function()
+            self.m_body:setCollisionBitmask(0x03)
+            self:setGravityEnable(true)
+            self.m_jump = false
+            self.m_armature:stopAllActions()
+            self:createModle(self.m_modle)
+        end)
+        local seq = cc.Sequence:create(easeOut,callfunc)
+        self:runAction(seq)
+    end
 
 --    AudioManager.playSoundEffect(AudioManager.Sound_Effect_Type.Jump_High_Sound)
 end
